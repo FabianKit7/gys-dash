@@ -42,13 +42,14 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
     const sendReport = async () => {
         const today = new Date();
         // today.setHours(0, 0, 0, 0);
+        // const date = today.toISOString()
         const formattedToday = today.toISOString().split('T')[0];
+        const date = formattedToday
 
         const getAllTodaySignups = await supabase
             .from('users')
             .select('*')
-            // .filter('created_at', 'gte', today.toISOString());
-            .filter('created_at', 'gte', formattedToday);
+            .filter('created_at', 'gte', date);
         // .eq("status", sectionName.toLocaleLowerCase())
         getAllTodaySignups.error && console.log(getAllTodaySignups.error);
 
@@ -63,15 +64,9 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
         const twofactorUsers = allTodaySignups.filter(user => user.status === 'twofactor');
         const incorrectUsers = allTodaySignups.filter(user => user.status === 'incorrect');
 
-        console.log('Active Users:', activeUsers.length);
-        console.log('Checking Users:', checkingUsers.length);
-        console.log('new Users:', newUsers.length);
-        console.log('Pending Users:', pendingUsers.length);
-        console.log('Two-Factor Users:', twofactorUsers.length);
-        console.log('Incorrect Users:', incorrectUsers.length);
-
         try {
             const msg = `
+            Date: ${date}\n
             Active Users: ${activeUsers.length}\n
             Checking Users: ${checkingUsers.length}\n
             New Users: ${newUsers.length}\n
@@ -79,6 +74,7 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
             Two-Factor Users: ${twofactorUsers.length}\n
             Incorrect Users: ${incorrectUsers.length}\n
             `;
+            // const msg = `hello hi`;
             await messageSlack(msg);
             // console.log(r);
         } catch (error) {

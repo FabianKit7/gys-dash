@@ -302,13 +302,11 @@ export const getUser = async (uid) => {
 }
 
 export const messageSlack = async (message) => {
-  console.log("BACKEND_URL");
-  console.log(BACKEND_URL);
   const r = await axios.post(BACKEND_URL + '/api/notify', {
-    webhookUrl: 'https://hooks.slack.com/services/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',
+    webhookUrl: process.env.REACT_APP_SLACK_WEBHOOK_URL,
     message
   }).then(r => {
-    if (r?.data?.e?.status === 404){
+    if (r?.data?.e?.status === null || r?.data?.e?.status === 404){
       console.log('error while sending message to Slack');
       console.log(r);
       return r

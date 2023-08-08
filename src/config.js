@@ -1,5 +1,6 @@
 
-export const BACKEND_URL = process.env.NODE_ENV === 'production' ? 'https://sproutysocial-api.up.railway.app' : 'http://localhost:8000';
+// export const BACKEND_URL = process.env.NODE_ENV === 'production' ? 'https://sproutysocial-api.up.railway.app' : 'http://localhost:8000';
+export const BACKEND_URL = 'https://sproutysocial-api.up.railway.app';
 
 
 // email templates
