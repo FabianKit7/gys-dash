@@ -3,6 +3,7 @@ import axios from "axios"
 import _ from 'lodash';
 // import { slackClient } from "./slackClient";
 import { supabase } from "./supabaseClient"
+import { BACKEND_URL } from "./config";
 const scraperAPI = "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile"
 
 export const numFormatter = (num = 0) => {
@@ -301,19 +302,23 @@ export const getUser = async (uid) => {
 }
 
 export const messageSlack = async (message) => {
-  const baseUrl = process.env.REACT_APP_BASE_URL
-  // const baseUrl = 'http://localhost:8000'
-
-  // console.log({ message });
-
-  const r = await axios.post(baseUrl + '/api/notify', {
+  console.log("BACKEND_URL");
+  console.log(BACKEND_URL);
+  const r = await axios.post(BACKEND_URL + '/api/notify', {
     webhookUrl: 'https://hooks.slack.com/services/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',
     message
   }).then(r => {
-    // console.log(r);
+    if (r?.data?.e?.status === 404){
+      console.log('error while sending message to Slack');
+      console.log(r);
+      return r
+    }
+    console.log('message sent to Slack');
+    console.log(r);
     return r
   })
     .catch((e) => {
+      console.log('error while sending message to Slack');
       console.log(e);
     })
   return r
@@ -388,7 +393,7 @@ export function getRefCode() {
   }
   return ''
 }
-  
+
 export function sumTotalInteractions(arr) {
   let sum = 0;
   for (let i = 0; i < arr.length; i++) {

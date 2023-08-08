@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { RefreshModal } from '../../../dashboard'
 import { supabase } from '../../../supabaseClient'
+import { messageSlack } from '../../../helpers'
 
 export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading }) {
     const [openRefreshModal, setOpenRefreshModal] = useState(false)
@@ -12,15 +13,15 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
         if (!searchString) return;
         setLoading(true)
         var column;
-        if (searchString.startsWith("@")){
+        if (searchString.startsWith("@")) {
             column = 'username'
             searchString = searchTerm.substring(1);
-        } else if (searchString.includes("@")){
+        } else if (searchString.includes("@")) {
             column = 'email'
-        }else {
+        } else {
             column = 'chargebee_customer_id'
         }
-        
+
         const res = await supabase
             .from('users')
             .select()
@@ -30,12 +31,59 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
         res.error && console.log(res.error);
         // if(error) return;
         if (res.error) return;
-        
+
         setUsers([]);
         setTimeout(() => {
             setUsers(res?.data);
             setLoading(false)
         }, 500);
+    }
+
+    const sendReport = async () => {
+        const today = new Date();
+        // today.setHours(0, 0, 0, 0);
+        const formattedToday = today.toISOString().split('T')[0];
+
+        const getAllTodaySignups = await supabase
+            .from('users')
+            .select('*')
+            // .filter('created_at', 'gte', today.toISOString());
+            .filter('created_at', 'gte', formattedToday);
+        // .eq("status", sectionName.toLocaleLowerCase())
+        getAllTodaySignups.error && console.log(getAllTodaySignups.error);
+
+        let allTodaySignups = getAllTodaySignups.data
+        let allTodaySignupsCount = getAllTodaySignups.data?.length
+        console.log("allTodaySignupsCount: ", allTodaySignupsCount);
+
+        const activeUsers = allTodaySignups.filter(user => user.status === 'active');
+        const newUsers = allTodaySignups.filter(user => user.status === 'new');
+        const checkingUsers = allTodaySignups.filter(user => user.status === 'checking');
+        const pendingUsers = allTodaySignups.filter(user => user.status === 'pending');
+        const twofactorUsers = allTodaySignups.filter(user => user.status === 'twofactor');
+        const incorrectUsers = allTodaySignups.filter(user => user.status === 'incorrect');
+
+        console.log('Active Users:', activeUsers.length);
+        console.log('Checking Users:', checkingUsers.length);
+        console.log('new Users:', newUsers.length);
+        console.log('Pending Users:', pendingUsers.length);
+        console.log('Two-Factor Users:', twofactorUsers.length);
+        console.log('Incorrect Users:', incorrectUsers.length);
+
+        try {
+            const msg = `
+            Active Users: ${activeUsers.length}\n
+            Checking Users: ${checkingUsers.length}\n
+            New Users: ${newUsers.length}\n
+            Pending Users: ${pendingUsers.length}\n
+            Two-Factor Users: ${twofactorUsers.length}\n
+            Incorrect Users: ${incorrectUsers.length}\n
+            `;
+            await messageSlack(msg);
+            // console.log(r);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -51,7 +99,9 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
                 </Link>
 
                 <div className="flex justify-end items-center text-[18px] font-semibold font-MontserratSemiBold tracking-[-0.36px]">
-                    <button className="rounded-[10px] bg-black text-white w-[203px] h-[59px]" onClick={() => setOpenRefreshModal(!openRefreshModal)}>Refresh Account</button>
+                    <button className="rounded-[10px] bg-black text-white w-[203px] h-[59px]" onClick={sendReport}>Send Report</button>
+
+                    <button className="rounded-[10px] bg-black text-white w-[203px] h-[59px] ml-5" onClick={() => setOpenRefreshModal(!openRefreshModal)}>Refresh Account</button>
                     <button className="rounded-[10px] bg-black text-white w-[203px] h-[59px] ml-5" onClick={async () => {
                         await supabase.auth.signOut();
                         window.onbeforeunload = function () {

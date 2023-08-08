@@ -1,4 +1,7 @@
 
+export const BACKEND_URL = process.env.NODE_ENV === 'production' ? 'https://sproutysocial-api.up.railway.app' : 'http://localhost:8000';
+
+
 // email templates
 export const INCORRECT_PASSWORD_TEMPLATE = (full_name, username) => {
     return `
