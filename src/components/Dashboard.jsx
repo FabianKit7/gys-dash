@@ -198,6 +198,22 @@ export default function Dashboard() {
   if (error) return <Error value={username} />;
 
   if (loading) return (<>
+  <AlertModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false)
+          if (errorMsg?.message === "Please finish your registration") {
+            if (userData?.username) {
+              window.location.pathname = `subscriptions/${userData?.username}`
+            } else {
+              window.location.pathname = `search`;
+            }
+          }
+        }}
+        title={errorMsg?.title}
+        message={errorMsg?.message}
+      />
+
     <h3 className="tracking-widest animate-pulse">Loading</h3>
   </>);
 
@@ -337,7 +353,7 @@ export default function Dashboard() {
           <div className="lg:hidden flex flex-col items-center mb-5">
             <div className="flex items-center gap-[8px]">
               <img alt="" src="/ic_summary.svg" className="bg-black p-[8px] rounded-[8px]" />
-              <h3 className="text-[24px] font-bold font-MontserratBold text-black"> Account Summary </h3>
+              <h3 className="text-[22px] font-bold font-MontserratBold text-black"> Account Summary </h3>
             </div>
 
             <div className="relative rounded-[10px] w-fit text-[#1b89ff] text-lg font-bold">

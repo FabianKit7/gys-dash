@@ -121,9 +121,12 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
 
       const checkUsername = await supabase.from("users").select().eq('email', user?.email).eq("username", vuser?.username)
       if (checkUsername.data?.[0]) {
-        setIsModalOpen(true);
-        setErrorMsg({ title: 'Alert', message: "This username name has already been registered!" })
-        setProcessing(false);
+        const ref = getRefCode()
+        if (ref) {
+          navigate(`/subscriptions/${checkUsername.data[0].username}?ref=${ref}`)
+        } else {
+          navigate(`/subscriptions/${checkUsername.data[0].username}`)
+        }
         return;
       }
 
@@ -132,7 +135,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
       const uploadImageFromURLRes = await uploadImageFromURL(vuser?.username)
 
       if (uploadImageFromURLRes?.status === 'success') {
-        profile_pic_url = uploadImageFromURLRes?.data
+        profile_pic_url = uploadImageFromURLRes?.data ?? ''
       }
 
       if (!currentUsername) {
@@ -339,7 +342,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                   {searchedAccounts.map((data, index) => {
                     return (<>
                       <div
-                        key={index}
+                        key={`searchedAccounts-${index + 1}`}
                         className='accounts w-full flex items-center cursor-pointer hover:bg-[#02a1fd]/20'
                         onClick={() => {
                           setDebouncedQuery(data?.username)
