@@ -30,11 +30,11 @@ const Error = ({ value }) => {
 };
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   let { username } = useParams();
   const currentUsername = username
   const [userData, setUserData] = useState([]);
   const [error, setError] = useState(false);
-  const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false)
   const [sessionsData, setSessionsData] = useState([])
   const [showDateOptions, setShowDateOptions] = useState(false)

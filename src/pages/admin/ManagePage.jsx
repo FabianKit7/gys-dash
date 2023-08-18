@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from './components/header'
 import { FaCaretUp, FaPen, FaPlus, FaTimes } from 'react-icons/fa'
 import { supabase } from '../../supabaseClient'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import copy from 'copy-to-clipboard';
 import axios from 'axios'
 import { ACTIVE_TEMPLATE, CHECKING_TEMPLATE, INCORRECT_PASSWORD_TEMPLATE, TWO_FACTOR_TEMPLATE } from '../../config'
@@ -28,6 +28,8 @@ export const calculateLast7DaysGrowth = (sessionData) => {
 export const statuses = ['new', 'active', 'checking', 'pending', 'twofactor', 'incorrect', 'cancelled']
 
 export default function ManagePage() {
+  const navigate = useNavigate();
+  const [fetchingUser, setFetchingUser] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [sectionName, setSectionName] = useState('new')
   const [sectionTotal, setSectionTotal] = useState(0)
@@ -38,7 +40,21 @@ export default function ManagePage() {
   const [showAddTagModal, setShowAddTagModal] = useState(false)
   const [userToAddTagFor, setUserToAddTagFor] = useState()
 
+  useEffect(() => {
+    const getData = async () => {
+      const authUserRes = await supabase.auth.getUser()
+      if (authUserRes.error) return navigate("/login")
+      const authUser = authUserRes?.data?.user
+      const getSuperUser = await supabase.from('users').select().eq("email", authUser.email)
+      const superUser = getSuperUser?.data?.[0]
+      if(!superUser || !superUser?.admin) return navigate("/login")
+      setFetchingUser(false)
+    };
 
+    getData();
+  }, [navigate]);
+
+  // setUsers([]); and setSectionTotal(0)
   useEffect(() => {
     const fetch = async () => {
       setSearchTerm('')
@@ -63,6 +79,7 @@ export default function ManagePage() {
     fetch()
   }, [sectionName, refreshUsers])
 
+  // last_7_days_growth_
   useEffect(() => {
     if (users.length > 0) {
       users.forEach(async user => {
@@ -87,6 +104,12 @@ export default function ManagePage() {
       })
     }
   }, [users])
+
+  if (fetchingUser) {
+    return (<>
+      Loading...
+    </>)
+  }
 
   return (<>
     {showAddTagModal && <TagModal
@@ -397,7 +420,7 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
                       subject = "Your account has incorrect password"
                       htmlContent = INCORRECT_PASSWORD_TEMPLATE(user?.full_name, user?.username)
                     }
-                    
+
                     let sendEmail = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/send_email`,
                       {
                         email: user?.email,

@@ -3,12 +3,30 @@ import { Spinner } from "react-bootstrap";
 // import { updateUserProfilePicUrl } from "../../helpers";
 import { supabase } from "../../supabaseClient";
 import Nav from "../Nav";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 
 export default function Admin() {
+  const navigate = useNavigate();
+  const [fetchingUser, setFetchingUser] = useState(true)
   const [files, setFiles] = useState([]);
   const [Loading, setLoading] = useState(false);
   const [reading, setReading] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      const authUserRes = await supabase.auth.getUser()
+      if (authUserRes.error) return navigate("/login")
+      const authUser = authUserRes?.data?.user
+      const getSuperUser = await supabase.from('users').select().eq("email", authUser.email)
+      const superUser = getSuperUser?.data?.[0]
+      if (!superUser || !superUser?.admin) return navigate("/login")
+      setFetchingUser(false)
+    };
+
+    getData();
+  }, [navigate]);
 
   let receipts = [];
   let receiptsRead = [];
@@ -184,6 +202,12 @@ export default function Admin() {
   //     }
   //   });
   // }
+
+  if (fetchingUser){
+    return (<>
+    Loading...
+    </>)
+  }
 
 
   return (<>

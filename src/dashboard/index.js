@@ -195,6 +195,12 @@ export default function DashboardApp() {
           //   .from('users')
           //   .select()
           //   .like('username', `%${searchTerm}%`)
+
+          const delAuth = await supabaseAdmin.auth.admin.deleteUser('b43949fb-b2ed-4a96-bd1a-7ea7fc1fa514')
+          console.log(delAuth);
+          const delUser = await deleteUserDetails('b43949fb-b2ed-4a96-bd1a-7ea7fc1fa514')
+          console.log(delUser);
+          
           const second = await supabase
             .from('users')
             .select()
