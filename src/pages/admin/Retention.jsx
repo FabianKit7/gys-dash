@@ -20,6 +20,7 @@ export default function Retention() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState({ sectionName: '', value: '' })
 
+  // verity user
   useEffect(() => {
     const getData = async () => {
       const authUserRes = await supabase.auth.getUser()
@@ -89,7 +90,7 @@ export default function Retention() {
       Loading...
     </>)
   }
-  
+
   return (
     <div className="font-MontserratRegular max-w-[1600px] mx-auto">
       {showChargebee && <Chargebee k={selectedUser?.id} user={selectedUser} setShowChargebee={setShowChargebee} />}
