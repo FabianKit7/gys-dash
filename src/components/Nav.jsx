@@ -35,13 +35,17 @@ export default function Nav({ setShowWelcomeModal, userD, admin }) {
         } = await supabase.auth.getUser();
         uEmail = user.email
 
-        const { data, error } = await supabase.from("users").select().eq("user_id", user.id).eq('username', currentUsername).single();
+        const { data, error } = await supabase
+          .from("users").select()
+          .eq("user_id", user.id)
+          .eq('username', currentUsername)
+          // .single();
         if (error) {
           console.log(error);
           setError(error);
           return;
         }
-        setData(data);
+        setData(data?.[0]);
       } else {
         // console.log(userD);
         setData(userD);
@@ -105,7 +109,7 @@ export default function Nav({ setShowWelcomeModal, userD, admin }) {
                 <div className="max-h-[360px] overflow-auto pb-4 flex flex-col">
                   {accounts.map((account, i) => {
                     return (
-                      <Link key={`account_nav_${account?.username}_${i+1}`} className="font-normal text-sm hover:bg-[#f8f8f8]" to={"/dashboard/" + account?.username}
+                      <Link key={`account_nav_${account?.username}_${i + 1}`} className="font-normal text-sm hover:bg-[#f8f8f8]" to={"/dashboard/" + account?.username}
                         onClick={() => {
                           setIsOpen(!isOpen);
                           setActiveLink("Profile");
