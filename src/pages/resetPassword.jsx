@@ -16,7 +16,7 @@ export default function ResetPassword() {
         setLoading(false)
 
         if (data) alert("Password updated successfully!")
-        if (data?.user) return navigate(`/dashboard/${data?.user?.username}`)
+        if (data?.user) return navigate(`/login`)
         if (error) alert("There was an error updating your password.")
     }
 
