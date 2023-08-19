@@ -37,7 +37,7 @@ export default function ResetPassword() {
                     <div className="mb-4 form-outline">
                         <input
                             type="password"
-                            id="form2Example2"
+                            id="form2Example1"
                             className="rounded-[10px] py-4 px-4 w-80 text-[1.25rem] bg-transparent border shadow-[inset_0_0px_2px_rgba(0,0,0,0.4)]"
                             value={password}
                             placeholder="Password"

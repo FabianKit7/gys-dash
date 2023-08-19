@@ -21,9 +21,9 @@ export default function WelcomeModal({ show, onHide, setShowWelcomeModal, showWe
       transition: "opacity .15s ease-in"
     }}
     >
-      <div className="fixed top-0 left-0 w-full h-screen bg-black/40 grid place-items-center" onClick={() => setShowWelcomeModal(false)}></div>
+      <div className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center" onClick={() => setShowWelcomeModal(false)}></div>
       <div className="bg-white to-black py-4 md:py-7 md:pt-12 px-5 md:px-10 relative max-w-[300px] md:max-w-[500px] lg:max-w-[600px] font-MontserratRegular rounded-[10px]">
-        <FaTimesCircle className="absolute top-3 right-3 flex flex-col items-center"
+        <FaTimesCircle className="absolute flex flex-col items-center top-3 right-3"
           onClick={() => {
             setShowWelcomeModal(false)
           }} />
@@ -59,12 +59,12 @@ export default function WelcomeModal({ show, onHide, setShowWelcomeModal, showWe
         <FaTimesCircle className="cursor-pointer" onClick={() => setShowWelcomeModal(false)} />
       </div>
 
-      <div className="flex flex-col items-center gap-4 pt-3 pb-5 px-2">
+      <div className="flex flex-col items-center gap-4 px-2 pt-3 pb-5">
         <div className="flex items-center justify-center">
           <img src="/sproutysocial-light.svg" alt="logo" className="h-[40px]" />
         </div>
 
-        // <h1 className="font-bold font-MontserratBold text-3xl">HOW TO START</h1> 
+        // <h1 className="text-3xl font-bold font-MontserratBold">HOW TO START</h1> 
         <h1 className="text-[1rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">HOW TO START</h1>
 
         <ol type="1" className="flex flex-col items-center gap-4 text-[.8rem] md:text-base">

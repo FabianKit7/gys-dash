@@ -4,14 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { TbRefresh } from "react-icons/tb";
 import axios from 'axios'
-// import CrispChat from "./CrispChat";
 import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "react-click-outside-hook";
 import { FaAngleLeft } from "react-icons/fa";
 import AlertModal from './AlertModal'
 import { useRef } from "react";
 import { CardComponent, CardNumber, CardExpiry, CardCVV } from "@chargebee/chargebee-js-react-wrapper"
-// import { getRefCode, uploadImageFromURL } from "../helpers";
 import { getRefCode } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { NOT_CONNECTED_TEMPLATE } from "../config";
@@ -27,8 +25,6 @@ const urlEncode = function (data) {
   }
   return str.join("&");
 }
-
-// g
 
 export default function Subscriptions() {
   const [user, setUser] = useState(null)
@@ -179,7 +175,7 @@ export default function Subscriptions() {
             </div>
 
             <div className="mt-[65px] mb-[150px]">
-              <div className="lg:hidden bg-white">
+              <div className="bg-white lg:hidden">
                 <div className="flex flex-col gap-[1px]">
                   <div className="border-l-8 border-l-[#23DF85] border-b h-[54px] pr-[20px] pl-3 flex items-center justify-between w-full bg-[#f8f8f8]">
                     <div className="flex items-center gap-[10px]">
@@ -212,7 +208,7 @@ export default function Subscriptions() {
                 </div>
               </div>
 
-              <div className="pt-4 bg-white px-5">
+              <div className="px-5 pt-4 bg-white">
                 <h1 className="text-black text-[20px] font-bold font-MontserratSemiBold">
                   {' '}
                   Start Your Free 7-Day Trial
@@ -297,7 +293,7 @@ export default function Subscriptions() {
                   >
                     <div className="">{Loading ? "Loading..." : "Pay $0.00 & Start Free Trial"}</div>
                   </button>
-                  <div className="text-center mt-2 text-black">
+                  <div className="mt-2 text-center text-black">
                     Then $24.99 per week, billed monthly. <br /> Cancel any time, no
                     risk.
                   </div>
@@ -313,7 +309,7 @@ export default function Subscriptions() {
                   >
                     <img src={'/icons/paypal-btn.svg'} alt="" className="h-[25px]" />
                   </button>
-                  <div className="text-center mt-2 text-black">
+                  <div className="mt-2 text-center text-black">
                     Start Free 7-Day Trial. Then $24.99 per week, billed monthly. Cancel any time, no risk.
                   </div>
                 </div>
@@ -404,13 +400,13 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
           <div className="">Enter Dashboard</div>
         </div>
 
-        <div className="pb-4 hidden lg:flex flex-col justify-between lg:justify-start lg:items-center h-full text-start px-5 lg:px-0">
-          <div className="flex flex-col lg:flex-row gap-5 w-full">
+        <div className="flex-col justify-between hidden h-full px-5 pb-4 lg:flex lg:justify-start lg:items-center text-start lg:px-0">
+          <div className="flex flex-col w-full gap-5 lg:flex-row">
             <div className="basis-[45%] grow-[3] rounded-[20px] flex gap-5 flex-col">
               <div className="rounded-[20px]">
                 <div className="text-start w-full h-[110px] shadow-[0_5px_10px_#0a17530d] rounded-[20px] py-[25px] px-4 lg:px-[50px] relative flex items-center justify-between bg-white">
                   <div className="w-full max-w-[420px] relative overflow-hidden flex items-center text-start py-5 pr-[30px]">
-                    <div className="w-full flex gap-4 items-center ">
+                    <div className="flex items-center w-full gap-4 ">
                       <div className="h-[60px] relative">
                         <img src={userResults?.profile_pic_url} alt="" className='w-[60px] h-[60px] min-w-[60px] min-h-[60px] rounded-full' />
                         <img src="/icons/instagram.svg" alt="" className='absolute -bottom-1 -right-1 border-2 w-[22px] h-[22px] rounded-full' />
@@ -486,7 +482,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                   Then $24.99 per week, billed monthly.
                 </p>
 
-                <div className="flex flex-col gap-4 text-black text-base">
+                <div className="flex flex-col gap-4 text-base text-black">
                   <div className="flex items-center gap-2">
                     <svgicon className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" _ngcontent-gsj-c72="" aria-hidden="true">
@@ -691,6 +687,29 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
 
   // const handleCardPay = async (setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard) => {
   const handleCardPay = async () => {
+
+
+    // if (process.env.NODE_ENV !== 'production') {
+    //   let data = {
+    //     username: userResults?.username,
+    //     email: user.email,
+    //     full_name: user.full_name,
+    //     followers: userResults?.follower_count,
+    //     following: userResults?.following_count,
+    //     is_verified: userResults?.is_verified,
+    //     biography: userResults?.biography,
+    //     start_time: getStartingDay(),
+    //     posts: userResults?.media_count,
+    //     subscribed: true
+    //   }
+    //   await supabase
+    //     .from("users")
+    //     .update(data).eq('id', user.id);
+    //   navigate(`/thankyou`);
+    //   return;
+    // }
+
+
     if (addCard) {
       await handleAddCard()
       return;
@@ -819,13 +838,11 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
               return;
             }
 
-            // console.log({ data });
-
             const updateUser = await supabase
               .from("users")
               .update(data).eq('id', user.id);
             if (updateUser?.error) {
-              console.log(updateUser.error);
+              // console.log(updateUser.error);
               setIsModalOpen(true);
               setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
 
@@ -956,7 +973,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
 
   return (<>
     <div className={`ex1-field shadow-[0_2px_4px_#00000026] rounded-[8px] px-5 py-6 text-sm ${mobile ? 'placeholder-[#333]' : 'placeholder-[#757575]'} bg-[#f8f8f8] font-[500] transition-all duration-280 ease mb-5`} id='num'>
-      <input type="text" className="w-full bg-transparent outline-none border-none" placeholder="Name on Card" value={nameOnCard}
+      <input type="text" className="w-full bg-transparent border-none outline-none" placeholder="Name on Card" value={nameOnCard}
         // onFocus={(e) => { console.log(e) }} onBlur={(e) => { console.log(e) }}
         onChange={(e) => { setNameOnCard(e.target.value) }} />
       {/* <label className="ex1-label font-MontserratLight">Card Number</label><i className="ex1-bar"></i> */}
@@ -992,7 +1009,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           {/* <label className="ex1-label font-MontserratLight">Card Number</label><i className="ex1-bar"></i> */}
         </div>
 
-        <div className="ex1-fields flex items-center gap-4 mb-5">
+        <div className="flex items-center gap-4 mb-5 ex1-fields">
           <div className="ex1-field w-full shadow-[0_2px_4px_#00000026] rounded-[8px] px-5 py-6 text-sm bg-[#f8f8f8] font-[500] transition-all duration-280 ease">
             <CardExpiry className="ex1-input"
               // onFocus={(e) => { console.log(e) }} onBlur={(e) => { console.log(e) }}
@@ -1024,7 +1041,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
         <span> {Loading ? "Processing..." : `${addCard ? "Add Payment Method" : "Pay $0.00 & Start Free Trial"}`}  </span>
       </button>
       {/* {showCardComponent && <></>} */}
-      {Loading && <div className="flex items-center py-3 gap-2 justify-center">
+      {Loading && <div className="flex items-center justify-center gap-2 py-3">
         <AiOutlineLoading3Quarters className="animate-spin" />
         <p className="font-[500] text-xs md:text-sm font-MontserratSemiBold text-[#333] animate-pulse">
           We're processing your request, please wait...

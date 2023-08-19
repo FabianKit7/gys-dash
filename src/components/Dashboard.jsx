@@ -55,16 +55,36 @@ export default function Dashboard() {
 
   useEffect(() => {
     const getData = async () => {
+      if (!currentUsername) {
+        setIsModalOpen(true);
+        setErrorMsg({ title: 'Alert', message: 'username not set!' });
+        return;
+      }
+
       const authUserRes = await supabase.auth.getUser()
       if (authUserRes.error) return navigate("/login")
       const authUser = authUserRes?.data?.user
+
+      // admin mode
       const getSuperUser = await supabase.from('users').select().eq("email", authUser.email)
+      if (getSuperUser.error) {
+        console.log(getSuperUser.error);
+        // alert(error?.message)
+        setIsModalOpen(true);
+        setErrorMsg({ title: 'Alert', message: getSuperUser.error?.message })
+        return;
+      }
+
       const superUser = getSuperUser?.data?.[0]
       const url = new URL(window.location.href);
       const uuid = url.searchParams.get('uuid');
-      var cuser
       superUser && uuid && setAdmin(superUser?.admin)
-      const { data, error } = await supabase.from('users').select().eq("user_id", (superUser.admin && uuid) ? uuid : authUser?.id).eq("username", currentUsername).single()
+      var cuser;
+      const { data, error } = await supabase
+        .from('users')
+        .select()
+        .eq("user_id", (superUser.admin && uuid) ? uuid : authUser?.id).eq("username", currentUsername)
+        .single()
       cuser = data
 
       if (error) {
@@ -76,31 +96,23 @@ export default function Dashboard() {
       }
 
       // check if the user email match the AuthUser email
-      if ((!cuser || authUser?.email !== cuser?.email) && !superUser.admin) {
+      if (!cuser) {
+        alert('user not found! Please login again.');
+        navigate("/login")
+        return;
+      }
+
+      if ((authUser?.email !== cuser?.email) && !superUser?.admin) {
         if (window.confirm(`You've not registered this account yet, do you want to resiter it now?`)) {
           // window.location.pathname = `search/?username=${currentUsername}`;
-          navigate(`/search/?username=${currentUsername}`)
+          navigate(`/search/?username=add_account`)
           return;
-        } else {
-          navigate("/login")
         }
       }
 
       if (cuser?.subscribed !== true) {
-        // alert('Please finish your registration')
         setIsModalOpen(true);
         setErrorMsg({ title: 'Alert', message: 'Please finish your registration' })
-        // if (cuser?.username) {
-        //   window.location.pathname = `subscriptions/${cuser?.username}`;
-        // } else {
-        //   window.location.pathname = `search`;
-        // }
-        setErrorMsg({ title: 'Alert', message: 'Please finish your registration' })
-        // if (data[0]?.username) {
-        //   window.location.pathname = `subscriptions/${data[0]?.username}`;
-        // } else {
-        //   window.location.pathname = `search`;
-        // }
         return;
       }
 
@@ -150,6 +162,7 @@ export default function Dashboard() {
 
   const [backupCode, setBackupCode] = useState('')
   const storeBackupCode = async () => {
+    if (!backupCode) return alert('field cannot be empty');
     setProcessing(true)
     // alert("We're processing your request...")
     await supabase
@@ -198,7 +211,34 @@ export default function Dashboard() {
   if (error) return <Error value={username} />;
 
   if (loading) return (<>
-  <AlertModal
+    <AlertModal
+      isOpen={isModalOpen}
+      onClose={() => {
+        setIsModalOpen(false)
+        if (errorMsg?.message === "Please finish your registration") {
+          if (userData?.username) {
+            window.location.pathname = `subscriptions/${userData?.username}`
+          } else {
+            window.location.pathname = `search`;
+          }
+        } else {
+          if (userData?.username) {
+            window.location.pathname = `subscriptions/${userData?.username}`
+          } else {
+            window.location.pathname = `search`;
+          }
+        }
+      }}
+      title={errorMsg?.title}
+      message={errorMsg?.message}
+    />
+
+    <h3 className="tracking-widest animate-pulse">Loading</h3>
+  </>);
+
+  return (
+    <>
+      <AlertModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false)
@@ -214,517 +254,572 @@ export default function Dashboard() {
         message={errorMsg?.message}
       />
 
-    <h3 className="tracking-widest animate-pulse">Loading</h3>
-  </>);
+      <Nav setShowWelcomeModal={setShowWelcomeModal} userD={userData} />
 
-  return (
-    <>
-      <AlertModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false)
-          if(errorMsg?.message === "Please finish your registration"){
-            if(userData?.username){
-              window.location.pathname = `subscriptions/${userData?.username}`
-            }else{
-              window.location.pathname = `search`;
-            }
-          }
-        }}
-        title={errorMsg?.title}
-        message={errorMsg?.message}
-      />
-
-      <Nav setShowWelcomeModal={setShowWelcomeModal} />
-
-        {/* <WelcomeModal show={showWelcomeModal} onHide={() => setShowWelcomeModal(false)}
+      {/* <WelcomeModal show={showWelcomeModal} onHide={() => setShowWelcomeModal(false)}
         setShowWelcomeModal={setShowWelcomeModal}
         showWelcomeModal={showWelcomeModal}
       /> */}
 
-        {mobileAdd.show &&
-          <AddOthers
-            pageProp={mobileAdd.pageProp}
-            userId={userData.user_id}
-            user={userData}
-            setMobileAdd={setMobileAdd}
-            admin={admin}
-          />
-        }
+      {mobileAdd.show &&
+        <AddOthers
+          pageProp={mobileAdd.pageProp}
+          userId={userData.user_id}
+          user={userData}
+          setMobileAdd={setMobileAdd}
+          admin={admin}
+        />
+      }
 
-        {!mobileAdd.show && <>
-          <div className="hidden lg:block">
-            <div
-              className="flex justify-between items-center rounded-[10px] h-[84px] px-4 mb-10"
-              style={{
-                boxShadow: '0 0 3px #00000040',
-              }}
-            >
-              <div className="ml-3 flex items-center gap-[10px]">
+      {!mobileAdd.show && <>
+        <div className="hidden lg:block">
+          <div
+            className="flex justify-between items-center rounded-[10px] h-[84px] px-4 mb-10"
+            style={{
+              boxShadow: '0 0 3px #00000040',
+            }}
+          >
+            <div className="ml-3 flex items-center gap-[10px]">
+              <img
+                alt=""
+                className="platform-logo"
+                src="/instagram.svg"
+                width="28px"
+                height="28px"
+              />
+              <div className="text-base font-black text-black capitalize lg:text-2xl font-MontserratBold">
+                {userData?.username}
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-[52px] h-[52px] rounded-[10px] flex items-center justify-center cursor-pointer bg-black"
+                onClick={() => setIsOpen(true)}
+              >
                 <img
                   alt=""
-                  className="platform-logo"
-                  src="/instagram.svg"
-                  width="28px"
-                  height="28px"
+                  className="settings-logo"
+                  src="/settings.svg"
+                  width="31px"
+                  height="31px"
                 />
-                <div className="font-black text-base lg:text-2xl text-black font-MontserratBold capitalize">
-                  {userData?.username}
-                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-[52px] h-[52px] rounded-[10px] flex items-center justify-center cursor-pointer bg-black"
-                  onClick={() => setIsOpen(true)}
-                >
-                  <img
-                    alt=""
-                    className="settings-logo"
-                    src="/settings.svg"
-                    width="31px"
-                    height="31px"
-                  />
-                </div>
 
-                <div className="hidden lg:block relative rounded-[10px] bg-black text-white text-lg font-bold">
+              <div className="hidden lg:block relative rounded-[10px] bg-black text-white text-lg font-bold">
+                <div
+                  className="flex items-center justify-center h-[52px] cursor-pointer"
+                  onClick={() => setShowDateOptions(!showDateOptions)}
+                >
+                  <AiOutlineClockCircle
+                    size={28}
+                    className="mr-[10px] ml-[16px]"
+                  />
+                  <span className="flex items-center p-0">
+                    {selectedDate?.title}
+                  </span>
+                  <FaAngleDown className="w-[12px] mr-[16px] ml-[7px]" />
+                </div>
+                <div
+                  className={`absolute w-full top-full left-0 rounded-[10px] z-[2] text-black bg-white ${showDateOptions ? 'opacity-100 block' : 'opacity-0 hidden'
+                    }`}
+                  style={{
+                    boxShadow: '0 0 3px #00000040',
+                    transform: 'translteY(8px)',
+                    transition: 'opacity .15s ease-in',
+                  }}
+                >
                   <div
-                    className="flex items-center justify-center h-[52px] cursor-pointer"
-                    onClick={() => setShowDateOptions(!showDateOptions)}
-                  >
-                    <AiOutlineClockCircle
-                      size={28}
-                      className="mr-[10px] ml-[16px]"
-                    />
-                    <span className="p-0 flex items-center">
-                      {selectedDate?.title}
-                    </span>
-                    <FaAngleDown className="w-[12px] mr-[16px] ml-[7px]" />
-                  </div>
-                  <div
-                    className={`absolute w-full top-full left-0 rounded-[10px] z-[2] text-black bg-white ${showDateOptions ? 'opacity-100 block' : 'opacity-0 hidden'
-                      }`}
-                    style={{
-                      boxShadow: '0 0 3px #00000040',
-                      transform: 'translteY(8px)',
-                      transition: 'opacity .15s ease-in',
+                    className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
+                    onClick={() => {
+                      setSelectedDate({ title: 'Last 7 days', value: 7 });
+                      setShowDateOptions(false);
                     }}
                   >
-                    <div
-                      className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
-                      onClick={() => {
-                        setSelectedDate({ title: 'Last 7 days', value: 7 });
-                        setShowDateOptions(false);
-                      }}
-                    >
-                      Last 7 days
-                    </div>
-                    <div
-                      className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
-                      onClick={() => {
-                        setSelectedDate({ title: 'Last 30 days', value: 30 });
-                        setShowDateOptions(false);
-                      }}
-                    >
-                      Last 30 days
-                    </div>
-                    <div
-                      className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
-                      onClick={() => {
-                        setSelectedDate({ title: 'Last 60 days', value: 60 });
-                        setShowDateOptions(false);
-                      }}
-                    >
-                      Last 60 days
-                    </div>
-                    <div
-                      className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
-                      onClick={() => {
-                        setSelectedDate({ title: 'Last 90 days', value: 90 });
-                        setShowDateOptions(false);
-                      }}
-                    >
-                      Last 90 days
-                    </div>
+                    Last 7 days
+                  </div>
+                  <div
+                    className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
+                    onClick={() => {
+                      setSelectedDate({ title: 'Last 30 days', value: 30 });
+                      setShowDateOptions(false);
+                    }}
+                  >
+                    Last 30 days
+                  </div>
+                  <div
+                    className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
+                    onClick={() => {
+                      setSelectedDate({ title: 'Last 60 days', value: 60 });
+                      setShowDateOptions(false);
+                    }}
+                  >
+                    Last 60 days
+                  </div>
+                  <div
+                    className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
+                    onClick={() => {
+                      setSelectedDate({ title: 'Last 90 days', value: 90 });
+                      setShowDateOptions(false);
+                    }}
+                  >
+                    Last 90 days
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="lg:hidden flex flex-col items-center mb-5">
-            <div className="flex items-center gap-[8px]">
-              <img alt="" src="/ic_summary.svg" className="bg-black p-[8px] rounded-[8px]" />
-              <h3 className="text-[22px] font-bold font-MontserratBold text-black"> Account Summary </h3>
-            </div>
-
-            <div className="relative rounded-[10px] w-fit text-[#1b89ff] text-lg font-bold">
-              <div
-                className="flex items-center justify-center h-[52px] cursor-pointer"
-                onClick={() => setShowDateOptions(!showDateOptions)}
-              >
-                <AiOutlineClockCircle
-                  size={15}
-                  className="mr-[10px] ml-[16px]"
-                />
-                <span className="p-0 flex items-center">
-                  {selectedDate?.title}
-                </span>
-                <FaAngleDown className="w-[12px] mr-[16px] ml-[7px]" />
-              </div>
-
-              <div
-                className={`absolute w-full top-full left-0 rounded-[10px] z-[2] text-black bg-white ${showDateOptions ? 'opacity-100 block' : 'opacity-0 hidden'
-                  }`}
-                style={{
-                  boxShadow: '0 0 3px #00000040',
-                  transform: 'translteY(8px)',
-                  transition: 'opacity .15s ease-in',
-                }}
-              >
-                <div
-                  className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
-                  onClick={() => {
-                    setSelectedDate({ title: 'Last 7 days', value: 7 });
-                    setShowDateOptions(false);
-                  }}
-                >
-                  Last 7 days
-                </div>
-                <div
-                  className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
-                  onClick={() => {
-                    setSelectedDate({ title: 'Last 30 days', value: 30 });
-                    setShowDateOptions(false);
-                  }}
-                >
-                  Last 30 days
-                </div>
-                <div
-                  className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
-                  onClick={() => {
-                    setSelectedDate({ title: 'Last 60 days', value: 60 });
-                    setShowDateOptions(false);
-                  }}
-                >
-                  Last 60 days
-                </div>
-                <div
-                  className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
-                  onClick={() => {
-                    setSelectedDate({ title: 'Last 90 days', value: 90 });
-                    setShowDateOptions(false);
-                  }}
-                >
-                  Last 90 days
-                </div>
-              </div>
-            </div>
-
+        <div className="flex flex-col items-center mb-5 lg:hidden">
+          <div className="flex items-center gap-[8px]">
+            <img alt="" src="/ic_summary.svg" className="bg-black p-[8px] rounded-[8px]" />
+            <h3 className="text-[22px] font-bold font-MontserratBold text-black"> Account Summary </h3>
           </div>
 
-          {modalIsOpen && <SettingsModal
-            show={modalIsOpen}
-            onHide={() => setIsOpen(false)}
-            modalIsOpen={modalIsOpen}
-            setIsOpen={setIsOpen}
-            user={userData}
-            u={'user'}
-            setRefreshUser={setRefreshUser}
-          />}
+          <div className="relative rounded-[10px] w-fit text-[#1b89ff] text-lg font-bold">
+            <div
+              className="flex items-center justify-center h-[52px] cursor-pointer"
+              onClick={() => setShowDateOptions(!showDateOptions)}
+            >
+              <AiOutlineClockCircle
+                size={15}
+                className="mr-[10px] ml-[16px]"
+              />
+              <span className="flex items-center p-0">
+                {selectedDate?.title}
+              </span>
+              <FaAngleDown className="w-[12px] mr-[16px] ml-[7px]" />
+            </div>
 
-          <div className="hidden lg:block">
-            {userData?.status === 'incorrect' && <div className="flex items-center h-[100px] rounded-[10px] overflow-hidden my-5">
-              <div className="px-8 h-full rounded-l-[10px] bg-[#ff8c00] text-white grid place-items-center">
-                <RiUserSettingsFill size={30} />
-              </div>
-              <div className="py-2 px-3 bg-[#fcede0] h-full w-full">
-                <div className="font-bold text-[.8rem] text-[#ff8c00] md:text-[1.3rem] capitalize font-MontserratBold">Your password is incorrect</div>
-                <p className="font-MontserratSemiBold text-[1.125rem]">The password you entered for your instagram account is incorrect. Please try again by clicking the button below</p>
-              </div>
-              <button
-                onClick={() => { setIsOpen(true) }}
-                // onClick={() => setOpenCA(true)}
-                // className="mt-3 bg-[#ff8c00] text-white rounded-md py-3 text-center w-full font-bold capitalize"
-                className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize"
-                style={{
-                  backgroundColor: '#ff8c00',
-                  color: 'white',
-                  // boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+            <div
+              className={`absolute w-full top-full left-0 rounded-[10px] z-[2] text-black bg-white ${showDateOptions ? 'opacity-100 block' : 'opacity-0 hidden'
+                }`}
+              style={{
+                boxShadow: '0 0 3px #00000040',
+                transform: 'translteY(8px)',
+                transition: 'opacity .15s ease-in',
+              }}
+            >
+              <div
+                className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
+                onClick={() => {
+                  setSelectedDate({ title: 'Last 7 days', value: 7 });
+                  setShowDateOptions(false);
                 }}
-              >change password</button>
-            </div>}
+              >
+                Last 7 days
+              </div>
+              <div
+                className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
+                onClick={() => {
+                  setSelectedDate({ title: 'Last 30 days', value: 30 });
+                  setShowDateOptions(false);
+                }}
+              >
+                Last 30 days
+              </div>
+              <div
+                className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
+                onClick={() => {
+                  setSelectedDate({ title: 'Last 60 days', value: 60 });
+                  setShowDateOptions(false);
+                }}
+              >
+                Last 60 days
+              </div>
+              <div
+                className="py-4 px-[30px] hover:bg-[#f8f8f8] cursor-pointer"
+                onClick={() => {
+                  setSelectedDate({ title: 'Last 90 days', value: 90 });
+                  setShowDateOptions(false);
+                }}
+              >
+                Last 90 days
+              </div>
+            </div>
+          </div>
 
-            {userData?.status === 'twofactor' && <div className="flex items-center h-[170px] xl:h-[150px] rounded-[10px] overflow-hidden my-5">
-              <div className="px-8 h-full rounded-l-[10px] bg-[#ff8c00] text-white grid place-items-center">
-                <RiUserSettingsFill size={30} />
+        </div>
+
+        {modalIsOpen && <SettingsModal
+          show={modalIsOpen}
+          onHide={() => setIsOpen(false)}
+          modalIsOpen={modalIsOpen}
+          setIsOpen={setIsOpen}
+          user={userData}
+          u={'user'}
+          setRefreshUser={setRefreshUser}
+        />}
+
+        <div className="hidden lg:block">
+          {userData?.status === 'incorrect' && <div className="flex items-center h-[100px] rounded-[10px] overflow-hidden my-5">
+            <div className="px-8 h-full rounded-l-[10px] bg-[#ff8c00] text-white grid place-items-center">
+              <RiUserSettingsFill size={30} />
+            </div>
+            <div className="py-2 px-3 bg-[#fcede0] h-full w-full">
+              <div className="font-bold text-[.8rem] text-[#ff8c00] md:text-[1.3rem] capitalize font-MontserratBold">Your password is incorrect</div>
+              <p className="font-MontserratSemiBold text-[1.125rem]">The password you entered for your instagram account is incorrect. Please try again by clicking the button below</p>
+            </div>
+            <button
+              onClick={() => { setIsOpen(true) }}
+              // onClick={() => setOpenCA(true)}
+              // className="mt-3 bg-[#ff8c00] text-white rounded-md py-3 text-center w-full font-bold capitalize"
+              className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize"
+              style={{
+                backgroundColor: '#ff8c00',
+                color: 'white',
+                // boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+              }}
+            >change password</button>
+          </div>}
+
+          {userData?.status === 'twofactor' && <div className="flex items-center h-[170px] xl:h-[150px] rounded-[10px] overflow-hidden my-5">
+            <div className="px-8 h-full rounded-l-[10px] bg-[#ff8c00] text-white grid place-items-center">
+              <RiUserSettingsFill size={30} />
+            </div>
+            <div className="py-2 px-3 bg-[#fcede0] h-full w-full">
+              <div className="font-bold text-[.8rem] text-[#ff8c00] md:text-[1.3rem] capitalize font-MontserratBold">
+                Two-Factor Authentication Enabled
               </div>
-              <div className="py-2 px-3 bg-[#fcede0] h-full w-full">
-                <div className="font-bold text-[.8rem] text-[#ff8c00] md:text-[1.3rem] capitalize font-MontserratBold">
-                  Two-Factor Authentication Enabled
-                </div>
-                <p className="font-MontserratSemiBold text-[1.125rem]">
-                  Two-factor authentication is currently enabled on your account. In order to log in directly to your Instagram account, please provide us with a backup code or accept our login request to get your account started.
-                </p>
-              </div>
-              <div className="bg-[#fcede0] px-3 grid place-items-center h-full w-2/5 ">
-                {/* <textarea name="" className="px-2 py-1 rounded-[10px] flex items-center w-full h-[50px] resize-none" id=""
+              <p className="font-MontserratSemiBold text-[1.125rem]">
+                Two-factor authentication is currently enabled on your account. In order to log in directly to your Instagram account, please provide us with a backup code or accept our login request to get your account started.
+              </p>
+            </div>
+            <div className="bg-[#fcede0] px-3 grid place-items-center h-full w-2/5 ">
+              {/* <textarea name="" className="px-2 py-1 rounded-[10px] flex items-center w-full h-[50px] resize-none" id=""
                 value={backupCode}
                 onChange={(e) => setBackupCode(e.target.value)} placeholder="Enter backup code"></textarea> */}
-                <input type="text" className="px-2 py-4 rounded-[10px] w-full" placeholder="Enter backup code"
+              <input type="text" className="px-2 py-4 rounded-[10px] w-full" placeholder="Enter backup code"
+                value={backupCode}
+                onChange={(e) => setBackupCode(e.target.value)} />
+            </div>
+            <button
+              onClick={() => storeBackupCode()}
+              // onClick={() => setOpenCA(true)}
+              // className="mt-3 bg-[#ff8c00] text-white rounded-md py-3 text-center w-full font-bold capitalize"
+              className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize"
+              style={{
+                backgroundColor: '#ff8c00',
+                color: 'white',
+                // boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+              }}
+            >{processing ? <span className="animate-pulse">processing...</span> : 'confirm'}</button>
+          </div>}
+
+          {userData?.status === 'checking' && <div className="flex items-center h-[100px] rounded-[10px] overflow-hidden my-5">
+            <div className="px-8 h-full rounded-l-[10px] bg-[#ffd12c] text-white grid place-items-center">
+              <RiUserSettingsFill size={30} />
+            </div>
+            <div className="py-2 px-3 bg-[#fffbeb] h-full w-full">
+              <div className="font-bold text-[.8rem] text-[#ffd12c] md:text-[1.3rem] capitalize font-MontserratBold">
+                Connecting Your Account
+              </div>
+              <p className="font-MontserratSemiBold text-[1.125rem]">Your account is in the process of logging in. please click "This was me" if you see a pop up screen on your Instagram.</p>
+            </div>
+            <button
+              // className="mt-3 bg-[#ffd12c] text-white rounded-md py-3 text-center w-full font-bold capitalize"
+              className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize cursor-text"
+              style={{
+                backgroundColor: '#ff8c00',
+                color: 'white',
+                // boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+              }}
+            >Logging in</button>
+          </div>}
+
+          {userData?.status === 'pending' && <div className="flex items-center h-[100px] rounded-[10px] overflow-hidden my-5">
+            <div className="px-8 h-full rounded-l-[10px] bg-[#ff2c55] text-white grid place-items-center">
+              <RiUserSettingsFill size={30} />
+            </div>
+            <div className="py-2 px-3 bg-[#ffebf0] h-full w-full">
+              <div className="font-bold text-[.8rem] text-[#ff2c55] md:text-[1.3rem] capitalize font-MontserratBold">
+                Connect Your Account
+              </div>
+              <p className="font-MontserratSemiBold text-[1.125rem]">Your account is currently not connected to our
+                growth system. To get started, please connect your
+                account now.</p>
+            </div>
+            <button
+              onClick={() => setIsOpen(true)}
+              // className="mt-3 bg-[#ff2c55] text-white rounded-md py-3 text-center w-full font-bold capitalize"
+              className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize relative"
+              style={{
+                backgroundColor: '#ff8c00',
+                color: 'white',
+                // boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+              }}
+            >connect account
+              {message?.text && <span className="absolute w-3 h-3 bg-red-900 rounded-full -top-2 -right-2"></span>}</button>
+          </div>}
+        </div>
+
+        <div className="lg:hidden">
+          {userData?.status === 'incorrect' && <div className="flex justify-center my-6">
+            <div className="w-[320px] md:w-[350px] rounded-[10px]">
+              <div className="bg-[#ff8c00] text-white font-bold px-4 py-2 flex items-center gap-2 text-[.8rem] md:text-[1.125rem] rounded-t-[10px] font-MontserratBold capitalize">
+                <RiUserSettingsFill size={30} />
+                Your password is incorrect
+              </div>
+              <div className="bg-[#fcede0] px-4 py-3 rounded-b-[10px] text-sm">
+                <p className="font-MontserratSemiBold">The password you entered for your instagram account is incorrect. Please try again by clicking the button below</p>
+
+                <button
+                  onClick={() => { setIsOpen(true) }}
+                  // onClick={() => setOpenCA(true)}
+                  // className="mt-3 bg-[#ff8c00] text-white rounded-md py-3 text-center w-full font-bold capitalize"
+                  className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] mt-5 w-full py-4 rounded-[10px] font-[600] false capitalize"
+                  style={{
+                    backgroundColor: '#ff8c00',
+                    color: 'white',
+                    boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+                  }}
+                >change password</button>
+              </div>
+            </div>
+          </div>}
+
+          {userData?.status === 'twofactor' && <div className="flex justify-center my-6">
+            <div className="w-[320px] md:w-[350px] rounded-[10px]">
+              <div className="bg-[#ff8c00] text-white font-bold px-4 py-2 flex items-center gap-2 text-[.8rem] md:text-[1.125rem] rounded-t-[10px] font-MontserratBold capitalize">
+                <RiUserSettingsFill size={30} />
+                Two-Factor Authentication Enabled
+              </div>
+              <div className="bg-[#fcede0] px-4 py-3 rounded-b-[10px] text-sm">
+                <p className="font-MontserratSemiBold">Two-factor authentication is currently enabled on your account. In order to log in directly to your Instagram account, please provide us with a backup code or accept our login request to get your account started.</p>
+                <textarea name="" className="px-2 py-1 rounded-[10px] mt-3 w-full resize-none" id="" rows="3"
                   value={backupCode}
-                  onChange={(e) => setBackupCode(e.target.value)} />
-              </div>
-              <button
-                onClick={() => storeBackupCode()}
-                // onClick={() => setOpenCA(true)}
-                // className="mt-3 bg-[#ff8c00] text-white rounded-md py-3 text-center w-full font-bold capitalize"
-                className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize"
-                style={{
-                  backgroundColor: '#ff8c00',
-                  color: 'white',
-                  // boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
-                }}
-              >{processing ? <span className="animate-pulse">processing...</span> : 'confirm'}</button>
-            </div>}
+                  onChange={(e) => setBackupCode(e.target.value)} placeholder="Enter backup code"></textarea>
 
-            {userData?.status === 'checking' && <div className="flex items-center h-[100px] rounded-[10px] overflow-hidden my-5">
-              <div className="px-8 h-full rounded-l-[10px] bg-[#ffd12c] text-white grid place-items-center">
-                <RiUserSettingsFill size={30} />
+                <button onClick={() => storeBackupCode()}
+                  // className="mt-3 bg-[#ff8c00] text-white rounded-[10px] py-3 text-center w-full font-bold capitalize"
+                  className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] mt-5 w-full py-4 rounded-[10px] font-[600] false capitalize"
+                  style={{
+                    backgroundColor: '#ff8c00',
+                    color: 'white',
+                    boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+                  }}
+                >{processing ? <span className="animate-pulse">processing...</span> : 'confirm'}</button>
               </div>
-              <div className="py-2 px-3 bg-[#fffbeb] h-full w-full">
-                <div className="font-bold text-[.8rem] text-[#ffd12c] md:text-[1.3rem] capitalize font-MontserratBold">
-                  Connecting Your Account
-                </div>
-                <p className="font-MontserratSemiBold text-[1.125rem]">Your account is in the process of logging in. please click "This was me" if you see a pop up screen on your Instagram.</p>
-              </div>
-              <button
-                // className="mt-3 bg-[#ffd12c] text-white rounded-md py-3 text-center w-full font-bold capitalize"
-                className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize cursor-text"
-                style={{
-                  backgroundColor: '#ff8c00',
-                  color: 'white',
-                  // boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
-                }}
-              >Logging in</button>
-            </div>}
+            </div>
+          </div>}
 
-            {userData?.status === 'pending' && <div className="flex items-center h-[100px] rounded-[10px] overflow-hidden my-5">
-              <div className="px-8 h-full rounded-l-[10px] bg-[#ff2c55] text-white grid place-items-center">
-                <RiUserSettingsFill size={30} />
+          {(userData?.status === 'checking' || userData?.status === 'new') && <div className="flex justify-center my-6">
+            <div className="w-[320px] md:w-[350px] rounded-[10px]">
+              <div className="bg-[#ffd12c] text-white font-bold px-4 py-2 flex items-center gap-2 text-[.8rem] md:text-[1.125rem] rounded-t-[10px] font-MontserratBold capitalize">
+                <RiUserSettingsFill />
+                Connecting Your Account
               </div>
-              <div className="py-2 px-3 bg-[#ffebf0] h-full w-full">
-                <div className="font-bold text-[.8rem] text-[#ff2c55] md:text-[1.3rem] capitalize font-MontserratBold">
-                  Connect Your Account
-                </div>
-                <p className="font-MontserratSemiBold text-[1.125rem]">Your account is currently not connected to our
+              <div className="bg-[#fffbeb] px-4 py-3 rounded-b-[10px] text-sm">
+                <p className="font-MontserratSemiBold">Your account is in the process of logging in. please click "This was me" if you see a pop up screen on your Instagram.</p>
+                <button
+                  // className="mt-3 bg-[#ffd12c] text-white rounded-[10px] py-3 text-center w-full"
+                  className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] mt-5 w-full py-4 rounded-[10px] font-[600] false capitalize cursor-text"
+                  style={{
+                    backgroundColor: '#ffd12c',
+                    color: 'white',
+                    boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+                  }}
+                >Logging in</button>
+              </div>
+            </div>
+          </div>}
+
+          {userData?.status === 'pending' && <div className="flex justify-center my-6">
+            <div className="w-[320px] md:w-[350px] rounded-[10px]">
+              <div className="bg-[#ff2c55] text-white font-bold px-4 py-2 flex items-center gap-2 text-[.8rem] md:text-[1.125rem] rounded-t-[10px] font-MontserratBold capitalize">
+                <RiUserSettingsFill />
+                Connect Your Account
+              </div>
+              <div className="bg-[#ffebf0] px-4 py-3 rounded-b-[10px] text-sm">
+                <p className="font-MontserratSemiBold">Your account is currently not connected to our
                   growth system. To get started, please connect your
                   account now.</p>
+                <button
+                  // className="mt-3 bg-[#ff2c55] text-white rounded-[10px] py-3 text-center w-full capitalize"
+                  className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] mt-5 w-full py-4 rounded-[10px] font-[600] false capitalize relative"
+                  style={{
+                    backgroundColor: '#ff2c55',
+                    color: 'white',
+                    boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
+                  }}
+                  onClick={() => setIsOpen(true)}
+                // onClick={() => setOpenCA(true)}
+                >connect account
+                  {message?.text && <span className="absolute w-3 h-3 bg-red-900 rounded-full -top-2 -right-2"></span>}
+                </button>
               </div>
-              <button
-                onClick={() => setIsOpen(true)}
-                // className="mt-3 bg-[#ff2c55] text-white rounded-md py-3 text-center w-full font-bold capitalize"
-                className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize relative"
-                style={{
-                  backgroundColor: '#ff8c00',
-                  color: 'white',
-                  // boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
-                }}
-              >connect account
-                {message?.text && <span className="w-3 h-3 rounded-full bg-red-900 absolute -top-2 -right-2"></span>}</button>
-            </div>}
-          </div>
+            </div>
+          </div>}
+        </div>
 
-          <div className="lg:hidden">
-            {userData?.status === 'incorrect' && <div className="flex justify-center my-6">
-              <div className="w-[320px] md:w-[350px] rounded-[10px]">
-                <div className="bg-[#ff8c00] text-white font-bold px-4 py-2 flex items-center gap-2 text-[.8rem] md:text-[1.125rem] rounded-t-[10px] font-MontserratBold capitalize">
-                  <RiUserSettingsFill size={30} />
-                  Your password is incorrect
-                </div>
-                <div className="bg-[#fcede0] px-4 py-3 rounded-b-[10px] text-sm">
-                  <p className="font-MontserratSemiBold">The password you entered for your instagram account is incorrect. Please try again by clicking the button below</p>
-
-                  <button
-                    onClick={() => { setIsOpen(true) }}
-                    // onClick={() => setOpenCA(true)}
-                    // className="mt-3 bg-[#ff8c00] text-white rounded-md py-3 text-center w-full font-bold capitalize"
-                    className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] mt-5 w-full py-4 rounded-[10px] font-[600] false capitalize"
-                    style={{
-                      backgroundColor: '#ff8c00',
-                      color: 'white',
-                      boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
-                    }}
-                  >change password</button>
-                </div>
-              </div>
-            </div>}
-
-            {userData?.status === 'twofactor' && <div className="flex justify-center my-6">
-              <div className="w-[320px] md:w-[350px] rounded-[10px]">
-                <div className="bg-[#ff8c00] text-white font-bold px-4 py-2 flex items-center gap-2 text-[.8rem] md:text-[1.125rem] rounded-t-[10px] font-MontserratBold capitalize">
-                  <RiUserSettingsFill size={30} />
-                  Two-Factor Authentication Enabled
-                </div>
-                <div className="bg-[#fcede0] px-4 py-3 rounded-b-[10px] text-sm">
-                  <p className="font-MontserratSemiBold">Two-factor authentication is currently enabled on your account. In order to log in directly to your Instagram account, please provide us with a backup code or accept our login request to get your account started.</p>
-                  <textarea name="" className="px-2 py-1 rounded-[10px] mt-3 w-full resize-none" id="" rows="3"
-                    value={backupCode}
-                    onChange={(e) => setBackupCode(e.target.value)} placeholder="Enter backup code"></textarea>
-
-                  <button onClick={() => storeBackupCode()}
-                    // className="mt-3 bg-[#ff8c00] text-white rounded-[10px] py-3 text-center w-full font-bold capitalize"
-                    className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] mt-5 w-full py-4 rounded-[10px] font-[600] false capitalize"
-                    style={{
-                      backgroundColor: '#ff8c00',
-                      color: 'white',
-                      boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
-                    }}
-                  >{processing ? <span className="animate-pulse">processing...</span> : 'confirm'}</button>
-                </div>
-              </div>
-            </div>}
-
-            {(userData?.status === 'checking' || userData?.status === 'new') && <div className="flex justify-center my-6">
-              <div className="w-[320px] md:w-[350px] rounded-[10px]">
-                <div className="bg-[#ffd12c] text-white font-bold px-4 py-2 flex items-center gap-2 text-[.8rem] md:text-[1.125rem] rounded-t-[10px] font-MontserratBold capitalize">
-                  <RiUserSettingsFill />
-                  Connecting Your Account
-                </div>
-                <div className="bg-[#fffbeb] px-4 py-3 rounded-b-[10px] text-sm">
-                  <p className="font-MontserratSemiBold">Your account is in the process of logging in. please click "This was me" if you see a pop up screen on your Instagram.</p>
-                  <button
-                    // className="mt-3 bg-[#ffd12c] text-white rounded-[10px] py-3 text-center w-full"
-                    className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] mt-5 w-full py-4 rounded-[10px] font-[600] false capitalize cursor-text"
-                    style={{
-                      backgroundColor: '#ffd12c',
-                      color: 'white',
-                      boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
-                    }}
-                  >Logging in</button>
-                </div>
-              </div>
-            </div>}
-
-            {userData?.status === 'pending' && <div className="flex justify-center my-6">
-              <div className="w-[320px] md:w-[350px] rounded-[10px]">
-                <div className="bg-[#ff2c55] text-white font-bold px-4 py-2 flex items-center gap-2 text-[.8rem] md:text-[1.125rem] rounded-t-[10px] font-MontserratBold capitalize">
-                  <RiUserSettingsFill />
-                  Connect Your Account
-                </div>
-                <div className="bg-[#ffebf0] px-4 py-3 rounded-b-[10px] text-sm">
-                  <p className="font-MontserratSemiBold">Your account is currently not connected to our
-                    growth system. To get started, please connect your
-                    account now.</p>
-                  <button
-                    // className="mt-3 bg-[#ff2c55] text-white rounded-[10px] py-3 text-center w-full capitalize"
-                    className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] mt-5 w-full py-4 rounded-[10px] font-[600] false capitalize relative"
-                    style={{
-                      backgroundColor: '#ff2c55',
-                      color: 'white',
-                      boxShadow: '0 20px 30px -12px rgb(255 132 102 / 47%)'
-                    }}
-                    onClick={() => setIsOpen(true)}
-                  // onClick={() => setOpenCA(true)}
-                  >connect account
-                    {message?.text && <span className="w-3 h-3 rounded-full bg-red-900 absolute -top-2 -right-2"></span>}
-                  </button>
-                </div>
-              </div>
-            </div>}
-          </div>
-
-          <div>
-            <div className="lg:mx-[40px] flex flex-col lg:flex-row justify-between items-center font-MontserratRegular">
-              <div className="w-full flex justify-between items-center">
-                <div className="flex items-center">
-                  <img
-                    className="w-[50px] h-[50px] lg:w-[100px] lg:h-[100px] rounded-[10px] lg:rounded-full mr-[12px] lg:mr-[20px]"
-                    src={userData?.profile_pic_url}
-                    alt=""
-                  />
-                  <div className="flex flex-col text-base lg:text-2xl">
-                    <div className="flex items-center gap-1"> {userData?.full_name}
-                      <img
-                        alt=""
-                        className="lg:hidden platform-logo"
-                        src="/instagram.svg"
-                        width="16px"
-                        height="16px"
-                      />
+        <div>
+          <div className="lg:mx-[40px] flex flex-col lg:flex-row justify-between items-center font-MontserratRegular">
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center">
+                <img
+                  className="w-[50px] h-[50px] lg:w-[100px] lg:h-[100px] rounded-[10px] lg:rounded-full mr-[12px] lg:mr-[20px]"
+                  src={userData?.profile_pic_url}
+                  alt=""
+                />
+                <div className="flex flex-col text-base lg:text-2xl">
+                  <div className="flex items-center gap-1"> {userData?.full_name}
+                    <img
+                      alt=""
+                      className="lg:hidden platform-logo"
+                      src="/instagram.svg"
+                      width="16px"
+                      height="16px"
+                    />
+                  </div>
+                  <div className="font-semibold text-[#757575]">
+                    @{userData?.username}
+                  </div>
+                  <div className="flex items-center">
+                    <div className="font-semibold font-MontserratSemiBold text-[#23df85] capitalize">
+                      {userData?.userMode}
                     </div>
-                    <div className="font-semibold text-[#757575]">
-                      @{userData?.username}
-                    </div>
-                    <div className="flex items-center">
-                      <div className="font-semibold font-MontserratSemiBold text-[#23df85] capitalize">
-                        {userData?.userMode}
-                      </div>
 
-                      <apptooltip className="hidden lg:block ml-[8px] cursor-pointer group relative">
-                        <div className="flex items-center">
-                          <svgicon
-                            className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
-                            style={{
-                              transition: 'all .1s ease-in',
-                            }}
+                    <apptooltip className="hidden lg:block ml-[8px] cursor-pointer group relative">
+                      <div className="flex items-center">
+                        <svgicon
+                          className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
+                          style={{
+                            transition: 'all .1s ease-in',
+                          }}
+                        >
+                          <svg
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
                           >
-                            <svg
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true"
-                            >
-                              <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
-                            </svg>
-                            <span className="font-medium font-MontserratSemiBold leading-5 tooltiptext opacity-0 group-hover:opacity-100 group-hover:visible" style={{
-                              transition: 'all .5s ease-in-out',
-                            }}>How your account is currently interacting with new users. You can change this in your interaction settings.</span>
-                          </svgicon>
-                        </div>
-                      </apptooltip>
-                    </div>
+                            <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
+                          </svg>
+                          <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
+                            transition: 'all .5s ease-in-out',
+                          }}>How your account is currently interacting with new users. You can change this in your interaction settings.</span>
+                        </svgicon>
+                      </div>
+                    </apptooltip>
                   </div>
                 </div>
-
-                <div className="lg:hidden w-[32px] h-[32px] rounded-[10px] flex items-center justify-center cursor-pointer bg-black"
-                  onClick={() => setIsOpen(true)}
-                >
-                  <img
-                    alt=""
-                    className="settings-logo"
-                    src="/settings.svg"
-                    width="19px"
-                    height="19px"
-                  />
-                </div>
               </div>
 
-              <Starts user={userData} chart={chart} setChart={setChart} totalInteractions={totalInteractions} />
+              <div className="lg:hidden w-[32px] h-[32px] rounded-[10px] flex items-center justify-center cursor-pointer bg-black"
+                onClick={() => setIsOpen(true)}
+              >
+                <img
+                  alt=""
+                  className="settings-logo"
+                  src="/settings.svg"
+                  width="19px"
+                  height="19px"
+                />
+              </div>
+            </div>
+
+            <Starts user={userData} chart={chart} setChart={setChart} totalInteractions={totalInteractions} />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center lg:flex-row lg:px-10">
+          <div
+            className="min-w-[calc(100%-450px)] w-full lg:py-5 lg:pr-10 pl-0"
+          >
+            {chart === 1 && <GrowthChart
+              sessionsData={sessionsData}
+              days={selectedDate.value}
+              isPrivate={false}
+            />}
+            {chart === 2 && <ColumnChart
+              sessionsData={sessionsData}
+              days={selectedDate.value}
+              type="following"
+            />}
+            {chart === 3 && <ColumnChart
+              sessionsData={sessionsData}
+              days={selectedDate.value}
+              type="total_interactions"
+            />}
+          </div>
+
+          <div className="w-full lg:hidden">
+            <div className="shadow-[0_0_3px_#00000040] rounded-[10px] p-5 relative">
+              <apptooltip className="absolute cursor-pointer top-5 right-5 group">
+                <div className="flex items-center">
+                  <svgicon
+                    className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
+                    style={{
+                      transition: 'all .1s ease-in',
+                    }}
+                  >
+                    <svg
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
+                    </svg>
+                    <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext2 group-hover:opacity-100 group-hover:visible" style={{
+                      transition: 'all .5s ease-in-out',
+                    }}>'Mike', your personal account analyst and growth consultant, who happens to be our most experienced Instagram marketing expert with over 5 years of proficiency. Don't hesitate to contact him for assistance with selecting the best targets, navigating the dashboard, generating content, engaging your followers, and much more. Mike is committed to sharing his knowledge and expertise to help you make the most of your time with us.</span>
+                  </svgicon>
+                </div>
+              </apptooltip>
+
+              <div className="flex items-center">
+                <img
+                  alt=""
+                  className="mr-5 w-[42px] h-[42px] rounded-full"
+                  src="/mike2.png"
+                ></img>
+                <div>
+                  <div
+                    _ngcontent-cuk-c74=""
+                    className="flex items-center gap-1 text-base font-bold text-black font-MontserratBold lg:text-2xl"
+                  >
+                    Mike P
+                    <img alt="" className="w-[20px] h-[20px]" src="/logo.png" />
+                  </div>
+                  <div className="text-base font-normal">
+                    Personal Account Analyst
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {showMobileManager && <div className="">
+              <div className="shadow-[0_0_3px_#00000040] rounded-[10px] p-5 relative">
+                <div className="text-sm font-normal text-black font-MontserratRegular">
+                  Greetings! I am Mike, and I am thrilled to serve as your dedicated account analyst. As an Instagram marketing consultant since 2015, my aim is to assist you in achieving the authentic and focused growth you have been longing for. Feel free to inquire about targeting, account settings, content creation, and other related concerns.
+                </div>
+              </div>
+              <div className="mt-[10px] gap-[10px] flex flex-col items-center">
+                <Link to="https://calendly.com/sproutysocial/30min" className="bg-[#23df85] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                  <BsHeadset size={18} className="mr-1" />
+                  <span>Schedule A Call</span>
+                </Link>
+                <a href="mailto:analyst@sproutysocial.com" className="bg-[#1b89ff] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                  <BiMessageSquareDots size={18} className="mr-1" />
+                  <span>Send An Email</span>
+                </a>
+              </div>
+            </div>}
+            {/* sdf */}
+
+            <div className="flex justify-center itcen mt-[8px]">
+              <h3 className="flex items-center gap-1 text-[#757575] font-bold font-MontserratBold w-fit cursor-pointer" onClick={() => setShowMobileManager(!showMobileManager)}>Show more
+                {showMobileManager ? <FaCaretUp className="w-[12] h-[12]" /> : <FaCaretDown className="w-[12] h-[12]" />}
+              </h3>
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row items-center lg:px-10">
-            <div
-              className="min-w-[calc(100%-450px)] w-full lg:py-5 lg:pr-10 pl-0"
-            >
-              {chart === 1 && <GrowthChart
-                sessionsData={sessionsData}
-                days={selectedDate.value}
-                isPrivate={false}
-              />}
-              {chart === 2 && <ColumnChart
-                sessionsData={sessionsData}
-                days={selectedDate.value}
-                type="following"
-              />}
-              {chart === 3 && <ColumnChart
-                sessionsData={sessionsData}
-                days={selectedDate.value}
-                type="total_interactions"
-              />}
-            </div>
+          <div className="hidden my-10 lg:block">
+            <div>
+              <div
+                className="p-[35px] relative rounded-[10px] w-[450px]"
+                style={{ boxShadow: '0 0 3px #00000040' }}
+              >
 
-            <div className="lg:hidden w-full">
-              <div className="shadow-[0_0_3px_#00000040] rounded-[10px] p-5 relative">
-                <apptooltip className="absolute top-5 right-5 group cursor-pointer">
+                <apptooltip className="absolute top-[25px] right-[20px] ml-[8px] group cursor-pointer">
                   <div className="flex items-center">
                     <svgicon
                       className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
@@ -739,7 +834,7 @@ export default function Dashboard() {
                       >
                         <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
                       </svg>
-                      <span className="font-medium font-MontserratSemiBold leading-5 tooltiptext2 opacity-0 group-hover:opacity-100 group-hover:visible" style={{
+                      <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext2 group-hover:opacity-100 group-hover:visible" style={{
                         transition: 'all .5s ease-in-out',
                       }}>'Mike', your personal account analyst and growth consultant, who happens to be our most experienced Instagram marketing expert with over 5 years of proficiency. Don't hesitate to contact him for assistance with selecting the best targets, navigating the dashboard, generating content, engaging your followers, and much more. Mike is committed to sharing his knowledge and expertise to help you make the most of your time with us.</span>
                     </svgicon>
@@ -749,120 +844,44 @@ export default function Dashboard() {
                 <div className="flex items-center">
                   <img
                     alt=""
-                    className="mr-5 w-[42px] h-[42px] rounded-full"
+                    className="mr-5 w-[87px] h-[87px] rounded-full"
                     src="/mike2.png"
                   ></img>
                   <div>
+                    <img alt="" className="w-[28px] h-[28px]" src="/logo.png" />
                     <div
                       _ngcontent-cuk-c74=""
-                      className="font-bold font-MontserratBold text-base lg:text-2xl text-black flex items-center gap-1"
+                      className="text-base font-bold text-black font-MontserratBold lg:text-2xl"
                     >
                       Mike P
-                      <img alt="" className="w-[20px] h-[20px]" src="/logo.png" />
                     </div>
-                    <div className="font-normal text-base">
+                    <div className="text-base font-normal">
                       Personal Account Analyst
                     </div>
                   </div>
                 </div>
+                <div className="mt-5 text-sm font-normal text-black">
+                  Greetings! I am Mike, and I am thrilled to serve as your dedicated account analyst. As an Instagram marketing consultant since 2015, my aim is to assist you in achieving the authentic and focused growth you have been longing for. Feel free to inquire about targeting, account settings, content creation, and other related concerns.
+                </div>
               </div>
-
-              {showMobileManager && <div className="">
-                <div className="shadow-[0_0_3px_#00000040] rounded-[10px] p-5 relative">
-                  <div className="text-black text-sm font-normal font-MontserratRegular">
-                    Greetings! I am Mike, and I am thrilled to serve as your dedicated account analyst. As an Instagram marketing consultant since 2015, my aim is to assist you in achieving the authentic and focused growth you have been longing for. Feel free to inquire about targeting, account settings, content creation, and other related concerns.
-                  </div>
-                </div>
-                <div className="mt-[10px] gap-[10px] flex flex-col items-center">
-                  <Link to="https://calendly.com/sproutysocial/30min" className="bg-[#23df85] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
-                    <BsHeadset size={18} className="mr-1" />
-                    <span>Schedule A Call</span>
-                  </Link>
-                  <a href="mailto:analyst@sproutysocial.com" className="bg-[#1b89ff] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
-                    <BiMessageSquareDots size={18} className="mr-1" />
-                    <span>Send An Email</span>
-                  </a>
-                </div>
-              </div>}
-              {/* sdf */}
-
-              <div className="flex justify-center itcen mt-[8px]">
-                <h3 className="flex items-center gap-1 text-[#757575] font-bold font-MontserratBold w-fit cursor-pointer" onClick={() => setShowMobileManager(!showMobileManager)}>Show more
-                  {showMobileManager ? <FaCaretUp className="w-[12] h-[12]" /> : <FaCaretDown className="w-[12] h-[12]" />}
-                </h3>
-              </div>
-            </div>
-
-            <div className="hidden lg:block my-10">
-              <div>
-                <div
-                  className="p-[35px] relative rounded-[10px] w-[450px]"
-                  style={{ boxShadow: '0 0 3px #00000040' }}
-                >
-
-                  <apptooltip className="absolute top-[25px] right-[20px] ml-[8px] group cursor-pointer">
-                    <div className="flex items-center">
-                      <svgicon
-                        className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
-                        style={{
-                          transition: 'all .1s ease-in',
-                        }}
-                      >
-                        <svg
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                        >
-                          <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
-                        </svg>
-                        <span className="font-medium font-MontserratSemiBold leading-5 tooltiptext2 opacity-0 group-hover:opacity-100 group-hover:visible" style={{
-                          transition: 'all .5s ease-in-out',
-                        }}>'Mike', your personal account analyst and growth consultant, who happens to be our most experienced Instagram marketing expert with over 5 years of proficiency. Don't hesitate to contact him for assistance with selecting the best targets, navigating the dashboard, generating content, engaging your followers, and much more. Mike is committed to sharing his knowledge and expertise to help you make the most of your time with us.</span>
-                      </svgicon>
-                    </div>
-                  </apptooltip>
-
-                  <div className="flex items-center">
-                    <img
-                      alt=""
-                      className="mr-5 w-[87px] h-[87px] rounded-full"
-                      src="/mike2.png"
-                    ></img>
-                    <div>
-                      <img alt="" className="w-[28px] h-[28px]" src="/logo.png" />
-                      <div
-                        _ngcontent-cuk-c74=""
-                        className="font-bold font-MontserratBold text-base lg:text-2xl text-black"
-                      >
-                        Mike P
-                      </div>
-                      <div className="font-normal text-base">
-                        Personal Account Analyst
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-5 text-black text-sm font-normal">
-                    Greetings! I am Mike, and I am thrilled to serve as your dedicated account analyst. As an Instagram marketing consultant since 2015, my aim is to assist you in achieving the authentic and focused growth you have been longing for. Feel free to inquire about targeting, account settings, content creation, and other related concerns.
-                  </div>
-                </div>
-                <div className="mt-[10px] gap-[10px] flex items-center">
-                  <Link to="https://calendly.com/sproutysocial/30min" className="bg-[#23df85] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
-                    <BsHeadset size={18} className="mr-1" />
-                    <span>Schedule A Call</span>
-                  </Link>
-                  <a href="mailto:analyst@sproutysocial.com" className="bg-[#1b89ff] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
-                    <BiMessageSquareDots size={18} className="mr-1" />
-                    <span>Send An Email</span>
-                  </a>
-                </div>
+              <div className="mt-[10px] gap-[10px] flex items-center">
+                <Link to="https://calendly.com/sproutysocial/30min" className="bg-[#23df85] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                  <BsHeadset size={18} className="mr-1" />
+                  <span>Schedule A Call</span>
+                </Link>
+                <a href="mailto:analyst@sproutysocial.com" className="bg-[#1b89ff] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                  <BiMessageSquareDots size={18} className="mr-1" />
+                  <span>Send An Email</span>
+                </a>
               </div>
             </div>
           </div>
+        </div>
 
-          <TargetingCompt user={userData} setMobileAdd={setMobileAdd} />
+        <TargetingCompt user={userData} setMobileAdd={setMobileAdd} />
 
-          <WhiteListCompt user={userData} userId={userData?.user_id} setMobileAdd={setMobileAdd} />
-        </>}
+        <WhiteListCompt user={userData} userId={userData?.user_id} setMobileAdd={setMobileAdd} />
+      </>}
     </>
   );
 }
@@ -871,7 +890,7 @@ const Starts = ({ user, setChart, chart, totalInteractions }) => {
   // console.log(user);
   return (<>
     <div className="mt-4 bg-[#f8f8f8] text-[#757575] md:text-black md:bg-transparent lg:mt-0 w-full rounded-[10px]">
-      <div className="flex justify-between items-center gap-1 lg:gap-4 w-full text-center">
+      <div className="flex items-center justify-between w-full gap-1 text-center lg:gap-4">
         <div
           className={`${chart === 1 ? "bg-black lg:bg-[#1b89ff] text-white" : "text-[#757575] md:text-black"} md:w-[220px] lg:w-[180px] xl:w-[220px] cursor-pointer rounded-[10px] flex flex-col justify-center itext-center p-2 lg:pt-3 xl:pr-4 lg:pb-[2px] lg:pl-5 lg:shadow-[0_0_3px_#00000040]`}
           onClick={() => setChart(1)}
@@ -880,7 +899,7 @@ const Starts = ({ user, setChart, chart, totalInteractions }) => {
           }}
         >
           <div className={`text-[12px] font-MontserratSemiBold lg:text-[16px] font-[500] ${chart !== 1 && "text-[#757575]"}`}>Followers</div>
-          <div className="flex flex-col lg:flex-row justify-between items-center text-center relative">
+          <div className="relative flex flex-col items-center justify-between text-center lg:flex-row">
             <div className="text-[24px] lg:text-4xl lg:leading-[54px] font-MontserratBold font-bold w-full text-center">
               {numFormatter(user.followers)}
             </div>
@@ -1023,10 +1042,10 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
   return (<>
     <div key={pageProp.id} className="w-full lg:w-[430px] mt-8 lg:mt-[50px] pl-4 h-[380px] relative">
       <div
-        className="h-full relative"
+        className="relative h-full"
         style={{ transition: 'opacity .25s ease-in' }}
       >
-        <div className="flex justify-between items-center gap-3">
+        <div className="flex items-center justify-between gap-3">
           <div className="flex items-center">
             <div className="lg:hidden mr-[12px]">
               {pageProp.title === "Targeting" && <img alt="" src="/ic_targeting.svg" className="bg-[#23df85] p-[8px] rounded-[8px]" />}
@@ -1034,7 +1053,7 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
               {pageProp.title === "blacklist" && <img alt="" src="/ic_blacklist.svg" width="40px" height="40px" className="w-10 h-10 rounded-[8px]" />}
             </div>
             <div className="">
-              <div className="font-bold font-MontserratBold text-base lg:text-2xl text-black">
+              <div className="text-base font-bold text-black font-MontserratBold lg:text-2xl">
                 Add {pageProp.title} {pageProp.title !== "Targeting" && "Accounts"}
               </div>
               <div className="font-normal text-[14px]">
@@ -1046,12 +1065,12 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
           <FaTimes className="lg:hidden w-7 h-7 text-[#757575] cursor-pointer" onClick={() => setMobileAdd({ show: false, pageProp: {} })} />
         </div>
 
-        <div className="mt-5 relative" ref={parentRef}>
+        <div className="relative mt-5" ref={parentRef}>
           <div className="flex items-center text-base font-medium text-black border border-black h-[60px] p-[18px] rounded-[10px] w-full outline-none box-border">
             <input
               type="text"
               placeholder="@accountname"
-              className="border-none outline-none w-full"
+              className="w-full border-none outline-none"
               value={debouncedQuery}
               ref={inputRef}
               onChange={(e) => {
@@ -1085,7 +1104,7 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
                 </div>}
                 <div className="flex flex-col">
                   <div className="flex items-center">
-                    <div className="text-black text-base font-medium ">
+                    <div className="text-base font-medium text-black ">
                       {selectedData?.full_name}
                     </div>
                     {selectedData?.is_verified && <MdVerified
@@ -1123,7 +1142,7 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
                 setShowResultModal(false);
               }}
             >
-              <div className="p-3 rounded-full bg-black text-white">
+              <div className="p-3 text-white bg-black rounded-full">
                 <FaUser size={14} color="white w-[46px] h-[46px]" />
               </div>
               <div className="">
@@ -1151,7 +1170,7 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
                       />
                       <div className="flex flex-col">
                         <div className="flex items-center">
-                          <div className="text-black text-base font-medium ">
+                          <div className="text-base font-medium text-black ">
                             {account?.full_name}
                           </div>
                           {account?.is_verified && <MdVerified
@@ -1193,23 +1212,23 @@ const OtherUsers = ({ account, addSuccess, setAddSuccess, from }) => {
   const [confirm, setConfirm] = useState({ title: '', description: '' })
 
   return (<>
-    {confirm.title && <div className="antialiased bg-gray-200/20 text-gray-900 font-sans overflow-x-hidden fixed top-0 left-0 w-full h-screen z-10">
-      <div className="relative px-4 min-h-screen md:flex md:items-center md:justify-center">
-        <div className="bg-black opacity-25 w-full h-full absolute z-10 inset-0" />
-        <div className="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
-          <div className="md:flex items-center">
-            <div className="rounded-full border border-gray-300 flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
-              {/* <i className="bx bx-error text-3xl" /> */}
+    {confirm.title && <div className="fixed top-0 left-0 z-10 w-full h-screen overflow-x-hidden font-sans antialiased text-gray-900 bg-gray-200/20">
+      <div className="relative min-h-screen px-4 md:flex md:items-center md:justify-center">
+        <div className="absolute inset-0 z-10 w-full h-full bg-black opacity-25" />
+        <div className="fixed inset-x-0 bottom-0 z-50 p-4 mx-4 mb-4 bg-white rounded-lg md:max-w-md md:mx-auto md:relative">
+          <div className="items-center md:flex">
+            <div className="flex items-center justify-center flex-shrink-0 w-16 h-16 mx-auto border border-gray-300 rounded-full">
+              {/* <i className="text-3xl bx bx-error" /> */}
               <CgDanger />
             </div>
-            <div className="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
+            <div className="mt-4 text-center md:mt-0 md:ml-6 md:text-left">
               <p className="font-bold">{confirm.title}</p>
-              <p className="text-sm text-gray-700 mt-1">{confirm.description}
+              <p className="mt-1 text-sm text-gray-700">{confirm.description}
               </p>
             </div>
           </div>
-          <div className="text-center md:text-right mt-4 md:flex md:justify-end">
-            <button className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-red-200 text-red-700 rounded-lg font-semibold text-sm md:ml-2 md:order-2"
+          <div className="mt-4 text-center md:text-right md:flex md:justify-end">
+            <button className="block w-full px-4 py-3 text-sm font-semibold text-red-700 bg-red-200 rounded-lg md:inline-block md:w-auto md:py-2 md:ml-2 md:order-2"
               onClick={async () => {
                 await deleteAccount(from, account.id);
                 setAddSuccess(!addSuccess)
@@ -1217,7 +1236,7 @@ const OtherUsers = ({ account, addSuccess, setAddSuccess, from }) => {
               }}
             >Delete
               Account</button>
-            <button className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-gray-200 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1"
+            <button className="block w-full px-4 py-3 mt-4 text-sm font-semibold bg-gray-200 rounded-lg md:inline-block md:w-auto md:py-2 md:mt-0 md:order-1"
               onClick={() => {
                 setConfirm({ title: "", description: "" })
               }}
@@ -1340,7 +1359,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                   >
                     <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
                   </svg>
-                  <span className="font-medium font-MontserratSemiBold leading-5 tooltiptext opacity-0 group-hover:opacity-100 group-hover:visible" style={{
+                  <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                     transition: 'all .5s ease-in-out',
                   }}>Once you've added your targets, you can monitor their progress and make modifications, as all of them will be displayed here. To achieve maximum outcomes, aim to achieve a follow-back rate of 15% or higher for all targets.</span>
                 </svgicon>
@@ -1373,7 +1392,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                   >
                     <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
                   </svg>
-                  <span className="font-medium font-MontserratSemiBold leading-5 tooltiptext opacity-0 group-hover:opacity-100 group-hover:visible" style={{
+                  <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                     transition: 'all .5s ease-in-out',
                   }}>Once you've added your targets, you can monitor their progress and make modifications, as all of them will be displayed here. To achieve maximum outcomes, aim to achieve a follow-back rate of 15% or higher for all targets.</span>
                 </svgicon>
@@ -1393,8 +1412,8 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
         </div>
       </div>
 
-      <div className="lg:m-10 mt-0 flex flex-col lg:flex-row items-center">
-        <div className="grow w-full lg:w-auto">
+      <div className="flex flex-col items-center mt-0 lg:m-10 lg:flex-row">
+        <div className="w-full grow lg:w-auto">
           <div className="text-[#757575] flex items-center justify-between w-full h-[50px] text-[14px] font-medium font-MontserratSemiBold md:pr-[30px]">
             <div className="w-[60%] flex items-center justify-start md:pl-5">
               <span className="ml-[60px]">Account</span>
@@ -1419,7 +1438,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
           </div>
         </div>
 
-        <div className="lg:hidden flex items-center gap-2 w-full mt-4">
+        <div className="flex items-center w-full gap-2 mt-4 lg:hidden">
           <button className={`bg-[#23df85] text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer`}
             onClick={() => setMobileAdd({ show: true, pageProp })}
           >
@@ -1562,7 +1581,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
                   >
                     <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
                   </svg>
-                  <span className="font-medium font-MontserratSemiBold leading-5 tooltiptext opacity-0 group-hover:opacity-100 group-hover:visible" style={{
+                  <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                     transition: 'all .5s ease-in-out',
                   }}>{pageProp.title === "Whitelist" ? "If you wish to continue following a user that we automatically followed for you, add them here and we won’t unfollow them. Remember, we will never unfollow anyone you manually followed before or after using our service - this only applies to users we followed for you." : "Add accounts that you never want us to follow. Our system will ensure to avoid interacting with every user you blacklist."}</span>
                 </svgicon>
@@ -1590,7 +1609,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
                   >
                     <path d="M10 0.625C4.8225 0.625 0.625 4.8225 0.625 10C0.625 15.1775 4.8225 19.375 10 19.375C15.1775 19.375 19.375 15.1775 19.375 10C19.375 4.8225 15.1775 0.625 10 0.625ZM11.5625 16.1719H8.4375V8.67188H11.5625V16.1719ZM10 6.95312C9.5856 6.95312 9.18817 6.78851 8.89515 6.49548C8.60212 6.20245 8.4375 5.80503 8.4375 5.39062C8.4375 4.97622 8.60212 4.5788 8.89515 4.28577C9.18817 3.99275 9.5856 3.82812 10 3.82812C10.4144 3.82812 10.8118 3.99275 11.1049 4.28577C11.3979 4.5788 11.5625 4.97622 11.5625 5.39062C11.5625 5.80503 11.3979 6.20245 11.1049 6.49548C10.8118 6.78851 10.4144 6.95312 10 6.95312Z" />
                   </svg>
-                  <span className="font-medium font-MontserratSemiBold leading-5 tooltiptext opacity-0 group-hover:opacity-100 group-hover:visible" style={{
+                  <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                     transition: 'all .5s ease-in-out',
                   }}>{pageProp.title === "Whitelist" ? "If you wish to continue following a user that we automatically followed for you, add them here and we won’t unfollow them. Remember, we will never unfollow anyone you manually followed before or after using our service - this only applies to users we followed for you." : "Add accounts that you never want us to follow. Our system will ensure to avoid interacting with every user you blacklist."}</span>
                 </svgicon>
@@ -1619,8 +1638,8 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
         </div>
       </div>
 
-      <div className="lg:m-10 mt-0 flex flex-col lg:flex-row items-center">
-        <div className="grow w-full lg:w-auto">
+      <div className="flex flex-col items-center mt-0 lg:m-10 lg:flex-row">
+        <div className="w-full grow lg:w-auto">
           <div className="text-[#757575] flex items-center justify-between w-full h-[50px] text-[14px] font-medium font-MontserratSemiBold md:pr-[30px]">
             <div className="w-[60%] flex items-center justify-start md:pl-5">
               <span className="ml-[60px]">Account</span>
@@ -1645,7 +1664,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
           </div>
         </div>
 
-        <div className="lg:hidden flex items-center gap-2 w-full my-4">
+        <div className="flex items-center w-full gap-2 my-4 lg:hidden">
           <button className={`bg-[#23df85] text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer`}
             onClick={() => setMobileAdd({ show: true, pageProp })}
           >

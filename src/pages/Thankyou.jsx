@@ -9,7 +9,6 @@ export default function Thankyou() {
 
     useEffect(() => {
         const getData = async () => {
-            console.log('sdlk');
             const { data: { user } } = await supabase.auth.getUser()
             if (!user) return navigate("/login")
             const { data, error } = await supabase
@@ -19,7 +18,8 @@ export default function Thankyou() {
                 .eq('first_account', true)
             if (error) return navigate("/login")
             if (!data[0]?.subscribed) {
-                window.location.pathname = `subscriptions/${data[0].username}`;
+                // window.location.pathname = `subscriptions/${data[0].username}`;
+                window.location = `/subscriptions/${data[0].username}`;
                 return;
             }
 
@@ -47,6 +47,6 @@ export default function Thankyou() {
     }, [navigate]);
 
     return (
-        <div></div>
+        <div>...</div>
     )
 }
