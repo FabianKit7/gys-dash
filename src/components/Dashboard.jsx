@@ -80,18 +80,25 @@ export default function Dashboard() {
       const uuid = url.searchParams.get('uuid');
       superUser && uuid && setAdmin(superUser?.admin)
       var cuser;
+
       const { data, error } = await supabase
         .from('users')
         .select()
         .eq("user_id", (superUser.admin && uuid) ? uuid : authUser?.id).eq("username", currentUsername)
-        .single()
-      cuser = data
+      // .single()
+      // cuser = data
+      cuser = data?.[0]
 
       if (error) {
         console.log(error);
         // alert(error?.message)
-        setIsModalOpen(true);
-        setErrorMsg({ title: 'Alert', message: error?.message })
+        if (error.message === "JSON object requested, multiple (or no) rows returned") {
+          setIsModalOpen(true);
+          setErrorMsg({ title: 'Alert', message: "You have created this account more than onece" })
+        } else {
+          setIsModalOpen(true);
+          setErrorMsg({ title: 'Alert', message: error?.message })
+        }
         return;
       }
 
@@ -678,9 +685,9 @@ export default function Dashboard() {
                       {userData?.userMode}
                     </div>
 
-                    <apptooltip className="hidden lg:block ml-[8px] cursor-pointer group relative">
+                    <span className="hidden lg:block ml-[8px] cursor-pointer group relative">
                       <div className="flex items-center">
-                        <svgicon
+                        <span
                           className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
                           style={{
                             transition: 'all .1s ease-in',
@@ -696,9 +703,9 @@ export default function Dashboard() {
                           <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                             transition: 'all .5s ease-in-out',
                           }}>How your account is currently interacting with new users. You can change this in your interaction settings.</span>
-                        </svgicon>
+                        </span>
                       </div>
-                    </apptooltip>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -743,9 +750,9 @@ export default function Dashboard() {
 
           <div className="w-full lg:hidden">
             <div className="shadow-[0_0_3px_#00000040] rounded-[10px] p-5 relative">
-              <apptooltip className="absolute cursor-pointer top-5 right-5 group">
+              <span className="absolute cursor-pointer top-5 right-5 group">
                 <div className="flex items-center">
-                  <svgicon
+                  <span
                     className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
                     style={{
                       transition: 'all .1s ease-in',
@@ -761,9 +768,9 @@ export default function Dashboard() {
                     <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext2 group-hover:opacity-100 group-hover:visible" style={{
                       transition: 'all .5s ease-in-out',
                     }}>'Mike', your personal account analyst and growth consultant, who happens to be our most experienced Instagram marketing expert with over 5 years of proficiency. Don't hesitate to contact him for assistance with selecting the best targets, navigating the dashboard, generating content, engaging your followers, and much more. Mike is committed to sharing his knowledge and expertise to help you make the most of your time with us.</span>
-                  </svgicon>
+                  </span>
                 </div>
-              </apptooltip>
+              </span>
 
               <div className="flex items-center">
                 <img
@@ -819,9 +826,9 @@ export default function Dashboard() {
                 style={{ boxShadow: '0 0 3px #00000040' }}
               >
 
-                <apptooltip className="absolute top-[25px] right-[20px] ml-[8px] group cursor-pointer">
+                <span className="absolute top-[25px] right-[20px] ml-[8px] group cursor-pointer">
                   <div className="flex items-center">
-                    <svgicon
+                    <span
                       className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
                       style={{
                         transition: 'all .1s ease-in',
@@ -837,9 +844,9 @@ export default function Dashboard() {
                       <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext2 group-hover:opacity-100 group-hover:visible" style={{
                         transition: 'all .5s ease-in-out',
                       }}>'Mike', your personal account analyst and growth consultant, who happens to be our most experienced Instagram marketing expert with over 5 years of proficiency. Don't hesitate to contact him for assistance with selecting the best targets, navigating the dashboard, generating content, engaging your followers, and much more. Mike is committed to sharing his knowledge and expertise to help you make the most of your time with us.</span>
-                    </svgicon>
+                    </span>
                   </div>
-                </apptooltip>
+                </span>
 
                 <div className="flex items-center">
                   <img
@@ -1344,9 +1351,9 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
               </span>
             </div>
 
-            <apptooltip className="ml-[8px] cursor-pointer group relative">
+            <span className="ml-[8px] cursor-pointer group relative">
               <div className="flex items-center">
-                <svgicon
+                <span
                   className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
                   style={{
                     transition: 'all .1s ease-in',
@@ -1362,9 +1369,9 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                   <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                     transition: 'all .5s ease-in-out',
                   }}>Once you've added your targets, you can monitor their progress and make modifications, as all of them will be displayed here. To achieve maximum outcomes, aim to achieve a follow-back rate of 15% or higher for all targets.</span>
-                </svgicon>
+                </span>
               </div>
-            </apptooltip>
+            </span>
           </div>
 
           <button className="bg-[#1b89ff] text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer" onClick={() => setFilterModal(true)}>
@@ -1377,9 +1384,9 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
           <div className="flex items-center justify-center gap-[8px]">
             <img alt="" src="/ic_targeting.svg" className="bg-[#23df85] p-[8px] rounded-[8px]" />
             <h3 className="text-[24px] font-bold font-MontserratBold text-black"> Targeting </h3>
-            <apptooltip className="ml-[8px] cursor-pointer group relative">
+            <span className="ml-[8px] cursor-pointer group relative">
               <div className="flex items-center">
-                <svgicon
+                <span
                   className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
                   style={{
                     transition: 'all .1s ease-in',
@@ -1395,9 +1402,9 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                   <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                     transition: 'all .5s ease-in-out',
                   }}>Once you've added your targets, you can monitor their progress and make modifications, as all of them will be displayed here. To achieve maximum outcomes, aim to achieve a follow-back rate of 15% or higher for all targets.</span>
-                </svgicon>
+                </span>
               </div>
-            </apptooltip>
+            </span>
           </div>
           <div className="mt-[30px] flex items-center">
             <div className="w-full flex justify-center bg-[#f8f8f8]">
@@ -1566,9 +1573,9 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
               </div>
             </div>
 
-            <apptooltip className="ml-[8px] cursor-pointer group relative">
+            <span className="ml-[8px] cursor-pointer group relative">
               <div className="flex items-center">
-                <svgicon
+                <span
                   className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
                   style={{
                     transition: 'all .1s ease-in',
@@ -1584,9 +1591,9 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
                   <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                     transition: 'all .5s ease-in-out',
                   }}>{pageProp.title === "Whitelist" ? "If you wish to continue following a user that we automatically followed for you, add them here and we won’t unfollow them. Remember, we will never unfollow anyone you manually followed before or after using our service - this only applies to users we followed for you." : "Add accounts that you never want us to follow. Our system will ensure to avoid interacting with every user you blacklist."}</span>
-                </svgicon>
+                </span>
               </div>
-            </apptooltip>
+            </span>
           </div>
         </div>
 
@@ -1594,9 +1601,9 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
           <div className="flex items-center justify-center gap-[8px]">
             <img alt="" src={`/ic_${(pageProp.title).toLowerCase()}.svg`} className="rounded-[8px]" />
             <h3 className="text-[24px] font-bold font-MontserratBold text-black"> {pageProp.title} </h3>
-            <apptooltip className="ml-[8px] cursor-pointer group relative">
+            <span className="ml-[8px] cursor-pointer group relative">
               <div className="flex items-center">
-                <svgicon
+                <span
                   className="w-[20px] h-[20px] cursor-pointer fill-[#c4c4c4] group-hover:fill-[orange]"
                   style={{
                     transition: 'all .1s ease-in',
@@ -1612,9 +1619,9 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
                   <span className="font-medium leading-5 opacity-0 font-MontserratSemiBold tooltiptext group-hover:opacity-100 group-hover:visible" style={{
                     transition: 'all .5s ease-in-out',
                   }}>{pageProp.title === "Whitelist" ? "If you wish to continue following a user that we automatically followed for you, add them here and we won’t unfollow them. Remember, we will never unfollow anyone you manually followed before or after using our service - this only applies to users we followed for you." : "Add accounts that you never want us to follow. Our system will ensure to avoid interacting with every user you blacklist."}</span>
-                </svgicon>
+                </span>
               </div>
-            </apptooltip>
+            </span>
           </div>
 
           <div className="mt-[30px] flex items-center">
