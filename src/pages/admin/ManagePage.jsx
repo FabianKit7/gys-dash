@@ -351,9 +351,10 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
 
   return (
     <div className="">
-      <div className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black cursor-pointer" onClick={() => {
+      <div className="w-[120px] h-[35px] flex items-center gap-2 justify-center rounded-[10px] bg-black text-white cursor-pointer capitalize" onClick={() => {
         setShowModal(!showModal)
       }}>
+        {user?.status}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-[18px] h-[18px]"

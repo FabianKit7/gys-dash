@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { countDays } from '../../helpers'
 import copy from 'copy-to-clipboard';
 import { ChangeStatusModal, calculateLast7DaysGrowth, statuses } from './ManagePage'
+import { FaInstagram } from 'react-icons/fa'
 
 export default function Retention() {
   const navigate = useNavigate();
@@ -127,7 +128,6 @@ export default function Retention() {
             <th>Following</th>
             <th>Last 7 Days Growth</th>
             <th>Updated</th>
-            <th>Status</th>
             <th colSpan={3}>
               <div className="text-center">Actions</div>
             </th>
@@ -146,17 +146,25 @@ export default function Retention() {
                   <img src={user?.profile_pic_url} alt="" className="w-[30px] h-[30px] min-w-[30px] min-h-[30px] rounded-full bg-black ml-4" />
                 </td>
                 <td>
-                  <div className="relative cursor-pointer max-w-[180px] break-words" onClick={() => {
-                    copy(user?.username, {
-                      debug: true,
-                      message: 'Press #{key} to copy',
-                    })
-                    setMessage({ sectionName: `username-${user?.username}`, value: 'copied' })
-                    setTimeout(() => {
-                      setMessage({ sectionName: '', value: '' })
-                    }, 1000);
-                  }}>@{user?.username}
-                    {message.sectionName === `username-${user?.username}` && <div className="absolute text-black font-bold">{message.value}</div>}
+                  <div className="flex items-center gap-2">
+                    <div className="relative cursor-pointer max-w-[180px] break-words"
+                      onClick={() => {
+                        copy(user?.username, {
+                          debug: true,
+                          message: 'Press #{key} to copy',
+                        })
+                        setMessage({ sectionName: `username-${user?.username}`, value: 'copied' })
+                        setTimeout(() => {
+                          setMessage({ sectionName: '', value: '' })
+                        }, 1000);
+                      }}
+                    >@{user?.username}
+                      {message.sectionName === `username-${user?.username}` && <div className="absolute text-black font-bold">{message.value}</div>}
+                    </div>
+
+                    <a href={`https://www.instagram.com/${user?.username}/`} target='_blank' rel="noreferrer" >
+                      <FaInstagram size={16} color="red" />
+                    </a>
                   </div>
                 </td>
                 <td>
@@ -171,13 +179,12 @@ export default function Retention() {
                   </div>
                 </td>
                 <td>{user?.session_updated_at ? countDays(user?.session_updated_at) : "N/A"}</td>
-                <td>{user?.status}</td>
                 <td>
-                  <div className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black cursor-pointer" 
-                  onClick={() => {
-                    setSelectedUser(user)
-                    setShowChargebee(true)
-                  }}>
+                  <div className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black cursor-pointer"
+                    onClick={() => {
+                      setSelectedUser(user)
+                      setShowChargebee(true)
+                    }}>
                     <img src="/icons/monetization.svg" alt="" className="w-[18px] h-[18px]" />
                   </div>
                 </td>
