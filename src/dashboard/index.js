@@ -903,29 +903,33 @@ export const Chargebee = ({ k, user, setShowChargebee }) => {
           <div className="flex flex-col md:flex-row justify-between border-b gap-10">
             <div className="">CUSTOMER_ID:</div>
             {/* <div className="">{d?.customer_id}</div> */}
-            <div className="cursor-pointer" onClick={() => {
-              copy(customer?.id, {
-                debug: true,
-                message: 'Press #{key} to copy',
-              })
-              setMessage('copied')
-              setTimeout(() => {
-                setMessage('')
-              }, 1000);
-            }}>{customer?.id}</div>
+            <a href={`https://sproutysocial.chargebee.com/d/customers/${customer?.id}`} target='_blank' className="cursor-pointer" rel="noreferrer" 
+            // onClick={() => {
+            //   copy(customer?.id, {
+            //     debug: true,
+            //     message: 'Press #{key} to copy',
+            //   })
+            //   setMessage('copied')
+            //   setTimeout(() => {
+            //     setMessage('')
+            //   }, 1000);
+            // }}
+            >{customer?.id}</a>
           </div>
           <div className="flex flex-col md:flex-row justify-between border-b gap-10">
             <div className="">SUBSCRIPTION_ID:</div>
-            <div className="cursor-pointer" onClick={() => {
-              copy(subscription?.id, {
-                debug: true,
-                message: 'Press #{key} to copy',
-              })
-              setMessage('copied')
-              setTimeout(() => {
-                setMessage('')
-              }, 1000);
-            }}>{subscription?.id}</div>
+            <a href={`https://sproutysocial.chargebee.com/d/subscriptions/${subscription?.id}`} target='_blank' className="cursor-pointer" rel="noreferrer" 
+            // onClick={() => {
+            //   copy(subscription?.id, {
+            //     debug: true,
+            //     message: 'Press #{key} to copy',
+            //   })
+            //   setMessage('copied')
+            //   setTimeout(() => {
+            //     setMessage('')
+            //   }, 1000);
+            // }}
+            >{subscription?.id}</a>
           </div>
         </div>
       </div>

@@ -370,7 +370,7 @@ const Password = ({ setShowModal, user, setRefresh, refresh }) => {
           handleSaveAndClose()
         }}>
           <HiOutlineRefresh size={20} />
-          <span>Update Email</span>
+          <span>Save</span>
         </button>
       </form>
     </div>
