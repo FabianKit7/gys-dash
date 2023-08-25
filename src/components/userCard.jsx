@@ -17,8 +17,8 @@ export default function UserCard({ item, addSuccess, setAddSuccess, from, page }
             <div className="flex gap-3 items-center">
                 <p className="hidden md:flex">{countDays(item.created_at)}</p>
                 <div className="flex items-center gap-0">
-                    <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
-                        <ImBin2 className="text-[#8C8C8C] font-semibold"
+                    <div className="rounded-[4px] bg-gray-100 p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
+                        <ImBin2 className="text-gray-600 font-semibold"
                             onClick={async () => {
                                 await deleteAccount('targeting', item.id);
                                 // const res = 
@@ -30,8 +30,8 @@ export default function UserCard({ item, addSuccess, setAddSuccess, from, page }
                             size={20}
                         />
                     </div>
-                    {item && page === 'admin' && <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
-                        <TbRefresh className="text-[#8C8C8C] font-semibold cursor-pointer" onClick={async () => {
+                    {item && page === 'admin' && <div className="rounded-[4px] bg-gray-100 p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
+                        <TbRefresh className="text-gray-600 font-semibold cursor-pointer" onClick={async () => {
                             await updateUserProfilePicUrl(item, from)
                             setAddSuccess(!addSuccess)
                         }} 

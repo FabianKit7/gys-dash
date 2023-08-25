@@ -7,6 +7,7 @@ import Nav from "../Nav";
 import ChangeModal from "./ChangeModal";
 import axios from "axios";
 import InfiniteRangeSlider from "../InfiniteRangeSlider";
+import { EMAIL } from "../../config";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -99,8 +100,8 @@ export default function Settings() {
 
           <div className="md:px-10">
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="border-b mb-2 md:mb-0 md:border-b-0">Full Name</div>
-              <div className="flex items-center justify-between md:justify-end gap-3">
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">Full Name</div>
+              <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">{user?.full_name}</div>
                 <div className="text-[#1b89ff] cursor-pointer"
                   onClick={() => {
@@ -112,7 +113,7 @@ export default function Settings() {
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="border-b mb-2 md:mb-0 md:border-b-0">Email</div>
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">Email</div>
               <div className="flex flex-col md:flex-row md:items-center md:gap-3">
                 <div className="text-[#757575]">{user?.email}</div>
                 <div className="text-[#1b89ff] cursor-pointer"
@@ -125,8 +126,8 @@ export default function Settings() {
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="border-b mb-2 md:mb-0 md:border-b-0">Password</div>
-              <div className="flex items-center justify-between md:justify-end gap-3">
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">Password</div>
+              <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">************</div>
                 <div className="text-[#1b89ff] cursor-pointer"
                   onClick={() => {
@@ -138,8 +139,8 @@ export default function Settings() {
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="border-b mb-2 md:mb-0 md:border-b-0">Phone number</div>
-              <div className="flex items-center justify-between md:justify-end gap-3">
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">Phone number</div>
+              <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">{user?.phone}</div>
                 <div className="text-[#1b89ff] cursor-pointer"
                   onClick={() => {
@@ -151,8 +152,8 @@ export default function Settings() {
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="border-b mb-2 md:mb-0 md:border-b-0">Subscription</div>
-              <div className="flex items-center justify-between md:justify-end gap-3">
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">Subscription</div>
+              <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">Active</div>
                 <div className="text-[#1b89ff] cursor-pointer" onClick={() => setCancelModal(true)}>Cancel</div>
               </div>
@@ -174,9 +175,9 @@ export default function Settings() {
             {/* payment and billing settings */}
             <div className="md:px-10">
               <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-                <div className="border-b mb-2 md:mb-0 md:border-b-0">Credit Card</div>
+                <div className="mb-2 border-b md:mb-0 md:border-b-0">Credit Card</div>
 
-                <div className="flex items-center justify-between md:justify-end gap-3">
+                <div className="flex items-center justify-between gap-3 md:justify-end">
                   <div className="text-[#757575] flex items-center gap-3">
                     {chargebeeCustomerData?.card?.card_type === 'visa' && <img src="/icons/visa.svg" alt="visa" className="w-[36px] h-fit" />}
                     {chargebeeCustomerData?.card?.card_type === 'mastercard' && <img src="/icons/mastercard.svg" alt="visa" className="w-[36px] h-fit" />}
@@ -218,14 +219,14 @@ export default function Settings() {
             {accounts.map(account => {
               // console.log(account);
               return (
-                <div key={`account_${account?.username}`} className="flex flex-col md:flex-row justify-between">
+                <div key={`account_${account?.username}`} className="flex flex-col justify-between md:flex-row">
                   <div className="border-b mb-2 pb-1 md:mb-0 md:border-b-0 flex items-center gap-2 md:gap-4 lg:gap-[30px]">
                     <div className="relative">
                       <img src={account?.profile_pic_url} alt={`@${account?.username}`} className="min-w-[50px] min-h-[50px] w-[50px] h-[50px] lg:min-w-[107px] lg:min-h-[107px] lg:w-[107px] lg:h-[107px] rounded-full" />
                       <div className="hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full bg-[#23df85]"></div>
                     </div>
                     <div className="lg:text-[24px] w-full">
-                      <div className="flex gap-1 w-full justify-between md:justify-start">@{account?.username} <span className="font-bold text-[#23df85]">Active</span></div>
+                      <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-[#23df85]">Active</span></div>
                       <div className="">
                         <img src="/instagram.svg" alt="" className="my-[3px] md:my-[5px] lg:my-[7px] mr-[8px] w-[16px] h-[16px] lg:w-[28px] lg:h-[28px] rounded-full" />
                       </div>
@@ -258,23 +259,23 @@ export default function Settings() {
           transition: "opacity .15s ease-in"
         }}
         >
-          <div className="fixed top-0 left-0 w-full h-screen bg-black/40 grid place-items-center" onClick={() => setCancelModal(false)}></div>
+          <div className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center" onClick={() => setCancelModal(false)}></div>
           <div className="bg-white to-black py-4 md:py-7 md:pt-12 px-5 md:px-10 relative max-w-[300px] md:max-w-[500px] lg:max-w-[600px] font-MontserratRegular rounded-[10px]">
-            <FaTimesCircle className="absolute top-3 right-3 flex flex-col items-center"
+            <FaTimesCircle className="absolute flex flex-col items-center top-3 right-3"
               onClick={() => {
                 setCancelModal(false)
               }} />
             <h1 className="text-[1rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">Submit your cancellation request</h1>
             <div className="text-[.8rem] md:text-base">
               <p className="text-center">
-                All cancellations requests have to be processed by our support team. Please request a cancellation and provide us with your reason for cancelling by emailing <a href="mailto:support@sproutysocial.com" className="text-blue-500">support@sproutysocial.com</a>. We appreciate your feedback and are always looking to improve
+                All cancellations requests have to be processed by our support team. Please request a cancellation and provide us with your reason for cancelling by emailing <a href={`mailto:${EMAIL}`} className="text-blue-500">{EMAIL}</a>. We appreciate your feedback and are always looking to improve
               </p>
               <br />
               <p className="text-center">
                 Our expert account managers are always on standby and ready to help. If you are not getting results, or need help, schedule a time to speak with our expert team who can help you reach your full instagram growth potential.
               </p>
             </div>
-            <a href="mailto:support@sproutysocial.com" className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3">
+            <a href={`mailto:${EMAIL}`} className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3">
               <BsFillEnvelopeFill />
               Send an email
             </a>

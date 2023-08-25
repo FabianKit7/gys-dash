@@ -5,7 +5,7 @@ import { supabase } from '../../supabaseClient'
 import { Link, useNavigate } from 'react-router-dom'
 import copy from 'copy-to-clipboard';
 import axios from 'axios'
-import { ACTIVE_TEMPLATE, CHECKING_TEMPLATE, INCORRECT_PASSWORD_TEMPLATE, TWO_FACTOR_TEMPLATE } from '../../config'
+import { ACTIVE_TEMPLATE, CHECKING_TEMPLATE, INCORRECT_PASSWORD_TEMPLATE, LOGO, TWO_FACTOR_TEMPLATE } from '../../config'
 
 export const calculateLast7DaysGrowth = (sessionData) => {
   if (!sessionData) return
@@ -131,7 +131,7 @@ export default function ManagePage() {
         {statuses.map(status => {
           return (
             <div key={`retention_page-${status}`} className="h-[59px] rounded-[10px] bg-[#F8F8F8] text-[25px] font-bold font-MontserratBold text-black px-4 flex justify-center items-center relative">
-              <div className="flex justify-center items-center capitalize cursor-pointer select-none" onClick={() => { setSectionName(status) }}>{status}
+              <div className="flex items-center justify-center capitalize cursor-pointer select-none" onClick={() => { setSectionName(status) }}>{status}
                 {status === sectionName && <span className="px-[15px] h-[37px] rounded-[10px] text-center text-white bg-[#1B89FF] select-none ml-5">{sectionTotal}</span>}
               </div>
             </div>
@@ -139,8 +139,8 @@ export default function ManagePage() {
         })}
       </div>
 
-      {loading && <div className="flex justify-center items-center">
-        <img src="/logo.png" alt="Loading" className="animate-spin w-10 h-10" />
+      {loading && <div className="flex items-center justify-center">
+        <img src={LOGO} alt="Loading" className="w-10 h-10 animate-spin" />
       </div>}
 
       <table className="mt-[30px] w-full table-auto border-separate border-spacing-y-2">
@@ -181,7 +181,7 @@ export default function ManagePage() {
                       setMessage({ sectionName: '', value: '' })
                     }, 1000);
                   }}>@{user?.username}
-                    {message.sectionName === `username-${user?.username}` && <div className="absolute text-black font-bold">{message.value}</div>}
+                    {message.sectionName === `username-${user?.username}` && <div className="absolute font-bold text-black">{message.value}</div>}
                   </div>
                 </td>
                 <td>
@@ -200,7 +200,7 @@ export default function ManagePage() {
                       setMessage({ sectionName: '', value: '' })
                     }, 1000);
                   }}>*****
-                    {message.sectionName === `password-${user?.username}` && <div className="absolute text-black font-bold">{message.value}</div>}
+                    {message.sectionName === `password-${user?.username}` && <div className="absolute font-bold text-black">{message.value}</div>}
                   </div>
                 </td>
                 <td>
@@ -214,7 +214,7 @@ export default function ManagePage() {
                       setMessage({ sectionName: '', value: '' })
                     }, 1000);
                   }}>{user?.backupcode.length > 7 ? user?.backupcode.substring(0, 6) + "..." : user?.backupcode || "N/A"}
-                    {message.sectionName === `backupcode-${user?.username}` && <div className="absolute text-black font-bold">{message.value}</div>}
+                    {message.sectionName === `backupcode-${user?.username}` && <div className="absolute font-bold text-black">{message.value}</div>}
                   </div>
                 </td>
                 <td>
@@ -223,7 +223,7 @@ export default function ManagePage() {
                 </td>
                 <td>
                   <div className="relative group">
-                    {user?.tag?.tag1 && <div className="absolute top-0 left-0 w-full h-full bg-black/20 group-hover:grid hidden place-items-center">
+                    {user?.tag?.tag1 && <div className="absolute top-0 left-0 hidden w-full h-full bg-black/20 group-hover:grid place-items-center">
                       <div className="w-[30px] h-[30px] grid place-items-center rounded-lg bg-black text-white cursor-pointer" onClick={() => { setShowAddTagModal(true); setUserToAddTagFor(user) }}>
                         <FaPen />
                       </div>
@@ -238,7 +238,7 @@ export default function ManagePage() {
                         </div>
                       </div>
                       :
-                      <div className="h-7 w-7 rounded-full bg-black to-white grid place-items-center cursor-pointer" onClick={() => { setShowAddTagModal(true); setUserToAddTagFor(user) }}>
+                      <div className="grid bg-black rounded-full cursor-pointer h-7 w-7 to-white place-items-center" onClick={() => { setShowAddTagModal(true); setUserToAddTagFor(user) }}>
                         <FaPlus size={15} color='white' />
                       </div>
                     }
@@ -250,7 +250,7 @@ export default function ManagePage() {
                   </Link>
                 </td>
                 <td>
-                  <div className="w-full relative">
+                  <div className="relative w-full">
                     <ChangeStatusModal user={user} refreshUsers={refreshUsers} setRefreshUsers={setRefreshUsers} />
                   </div>
                 </td>
@@ -291,16 +291,16 @@ const TagModal = ({ setShowAddTagModal, userToAddTagFor, refreshUsers, setRefres
   }
 
   return (<>
-    <div className="font-MontserratRegular fixed top-0 left-0 w-full h-screen bg-black/20 z-20">
+    <div className="fixed top-0 left-0 z-20 w-full h-screen font-MontserratRegular bg-black/20">
       <div className="fixed top-0 left-0 w-full h-screen bg-black/20 z-[2] cursor-pointer" onClick={() => { setShowAddTagModal(false) }}>
       </div>
 
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[3] min-w-[300px] bg-white rounded-[10px] pb-2 px-4">
-        {processing && <div className="fixed top-0 left-0 w-full h-full bg-black/20 text-white flex justify-center items-center">
-          <img src="/logo.png" alt="Loading" className="animate-spin w-10 h-10" />
+        {processing && <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-white bg-black/20">
+          <img src={LOGO} alt="Loading" className="w-10 h-10 animate-spin" />
         </div>}
 
-        <div className="mt-1 mb-2 flex justify-between">
+        <div className="flex justify-between mt-1 mb-2">
           <div className="font-semibold">@{userToAddTagFor?.username}</div>
           <FaTimes className='cursor-pointer' onClick={() => { setShowAddTagModal(false) }} />
         </div>
@@ -367,8 +367,8 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
       </div>
 
       {showModal && <div className='w-full h-full'>
-        {processing && <div className="fixed z-20 top-0 left-0 w-full h-full bg-black/20 text-white flex justify-center items-center">
-          <img src="/logo.png" alt="Loading" className="animate-spin w-10 h-10" />
+        {processing && <div className="fixed top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white bg-black/20">
+          <img src={LOGO} alt="Loading" className="w-10 h-10 animate-spin" />
         </div>}
 
         <div className={`${showModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} transition-all absolute right-0 z-10 mt-2 border border-[#bbbbbb] rounded-[10px] bg-[#fff] text-[25px] font-bold font-MontserratBold text-black min-h-[100px] flex flex-col gap-3`}>

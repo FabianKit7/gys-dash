@@ -102,22 +102,22 @@ export default function Blacklist({ user, userId, page }) {
         addSuccess={addSuccess}
       />
 
-      <div className="shadow-targeting mt-12">
+      <div className="mt-12 shadow-targeting">
         {/* nav */}
         <div className="flex justify-between px-8 pt-8">
           <div className="flex items-center gap-3">
             <h3 className="font-bold text-[28px] font-MontserratBold">Blacklist</h3>
-            <div className="bg-gray20 rounded w-8 h-8 flex justify-center items-center">
+            <div className="flex items-center justify-center w-8 h-8 bg-gray-800 rounded">
               <h2 className="text-white font-MontserratSemiBold">{blacklistAccounts.length}</h2>
             </div>
             {loadingSpinner && (<Spinner animation="border" />)}
           </div>
-          <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setIsOpen(!modalIsOpen) }}>
-            <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
+          <div className="rounded-[4px] bg-gray-100 p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setIsOpen(!modalIsOpen) }}>
+            <BsFillPlusSquareFill className="absolute font-semibold text-gray-600" />
           </div>
         </div>
         {/* body */}
-        <div className="grid p-5 md:p-8 gap-4">
+        <div className="grid gap-4 p-5 md:p-8">
           {blacklistAccounts.map((item, index) => {
             return (
               <UserCard key={`blacklist_${index}`} item={item} setAddSuccess={setAddSuccess} addSuccess={addSuccess} from="blacklist" page={page} />

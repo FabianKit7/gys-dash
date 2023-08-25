@@ -1,4 +1,3 @@
-import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Search from "./components/Search";
 import Dashboard from "./components/Dashboard";
@@ -31,7 +30,7 @@ function App() {
     // const clickId = getCookie('_vid_t')
     // console.log(clickId);
     Tap.init(
-      '40122-96e787', // your account ID
+      process.env.REACT_APP_TAPFILIATE_ACCOUNT_ID, // your account ID
       { integration: 'javascript' }, // createOptions with cookie domain set to your main domain
       // createCallback function
       function () {

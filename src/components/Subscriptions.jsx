@@ -12,7 +12,7 @@ import { useRef } from "react";
 import { CardComponent, CardNumber, CardExpiry, CardCVV } from "@chargebee/chargebee-js-react-wrapper"
 import { getRefCode } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { NOT_CONNECTED_TEMPLATE } from "../config";
+import { LOGO, NOT_CONNECTED_TEMPLATE, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "../config";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -84,11 +84,11 @@ export default function Subscriptions() {
     if (!user) navigate('/');
     const options = {
       method: "GET",
-      url: "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile",
+      url: SCRAPER_API_URL,
       params: { ig: username, response_type: "short", corsEnabled: "true" },
       headers: {
-        "X-RapidAPI-Key": "47e2a82623msh562f6553fe3aae6p10b5f4jsn431fcca8b82e",
-        "X-RapidAPI-Host": "instagram-bulk-profile-scrapper.p.rapidapi.com",
+        "X-RapidAPI-Key": X_RAPID_API_KEY,
+        "X-RapidAPI-Host": X_RAPID_API_HOST,
       },
     };
 
@@ -153,7 +153,7 @@ export default function Subscriptions() {
               }}
             >
               <div className="flex">
-                <img alt="" className="w-[36px] h-[36px]" src="/logo.png" />
+                <img alt="" className="w-[36px] h-[36px]" src={LOGO} />
               </div>
               <div
                 className={`${showMenu && ' border-red-300'
@@ -418,7 +418,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     </div>
                   </div>
                   <div className="w-[40px] h-[40px] rounded-[10px] grid place-items-center shadow-[0_3px_8px_#0000001a] cursor-pointer bg-[#f8f8f8]" onClick={() => { navigate(`/search`) }}>
-                    <TbRefresh className="text-[#8C8C8C] font-semibold" />
+                    <TbRefresh className="font-semibold text-gray-600" />
                   </div>
                 </div>
 
@@ -432,7 +432,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                 <div className="">
                   <div className="flex items-center gap-3">
                     {showCreaditCardInput && <div className="w-[32px] h-[32px] rounded-full grid place-items-center shadow-[0_3px_8px_#0000001a] cursor-pointer bg-[#f8f8f8]" onClick={() => { setShowCreaditCardInput(false) }}>
-                      <FaAngleLeft className="text-[#8C8C8C] font-semibold" />
+                      <FaAngleLeft className="font-semibold text-gray-600" />
                     </div>}
                     <h1 className="text-[20px] lg:text-[20px] font-bold text-black font-MontserratBold">Payment method</h1>
                   </div>

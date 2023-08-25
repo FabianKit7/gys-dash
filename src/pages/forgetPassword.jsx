@@ -42,24 +42,11 @@ export default function ForgetPassword() {
         }
     }
 
-    // useEffect(() => {
-    //     const scriptText = `
-    //   (function(t,a,p){t.TapfiliateObject=a;t[a]=t[a]||function(){ (t[a].q=t[a].q||[]).push(arguments)}})(window,'tap');
-
-    //   tap('create', '40122-96e787', { integration: "javascript" });
-    //   tap('detect');
-    // `
-    //     const script = document.createElement('script');
-    //     script.type = "text/javascript"
-    //     script.innerHTML = scriptText
-    //     document.querySelector('#affiliateScript').appendChild(script)
-    // }, [])
-
     return (<>
         <div id="affiliateScript"></div>
-        <div className="flex flex-col justify-center items-center h-screen">
-            <div className="p-5 shadow-lg rounded-lg">
-                <div className="flex flex-col justify-center items-center pb-10">
+        <div className="flex flex-col items-center justify-center h-screen">
+            <div className="p-5 rounded-lg shadow-lg">
+                <div className="flex flex-col items-center justify-center pb-10">
                     {/* <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="sprouty social" /> */}
                     <div className="font-MADEOKINESANSPERSONALUSE text-[28px]"><strong className="text-[25px] text-left">SPROUTYSOCIAL</strong></div>
                     <hr className="mb-7 w-full border-[#ef5f3c]" />
@@ -70,7 +57,7 @@ export default function ForgetPassword() {
                 {page === 0 ?
                     <>
                         <form action="" className="flex flex-col items-center justify-start" onSubmit={handleSendResetLink}>
-                            <div className="form-outline mb-4 font-MontserratRegular">
+                            <div className="mb-4 form-outline font-MontserratRegular">
                                 <input
                                     type="email"
                                     id="form2Example1"

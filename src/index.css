@@ -27,6 +27,11 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    background-color: white !important;
+    color: black !important;
+}
+
 .grid-cols-7 {
     grid-template-columns: repeat(7, 1fr);
 }

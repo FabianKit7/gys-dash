@@ -116,7 +116,7 @@ const ModalAdd = ({ from, modalIsOpen, setIsOpen, title, subtitle, extraSubtitle
       <div className="modal_form_wrapper relative">
         <div className="flex justify-end">
           <IoClose
-            className="text-[30px] text-[#8c8c8c]"
+            className="text-[30px] text-gray-600"
             onClick={() => {
               setIsOpen(!modalIsOpen);
             }}

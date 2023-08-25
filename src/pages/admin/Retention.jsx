@@ -7,6 +7,7 @@ import { countDays } from '../../helpers'
 import copy from 'copy-to-clipboard';
 import { ChangeStatusModal, calculateLast7DaysGrowth, statuses } from './ManagePage'
 import { FaInstagram } from 'react-icons/fa'
+import { LOGO } from '../../config'
 
 export default function Retention() {
   const navigate = useNavigate();
@@ -106,7 +107,7 @@ export default function Retention() {
         {statuses.map(status => {
           return (
             <div key={`retention_page-${status}`} className="h-[59px] rounded-[10px] bg-[#F8F8F8] text-[25px] font-bold font-MontserratBold text-black px-4 flex justify-center items-center relative">
-              <div className="flex justify-center items-center capitalize cursor-pointer select-none" onClick={() => { setSectionName(status) }}>{status}
+              <div className="flex items-center justify-center capitalize cursor-pointer select-none" onClick={() => { setSectionName(status) }}>{status}
                 {status === sectionName && <span className="px-[15px] h-[37px] rounded-[10px] text-center text-white bg-[#1B89FF] select-none ml-5">{sectionTotal}</span>}
               </div>
             </div>
@@ -114,8 +115,8 @@ export default function Retention() {
         })}
       </div>
 
-      {loading && <div className="flex justify-center items-center">
-        <img src="/logo.png" alt="Loading" className="animate-spin w-10 h-10" />
+      {loading && <div className="flex items-center justify-center">
+        <img src={LOGO} alt="Loading" className="w-10 h-10 animate-spin" />
       </div>}
 
       <table className="mt-[30px] w-full table-auto border-separate border-spacing-y-2">
@@ -159,7 +160,7 @@ export default function Retention() {
                         }, 1000);
                       }}
                     >@{user?.username}
-                      {message.sectionName === `username-${user?.username}` && <div className="absolute text-black font-bold">{message.value}</div>}
+                      {message.sectionName === `username-${user?.username}` && <div className="absolute font-bold text-black">{message.value}</div>}
                     </div>
 
                     <a href={`https://www.instagram.com/${user?.username}/`} target='_blank' rel="noreferrer" >
@@ -178,7 +179,11 @@ export default function Retention() {
                   <div id={`last_7_days_growth_${user?.username}`}>N/A
                   </div>
                 </td>
-                <td>{user?.session_updated_at ? countDays(user?.session_updated_at) : "N/A"}</td>
+                <td>
+                  <div>
+                    {user?.session_updated_at ? countDays(user?.session_updated_at) : "N/A"}
+                  </div>
+                </td>
                 <td>
                   <div className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black cursor-pointer"
                     onClick={() => {
@@ -194,7 +199,7 @@ export default function Retention() {
                   </Link>
                 </td>
                 <td>
-                  <div className="w-full relative">
+                  <div className="relative w-full">
                     <ChangeStatusModal user={user} refreshUsers={refreshUsers} setRefreshUsers={setRefreshUsers} />
                   </div>
                 </td>

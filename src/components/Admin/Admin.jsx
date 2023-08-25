@@ -73,7 +73,7 @@ export default function Admin() {
       try {
         const data = file?.data
         let lastItem = data[data?.length - 1];
-        const currentDate = new Date();
+        const currentDate = new Date(lastItem.finish_time);
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth() + 1;
         const day = currentDate.getDate();
@@ -212,7 +212,7 @@ export default function Admin() {
 
   return (<>
     <Nav />
-    <div className="h-screen flex flex-col">
+    <div className="flex flex-col h-screen">
       <div className="w-[250px]">
         <h1 className="mb-5">Upload session file (Json)</h1>
 

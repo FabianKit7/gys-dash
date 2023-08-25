@@ -141,7 +141,7 @@ export default function ColumnChart({ type, sessionsData, days }) {
 
   return (
     <div className="w-full rounded-lg">
-      <div className="rounded-md text-gray20 w-full">
+      <div className="rounded-md text-gray-800 w-full">
         <div className="md:px-3">
           <Chart
             options={options}

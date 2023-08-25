@@ -7,6 +7,7 @@ import { FaAngleDown } from "react-icons/fa";
 import { FiGrid, FiLogOut } from "react-icons/fi";
 import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { MdAdminPanelSettings } from "react-icons/md";
+import { LOGO, LOGO_WITH_NAME } from "../config";
 
 export default function Nav({ setShowWelcomeModal, userD, admin }) {
   let { username } = useParams();
@@ -66,8 +67,8 @@ export default function Nav({ setShowWelcomeModal, userD, admin }) {
       >
         <Link to={`${data?.username ? `/dashboard/${data?.username}` : "/"}`} className="navbar-brand" href="#">
           <div className="font-MADEOKINESANSPERSONALUSE text-[20px] md:text-[25px]">
-            <img alt="" className="md:hidden w-[36px] h-[36px]" src="/logo.png" />
-            <img src="/sproutysocial-light.svg" alt="" className="hidden md:inline  w-[346px]" />
+            <img alt="" className="md:hidden w-[36px] h-[36px]" src={LOGO} />
+            <img src={LOGO_WITH_NAME} alt="" className="hidden md:inline  w-[346px]" />
           </div>
         </Link>
 

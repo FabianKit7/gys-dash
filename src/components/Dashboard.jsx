@@ -19,6 +19,7 @@ import SettingsModal from './SettingsModal'
 import GrowthChart from "./GrowthChart";
 import ColumnChart from "./ColumnChart";
 import AlertModal from "./AlertModal";
+import { ANALYST_NAME, LOGO } from "../config";
 // import WelcomeModal from "./WelcomeModal";
 
 const Error = ({ value }) => {
@@ -780,11 +781,10 @@ export default function Dashboard() {
                 ></img>
                 <div>
                   <div
-                    _ngcontent-cuk-c74=""
                     className="flex items-center gap-1 text-base font-bold text-black font-MontserratBold lg:text-2xl"
                   >
-                    Mike P
-                    <img alt="" className="w-[20px] h-[20px]" src="/logo.png" />
+                    {ANALYST_NAME}
+                    <img alt="" className="w-[20px] h-[20px]" src={LOGO} />
                   </div>
                   <div className="text-base font-normal">
                     Personal Account Analyst
@@ -855,12 +855,12 @@ export default function Dashboard() {
                     src="/mike2.png"
                   ></img>
                   <div>
-                    <img alt="" className="w-[28px] h-[28px]" src="/logo.png" />
+                    <img alt="" className="w-[28px] h-[28px]" src={LOGO} />
                     <div
                       _ngcontent-cuk-c74=""
                       className="text-base font-bold text-black font-MontserratBold lg:text-2xl"
                     >
-                      Mike P
+                      {ANALYST_NAME}
                     </div>
                     <div className="text-base font-normal">
                       Personal Account Analyst

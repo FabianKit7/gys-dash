@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { RefreshModal } from '../../../dashboard'
 import { supabase } from '../../../supabaseClient'
 import { messageSlack } from '../../../helpers'
+import { LOGO } from '../../../config'
 
 export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading }) {
     const [openRefreshModal, setOpenRefreshModal] = useState(false)
@@ -86,10 +87,10 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
         <div className="">
             {openRefreshModal && <RefreshModal openRefreshModal={openRefreshModal} setOpenRefreshModal={setOpenRefreshModal} />}
 
-            <nav className="flex justify-between items-center">
+            <nav className="flex items-center justify-between">
                 <Link to={"/"} className="navbar-brand" href="#">
                     <div className="font-MADEOKINESANSPERSONALUSE text-[20px] md:text-[25px]">
-                        <img alt="" className="md:hidden w-[36px] h-[36px]" src="/logo.png" />
+                        <img alt="" className="md:hidden w-[36px] h-[36px]" src={LOGO} />
                         <img src="/sproutysocial-light.svg" alt="" className="hidden md:inline  w-[346px]" />
                     </div>
                 </Link>

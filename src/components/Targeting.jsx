@@ -76,14 +76,14 @@ export default function Targeting({ user, userId, page }) {
         <div className="flex justify-between px-8 pt-8">
           <div className="flex items-center gap-3">
             <h3 className="font-bold text-[28px] font-MontserratBold">Targeting</h3>
-            <div className="bg-gray20 rounded w-8 h-8 flex justify-center items-center">
+            <div className="bg-gray-800 rounded w-8 h-8 flex justify-center items-center">
               <h2 className="text-white font-MontserratSemiBold">{targetingAccounts?.length} </h2>
             </div>
             {loadingSpinner && (<Spinner animation="border" />)}
           </div>
           <div className="flex gap-3 text-black">
-            <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setIsOpen(!modalIsOpen) }}>
-              <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
+            <div className="rounded-[4px] bg-gray-100 p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setIsOpen(!modalIsOpen) }}>
+              <BsFillPlusSquareFill className="absolute text-gray-600 font-semibold" />
             </div>
           </div>
         </div>

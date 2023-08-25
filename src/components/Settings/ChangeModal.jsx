@@ -53,7 +53,7 @@ const UpdatePayment = ({ setShowModal, user, setRefresh, refresh, chargebeeCusto
     <div className="px-2 py-4 md:px-5 lg:p-10">
       <div className="absolute flex justify-end cursor-pointer top-5 right-5">
         <IoClose
-          className="text-[30px] text-[#8c8c8c]"
+          className="text-[30px] text-gray-600"
           onClick={() => setShowModal(false)}
         />
       </div>
@@ -61,7 +61,7 @@ const UpdatePayment = ({ setShowModal, user, setRefresh, refresh, chargebeeCusto
       <div className="flex flex-col">
         <div className="flex items-center gap-3 mb-2">
           {showCardPage && <div className="w-[32px] h-[32px] rounded-full grid place-items-center shadow-[0_3px_8px_#0000001a] cursor-pointer bg-[#f8f8f8]" onClick={() => setShowCardPage(false)}>
-            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 512" className="text-[#8C8C8C] font-semibold" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path></svg>
+            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 512" className="text-gray-600 font-semibold" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path></svg>
           </div>}
           <Modal.Title className="font-bold text-[20px] font-MontserratBold">Payment method</Modal.Title>
         </div>
@@ -149,7 +149,7 @@ const FullName = ({ setShowModal, user, setRefresh, refresh }) => {
     <div className="px-2 py-4 md:px-5 lg:p-10">
       <div className="absolute flex justify-end cursor-pointer top-5 right-5">
         <IoClose
-          className="text-[30px] text-[#8c8c8c]"
+          className="text-[30px] text-gray-600"
           onClick={() => setShowModal(false)}
         />
       </div>
@@ -237,7 +237,7 @@ const Email = ({ setShowModal, user, setRefresh, refresh }) => {
     <div className="px-2 py-4 md:px-5 lg:p-10">
       <div className="absolute flex justify-end cursor-pointer top-5 right-5">
         <IoClose
-          className="text-[30px] text-[#8c8c8c]"
+          className="text-[30px] text-gray-600"
           onClick={() => setShowModal(false)}
         />
       </div>
@@ -325,7 +325,7 @@ const Password = ({ setShowModal, user, setRefresh, refresh }) => {
     <div className="px-2 py-4 md:px-5 lg:p-10">
       <div className="absolute flex justify-end cursor-pointer top-5 right-5">
         <IoClose
-          className="text-[30px] text-[#8c8c8c]"
+          className="text-[30px] text-gray-600"
           onClick={() => setShowModal(false)}
         />
       </div>
@@ -399,7 +399,7 @@ const Phone = ({ setShowModal, user, setRefresh, refresh }) => {
     <div className="px-2 py-4 md:px-5 lg:p-10">
       <div className="absolute flex justify-end cursor-pointer top-5 right-5">
         <IoClose
-          className="text-[30px] text-[#8c8c8c]"
+          className="text-[30px] text-gray-600"
           onClick={() => setShowModal(false)}
         />
       </div>

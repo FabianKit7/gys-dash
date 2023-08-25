@@ -95,7 +95,7 @@ const StatsCard = ({ userData, sessionsData }) => {
                             <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
                                 <BsArrowUp className="absolute text-btngreen font-semibold" />
                             </div>
-                            <h2 className="font-bold text-[28px] font-MontserratBold text-gray20">Status</h2>
+                            <h2 className="font-bold text-[28px] font-MontserratBold text-gray-800">Status</h2>
                         </div>
                         <p className="pt-4 pb-4 font-normal text-sm font-MontserratRegular text-center lg:text-start w-full">Your status is <span className="font-bold font-MontserratSemiBold">{userData?.status}</span></p>
                         <p className="font-normal text-sm opacity-90 font-MontserratLight text-center lg:text-start">
@@ -119,11 +119,11 @@ const StatsCard = ({ userData, sessionsData }) => {
                             }
 
                             {_7daysGrowth >= 0 ?
-                                <h2 className="font-bold text-[30px] text-gray20 -mr-3">+</h2>
+                                <h2 className="font-bold text-[30px] text-gray-800 -mr-3">+</h2>
                                 :
-                                <h2 className="font-bold text-[30px] text-gray20 -mr-3">-</h2>
+                                <h2 className="font-bold text-[30px] text-gray-800 -mr-3">-</h2>
                             }
-                            <h2 className="font-bold text-[30px] text-gray20">{nFormatter(Math.abs(_7daysGrowth)) || 'NAN'}</h2>
+                            <h2 className="font-bold text-[30px] text-gray-800">{nFormatter(Math.abs(_7daysGrowth)) || 'NAN'}</h2>
                         </div>
                         <p className="pt-4 pb-4 font-normal text-sm font-MontserratRegular text-center lg:text-start w-full">Last <span className="font-MontserratSemiBold font-bold">7 days</span> Follower Growth</p>
                         <p className="font-normal text-sm opacity-90 font-MontserratLight text-center lg:text-start"><span className="font-bold hidden">{_7daysGrowthPercent}</span>How much followers your account received in the last 7 days period.</p>
@@ -141,11 +141,11 @@ const StatsCard = ({ userData, sessionsData }) => {
                             }
 
                             {_30daysGrowth >= 0 ?
-                                <h2 className="font-bold text-[30px] text-gray20 -mr-3">+</h2>
+                                <h2 className="font-bold text-[30px] text-gray-800 -mr-3">+</h2>
                                 :
-                                <h2 className="font-bold text-[30px] text-gray20 -mr-3">-</h2>
+                                <h2 className="font-bold text-[30px] text-gray-800 -mr-3">-</h2>
                             }
-                            <h2 className="font-bold text-[30px] text-gray20">{nFormatter(Math.abs(_30daysGrowth)) || 'NAN'}</h2>
+                            <h2 className="font-bold text-[30px] text-gray-800">{nFormatter(Math.abs(_30daysGrowth)) || 'NAN'}</h2>
                         </div>
                         <p className="pt-4 pb-4 font-normal text-sm font-MontserratRegular text-center lg:text-start w-full">Last <span className="font-MontserratSemiBold font-bold">30 days</span> Follower Growth</p>
                         <p className="font-normal text-sm opacity-90 font-MontserratLight text-center lg:text-start"><span className="font-bold hidden">{_30daysGrowthPercent}</span>How much followers your account received in the last 30 days period.</p>
@@ -155,7 +155,7 @@ const StatsCard = ({ userData, sessionsData }) => {
                             <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
                                 <BsArrowUp className="absolute text-btngreen font-semibold" />
                             </div>
-                            <h2 className="font-bold text-[30px] text-gray20">{nFormatter(total_interactions)}</h2>
+                            <h2 className="font-bold text-[30px] text-gray-800">{nFormatter(total_interactions)}</h2>
                         </div>
                         <p className="pt-4 pb-4 font-normal text-sm font-MontserratRegular text-center lg:text-start w-full"><span className="font-bold">Total</span> Interactions</p>
                         <p className="font-normal text-sm opacity-90 font-MontserratLight text-center lg:text-start">Total interactions made by your personal manager on the account.</p>

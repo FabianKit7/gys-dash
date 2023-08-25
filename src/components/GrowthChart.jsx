@@ -105,7 +105,7 @@ export default function GrowthChart({ isPrivate, sessionsData, days }) {
         (
           <Fragment>
               <div>
-                <div className="rounded-md text-gray20 w-full">
+                <div className="rounded-md text-gray-800 w-full">
                   <div className="md:px-3">
                     <Chart
                       options={options}

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal';
 import axios from 'axios';
 import { getStartingDay } from '../Subscriptions';
+import { SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from '../../config';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -91,11 +92,11 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
       // const params = { ig: filteredSelected, response_type: "short", corsEnabled: "false" };
       const options = {
         method: "GET",
-        url: "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile",
+        url: SCRAPER_API_URL,
         params,
         headers: {
-          "X-RapidAPI-Key": "47e2a82623msh562f6553fe3aae6p10b5f4jsn431fcca8b82e",
-          "X-RapidAPI-Host": "instagram-bulk-profile-scrapper.p.rapidapi.com",
+          "X-RapidAPI-Key": X_RAPID_API_KEY,
+          "X-RapidAPI-Host": X_RAPID_API_HOST,
         },
       };
       const userResults = await Axios.request(options);
@@ -260,12 +261,12 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           <div className="">Enter Dashboard</div>
         </div>
 
-        <div className="pb-4 flex flex-col justify-between lg:justify-center lg:items-center h-full text-start lg:text-center px-5 lg:px-0">
+        <div className="flex flex-col justify-between h-full px-5 pb-4 lg:justify-center lg:items-center text-start lg:text-center lg:px-0">
           <div className="block lg:flex flex-col lg:justify-center lg:items-center pb-[80px]">
             <h1 className='font-bold text-black font-MontserratBold text-[26px] pb-3'>Search your account</h1>
             <p className='text-[0.875rem] font-MontserratRegular lg:px-[100px]'>Find your Instagram account and start growing followers with <br className='hidden lg:block' /> Sprouty Social</p>
 
-            <div className="lg:block flex flex-col justify-between mt-3">
+            <div className="flex flex-col justify-between mt-3 lg:block">
               <div className="flex flex-col items-center justify-between h-full w-full lg:h-fit lg:w-[411px] relative" ref={parentRef}>
                 <div className={`w-full lg:w-[411px] ${selected ? 'h-[100px]' : 'h-[62px]'} transition-all duration-300 ease-in`}>
                   {selected && <div className={`py-[30px] px-5 lg:px-7 h-full flex items-center justify-between border rounded-[10px] shadow-[0_0_4px_#00000040] bg-[#f8f8f8]`}>
@@ -313,7 +314,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                 </div>
 
                 {showResultModal && !selected && !processing && <div className="absolute top-[64px] z-50 w-full min-h-[150px] max-h-[300px] overflow-auto shadow-md border rounded-md bg-white py-3 px-4 flex flex-col gap-4">
-                  {debouncedQuery && <div className="flex items-center gap-2 border-b pb-2 cursor-pointer"
+                  {debouncedQuery && <div className="flex items-center gap-2 pb-2 border-b cursor-pointer"
                     onClick={async () => {
                       setProcessing(true)
                       const a = await getAccount(debouncedQuery)
@@ -331,7 +332,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                       setShowResultModal(false);
                     }}
                   >
-                    <div className="p-3 rounded-full bg-black">
+                    <div className="p-3 bg-black rounded-full">
                       <FaUser size={14} color="white" />
                     </div>
                     <div className="">
@@ -381,7 +382,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
             </div>
           </div>
 
-          <div className="fixed bottom-6 left-0 w-full px-5">
+          <div className="fixed left-0 w-full px-5 bottom-6">
             <button className={`${selected ? 'bg-[#ef5f3c]' : 'bg-[#C4C4C4]'} lg:hidden w-full lg:w-[350px] h-[50px] py-[15px] rounded-[10px] text-[.8rem] font-semibold text-white ${processing && 'cursor-wait bg-[#ffa58e]'}`}
               onClick={() => { (selected && !processing) && handleSubmit() }}
             >

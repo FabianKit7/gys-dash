@@ -9,6 +9,7 @@ import { supabase } from "../supabaseClient";
 import { useState } from "react";
 import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "react-click-outside-hook";
+import { LOGO } from "../config";
 
 export default function Search() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -63,7 +64,7 @@ export default function Search() {
           showMenu && setShowMenu(false);
         }}>
           <div className="flex">
-            <img alt="" className="w-[36px] h-[36px]" src="/logo.png" />
+            <img alt="" className="w-[36px] h-[36px]" src={LOGO} />
           </div>
           <div className={`${showMenu && ' border-red-300'} border-2 rounded-full`}>
             <div className={`w-[32px] h-[32px] rounded-full bg-[#23DF85] text-white grid place-items-center cursor-pointer`} onClick={() => {
@@ -75,7 +76,7 @@ export default function Search() {
         </div>
 
         <div className={`${!showMenu && 'opacity-0 pointer-events-none hidden'} absolute top-0 left-0 w-full h-screen z-10`}>
-          <div className="absolute top-0 left-0 w-full h-screen bg-black/0 z-10 cursor-pointer" onClick={() => {
+          <div className="absolute top-0 left-0 z-10 w-full h-screen cursor-pointer bg-black/0" onClick={() => {
             setShowMenu(!showMenu);
           }}></div>
           <div className={`${!showMenu && 'opacity-0 pointer-events-none hidden'} absolute top-0 lg:top-14 z-10 left-5 lg:left-[unset] right-5 bg-white w-[calc(100%-40px)] lg:w-[350px] lg:max-w-[400px] rounded-[10px] shadow-[0_5px_10px_#0a17530d] transition-all duration-150 ease-in`} ref={parentRef} tabIndex={0}>

@@ -40,17 +40,17 @@ export default function TargetingFilterModal(props, { min, max }) {
         .select()
         .eq("user_id", user?.user_id).eq("username", user?.username).order('created_at', { ascending: false })
 
-      setFollowerMinValue(data?.[0]?.targetingFilter.followersMin);
-      setFollowerMaxValue(data?.[0]?.targetingFilter.followersMax);
-      setFollowingMinValue(data?.[0]?.targetingFilter.followingMin);
-      setFollowingMaxValue(data?.[0]?.targetingFilter.followingMax);
-      setMediaMinValue(data?.[0]?.targetingFilter.mediaMin);
-      setMediaMaxValue(data?.[0]?.targetingFilter.mediaMax);
+      setFollowerMinValue(data?.[0]?.targetingFilter?.followersMin);
+      setFollowerMaxValue(data?.[0]?.targetingFilter?.followersMax);
+      setFollowingMinValue(data?.[0]?.targetingFilter?.followingMin);
+      setFollowingMaxValue(data?.[0]?.targetingFilter?.followingMax);
+      setMediaMinValue(data?.[0]?.targetingFilter?.mediaMin);
+      setMediaMaxValue(data?.[0]?.targetingFilter?.mediaMax);
 
-      setMargic(data?.[0]?.targetingFilter.margicFilter || true);
-      setPrivacy(data?.[0]?.targetingFilter.privacy || 'All');
-      setGender(data?.[0]?.targetingFilter.gender || 'All');
-      setLang(data?.[0]?.targetingFilter.lang || 'All');
+      setMargic(data?.[0]?.targetingFilter?.margicFilter || true);
+      setPrivacy(data?.[0]?.targetingFilter?.privacy || 'All');
+      setGender(data?.[0]?.targetingFilter?.gender || 'All');
+      setLang(data?.[0]?.targetingFilter?.lang || 'All');
       error && console.log(error);
     }
     if (user_id) {
@@ -97,7 +97,7 @@ export default function TargetingFilterModal(props, { min, max }) {
         </div>
         <div className="flex justify-end cursor-pointer">
           <IoClose
-            className="text-[30px] text-[#8c8c8c]"
+            className="text-[30px] text-gray-600"
             onClick={() => setFilterModal(false)}
           />
         </div>
@@ -105,11 +105,11 @@ export default function TargetingFilterModal(props, { min, max }) {
 
       <Modal.Body>
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-12 p-3 font-MontserratRegular">
+          <div className="grid w-full grid-cols-1 gap-12 p-3 lg:grid-cols-2 font-MontserratRegular">
             <div className="flex flex-col justify-content-between">
               <div className="flex flex-col w-[80%] relative">
-                <label className="font-semibold font-MontserratSemiBold text-base">Followers</label>
-                <div className="mrslider relative">
+                <label className="text-base font-semibold font-MontserratSemiBold">Followers</label>
+                <div className="relative mrslider">
                   <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
                     <FaMagic className="text-white" />
                   </div>
@@ -132,8 +132,8 @@ export default function TargetingFilterModal(props, { min, max }) {
               </div>
 
               <div className="flex flex-col w-[80%]">
-                <label className="font-semibold font-MontserratSemiBold text-base mt-4">Following</label>
-                <div className="mrslider relative">
+                <label className="mt-4 text-base font-semibold font-MontserratSemiBold">Following</label>
+                <div className="relative mrslider">
                   <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
                     <FaMagic className="text-white" />
                   </div>
@@ -154,8 +154,8 @@ export default function TargetingFilterModal(props, { min, max }) {
                 </div>
               </div>
               <div className="flex flex-col w-[80%]">
-                <label className="font-semibold font-MontserratSemiBold text-base mt-4">Media</label>
-                <div className="mrslider relative">
+                <label className="mt-4 text-base font-semibold font-MontserratSemiBold">Media</label>
+                <div className="relative mrslider">
                   <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
                     <FaMagic className="text-white" />
                   </div>
