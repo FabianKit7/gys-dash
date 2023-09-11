@@ -7,7 +7,7 @@ import Nav from "../Nav";
 import ChangeModal from "./ChangeModal";
 import axios from "axios";
 import InfiniteRangeSlider from "../InfiniteRangeSlider";
-import { EMAIL } from "../../config";
+import { BACKEND_URL, EMAIL } from "../../config";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -58,14 +58,14 @@ export default function Settings() {
           customerId: currentUser?.chargebee_customer_id,
         }
         setShowRangeSlider(true)
-        let chargebeeCustomerData = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/retrieve_customer`,
+        let chargebeeCustomerData = await axios.post(`${BACKEND_URL}/api/retrieve_customer`,
           urlEncode(retrieve_customer_data))
           .then((response) => response.data).catch((err) => {
             console.log(err);
           })
         setShowRangeSlider(false)
 
-        // console.log(chargebeeCustomerData);
+        console.log(chargebeeCustomerData);
         if (chargebeeCustomerData?.card) {
           setChargebeeCustomerData(chargebeeCustomerData)
         }

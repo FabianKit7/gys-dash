@@ -7,7 +7,7 @@ import { countDays } from '../../helpers'
 import copy from 'copy-to-clipboard';
 import { ChangeStatusModal, calculateLast7DaysGrowth, statuses } from './ManagePage'
 import { FaInstagram, FaTimes } from 'react-icons/fa'
-import { LOGO } from '../../config'
+import { BACKEND_URL, LOGO } from '../../config'
 import axios from 'axios'
 
 export default function Retention() {
@@ -252,7 +252,7 @@ const CheckActiveUsers = () => {
       while (count < data.length) {
         const user = data[count];
         const chargebee_customer_id = user.chargebee_customer_id;
-        const baseUrl = process.env.REACT_APP_BASE_URL
+        const baseUrl = BACKEND_URL
         if (chargebee_customer_id) {
           let subscription = await axios.post(`${baseUrl}/api/subscription_list`,
             { customer_id: chargebee_customer_id })
@@ -283,13 +283,13 @@ const CheckActiveUsers = () => {
   }
 
   const cancelUser = async (user) => {
-    const baseUrl = process.env.REACT_APP_BASE_URL
+    const baseUrl = BACKEND_URL
     if (loading || !user) return
 
     setLoading(true)
     var chargebee_subscription_id = user.chargebee_subscription_id
     if (!chargebee_subscription_id && user?.chargebee_customer_id) {
-      const url = `${process.env.REACT_APP_BASE_URL}/api/subscription_list`
+      const url = `${BACKEND_URL}/api/subscription_list`
       let subscription = await axios.post(url,
         { customer_id: user?.chargebee_customer_id })
         .then((response) => response.data)

@@ -12,7 +12,7 @@ import { useRef } from "react";
 import { CardComponent, CardNumber, CardExpiry, CardCVV } from "@chargebee/chargebee-js-react-wrapper"
 import { getRefCode } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { LOGO, NOT_CONNECTED_TEMPLATE, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "../config";
+import { BACKEND_URL, LOGO, NOT_CONNECTED_TEMPLATE, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "../config";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -657,22 +657,30 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
 
         const create_customer_data = {
           customer_id: user?.chargebee_customer_id,
-          token_id: token
+          token_id: token,
+          replace_primary_payment_source: true
         }
 
-        let updateCustomerPaymentMethodRes = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/updateCustomerPaymentMethod`,
+        // console.log("create_customer_data");
+        // console.log(create_customer_data);
+
+        let updateCustomerPaymentMethodRes = await axios.post(`${BACKEND_URL}/api/updateCustomerPaymentMethod`,
           urlEncode(create_customer_data))
           .then((response) => response.data).catch(error => {
             console.log(error);
             return { message: 'error', error }
           })
 
-        if (updateCustomerPaymentMethodRes?.message === 'success') {
+        // console.log("updateCustomerPaymentMethodRes");
+        // console.log(updateCustomerPaymentMethodRes);
+
+
+        if (updateCustomerPaymentMethodRes?.payment_source?.status === 'valid') {
           setRefresh(!refresh)
           setLoading(false);
           setIsModalOpen(false);
         } else {
-          console.log('Error creating customer:', updateCustomerPaymentMethodRes?.error);
+          console.log('Error creating customer:', updateCustomerPaymentMethodRes);
           // alert('An error occurred, please try again or contact support')
           setIsModalOpen(true);
           setErrorMsg({ title: 'Alert', message: 'An error occurred, please try again or contact support!' })
@@ -688,6 +696,10 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
   // const handleCardPay = async (setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard) => {
   const handleCardPay = async () => {
 
+    if (addCard) {
+      await handleAddCard()
+      return;
+    }
 
     if (process.env.NODE_ENV !== 'production') {
       let data = {
@@ -706,12 +718,6 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
         .from("users")
         .update(data).eq('id', user.id);
       navigate(`/thankyou`);
-      return;
-    }
-
-
-    if (addCard) {
-      await handleAddCard()
       return;
     }
 
@@ -777,7 +783,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           plan_id: "Monthly-Plan-7-Day-Free-Trial-USD-Monthly"
         }
 
-        let createCustomer = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_customer_and_subscription`,
+        let createCustomer = await axios.post(`${BACKEND_URL}/api/create_customer_and_subscription`,
           urlEncode(create_customer_data))
           .then((response) => response.data).catch((err) => {
             // console.log(err);
@@ -800,7 +806,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           // console.log(customer_id);
 
           if (!customer_id) {
-            let getCustomer = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/customer_list`, { email: user?.email })
+            let getCustomer = await axios.post(`${BACKEND_URL}/api/customer_list`, { email: user?.email })
             if (getCustomer?.data?.id) {
               customer_id = getCustomer?.data?.id
             } else {
@@ -857,7 +863,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
             }
           }
 
-          let sendEmail = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/send_email`, { email: user?.email, subject: "Your account is not connected", htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name) }).catch(err => err)
+          let sendEmail = await axios.post(`${BACKEND_URL}/api/send_email`, { email: user?.email, subject: "Your account is not connected", htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name) }).catch(err => err)
           if (sendEmail.status !== 200) {
             console.log(sendEmail);
           }

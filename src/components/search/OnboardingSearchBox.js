@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal';
 import axios from 'axios';
 import { getStartingDay } from '../Subscriptions';
-import { SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from '../../config';
+import { BACKEND_URL, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from '../../config';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -180,7 +180,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           customer_id: user?.chargebee_customer_id,
           plan_id: "Monthly-Plan-7-Day-Free-Trial-USD-Monthly"
         }
-        let createSubscription = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_subscription`,
+        let createSubscription = await axios.post(`${BACKEND_URL}/api/create_subscription`,
           urlEncode(data))
           .then((response) => response.data).catch((err) => {
             // console.log(err);

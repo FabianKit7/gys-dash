@@ -5,7 +5,7 @@ import axios from 'axios'
 import { FaTimesCircle } from "react-icons/fa";
 import { BsFillEnvelopeFill } from "react-icons/bs";
 import Nav from "../Nav";
-import { EMAIL } from "../../config";
+import { BACKEND_URL, EMAIL } from "../../config";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -66,7 +66,7 @@ export default function Settings() {
       const { data: { user } } = await supabase.auth.getUser()
       instance.setPortalSession(async () => {
         // https://apidocs.chargebee.com/docs/api/portal_sessions#create_a_portal_session
-        return await axios.post(`${process.env.REACT_APP_BASE_URL}/api/generate_portal_session`, urlEncode({ customer_id: user?.id })).then((response) => response.data);
+        return await axios.post(`${BACKEND_URL}/api/generate_portal_session`, urlEncode({ customer_id: user?.id })).then((response) => response.data);
       });
     }
     fetch()
@@ -120,7 +120,7 @@ export default function Settings() {
     setSubLoading(true)
     await cbInstance.openCheckout({
       async hostedPage() {
-        return await axios.post(`${process.env.REACT_APP_BASE_URL}/api/generate_checkout_new_url`,
+        return await axios.post(`${BACKEND_URL}/api/generate_checkout_new_url`,
           urlEncode({
             plan_id: "Monthly-Plan-USD-Monthly" //"Free-Trial-USD-Monthly"
           }))
@@ -128,11 +128,11 @@ export default function Settings() {
       },
       async success(hostedPageId) {
         console.log(hostedPageId);
-        let customer = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/customer_list`,
+        let customer = await axios.post(`${BACKEND_URL}/api/customer_list`,
           urlEncode({ email: supaData?.email }))
           .then((response) => response.data)
 
-        let subscription = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/subscription_list`,
+        let subscription = await axios.post(`${BACKEND_URL}/api/subscription_list`,
           urlEncode({ customer_id: customer?.id }))
           .then((response) => response.data)
 
