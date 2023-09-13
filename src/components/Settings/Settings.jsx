@@ -65,7 +65,7 @@ export default function Settings() {
           })
         setShowRangeSlider(false)
 
-        console.log(chargebeeCustomerData);
+        // console.log(chargebeeCustomerData);
         if (chargebeeCustomerData?.card) {
           setChargebeeCustomerData(chargebeeCustomerData)
         }

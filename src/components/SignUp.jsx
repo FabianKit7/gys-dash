@@ -112,9 +112,9 @@ export default function SignUp() {
 
     <div id="affiliateScript"></div>
 
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen">
       <div className="p-5 md:p-10 md:shadow-lg rounded-[10px] w-full md:w-[458px]">
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center justify-center">
           {/* <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="sprouty social" /> */}
           <div className="font-MADEOKINESANSPERSONALUSE text-[28px]">
             <img src="/sproutysocial-light.svg" alt="" className="w-[220px]" />
@@ -129,23 +129,25 @@ export default function SignUp() {
         </div>
 
         <form action="" className="flex flex-col items-center justify-start" onSubmit={handleSignUp}>
-          <div className="form-outline mb-3">
+          <div className="mb-3 form-outline">
             <input
               type="text"
               id="form2Example1"
               className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
               value={fullName}
               placeholder="Full Name"
+              required
               onChange={({ target }) => setFullName(target.value)}
             />
           </div>
-          <div className="form-outline mb-3">
+          <div className="mb-3 form-outline">
             <input
               type="email"
               id="form2Example1"
               className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
               value={email}
               placeholder="Email Address"
+              required
               onChange={({ target }) => setEmail(target.value)}
             />
           </div>
@@ -157,6 +159,7 @@ export default function SignUp() {
               className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
               value={password}
               placeholder="Password"
+              required
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
@@ -182,7 +185,7 @@ export default function SignUp() {
 
         {/* signup with oAuth */}
 
-        {/* <div className="hidden del-flex justify-center items-center relative my-8">
+        {/* <div className="relative items-center justify-center hidden my-8 del-flex">
           <hr className="w-full" />
           <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] px-4 bg-white text-black">OR</div>
         </div>
