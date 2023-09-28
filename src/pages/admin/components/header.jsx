@@ -91,7 +91,7 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
                 <Link to={"/"} className="navbar-brand" href="#">
                     <div className="font-MADEOKINESANSPERSONALUSE text-[20px] md:text-[25px]">
                         <img alt="" className="md:hidden w-[36px] h-[36px]" src={LOGO} />
-                        <img src="/sproutysocial-light.svg" alt="" className="hidden md:inline  w-[346px]" />
+                        <img src="/liftinf-logo-with-name.svg" alt="" className="hidden md:inline  w-[346px]" />
                     </div>
                 </Link>
 

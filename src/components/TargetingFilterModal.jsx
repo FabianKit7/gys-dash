@@ -110,7 +110,7 @@ export default function TargetingFilterModal(props, { min, max }) {
               <div className="flex flex-col w-[80%] relative">
                 <label className="text-base font-semibold font-MontserratSemiBold">Followers</label>
                 <div className="relative mrslider">
-                  <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
+                  <div className={`${margic ? "bg-primary/90" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
                     <FaMagic className="text-white" />
                   </div>
                   <MultiRangeSlider
@@ -134,7 +134,7 @@ export default function TargetingFilterModal(props, { min, max }) {
               <div className="flex flex-col w-[80%]">
                 <label className="mt-4 text-base font-semibold font-MontserratSemiBold">Following</label>
                 <div className="relative mrslider">
-                  <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
+                  <div className={`${margic ? "bg-primary/90" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
                     <FaMagic className="text-white" />
                   </div>
                   <MultiRangeSlider
@@ -156,7 +156,7 @@ export default function TargetingFilterModal(props, { min, max }) {
               <div className="flex flex-col w-[80%]">
                 <label className="mt-4 text-base font-semibold font-MontserratSemiBold">Media</label>
                 <div className="relative mrslider">
-                  <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
+                  <div className={`${margic ? "bg-primary/90" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer absolute top-[12%] -right-[23%]`} onClick={() => { setMargic(!margic) }}>
                     <FaMagic className="text-white" />
                   </div>
                   <MultiRangeSlider
@@ -177,7 +177,7 @@ export default function TargetingFilterModal(props, { min, max }) {
               </div>
 
               <button
-                className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} font-MontserratSemiBold w-full mt-5 rounded-[10px] py-4 text-base text-white font-bold`}
+                className={`${margic ? "bg-primary/90" : "bg-gray-600"} font-MontserratSemiBold w-full mt-5 rounded-[10px] py-4 text-base text-white font-bold`}
                 onClick={() => { setMargic(!margic) }}
               >Magic Filters: {margic ? 'ON' : 'OFF'}</button>
             </div>

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getRefCode } from "../helpers";
 import { supabase } from "../supabaseClient";
 import AlertModal from "./AlertModal";
+import PrimaryButton from "./PrimaryButton";
 // import { BsFacebook } from "react-icons/bs";
 
 export default function SignUp() {
@@ -115,17 +116,13 @@ export default function SignUp() {
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="p-5 md:p-10 md:shadow-lg rounded-[10px] w-full md:w-[458px]">
         <div className="flex flex-col items-center justify-center">
-          {/* <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="sprouty social" /> */}
           <div className="font-MADEOKINESANSPERSONALUSE text-[28px]">
-            <img src="/sproutysocial-light.svg" alt="" className="w-[220px]" />
-            {/* <img src="/LogoSprouty2.svg" alt="" className="w-[220px]" /> */}
-            {/* <strong className="text-[25px] text-left">SPROUTYSOCIAL</strong> */}
+            <img src="/liftinf-logo-with-name.svg" alt="" className="w-[220px]" />
           </div>
-          <hr className="mb-7 w-full border-[#ef5f3c]" />
+          <hr className="mb-7 w-full border-primary" />
 
           <h5 className="font-semibold text-[2rem] text-center text-black font-MontserratSemiBold mt-[30px]">Partner With Us</h5>
-          {/* <p className="text-center text-[0.75rem] font-MontserratRegular text-[#333]">Start growing <span className="font-bold">~1-10k</span> real and targeted Instagram <br /><span className="font-bold">followers</span> every month.</p> */}
-          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Join more than <span className="font-bold">25,000</span> users that trust SproutySocial to grow on Instagram. <br className="md:hidden" /> Create an account.</p>
+          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Join more than <span className="font-bold">25,000</span> users that trust Liftinfluence to grow on Instagram. <br className="md:hidden" /> Create an account.</p>
         </div>
 
         <form action="" className="flex flex-col items-center justify-start" onSubmit={handleSignUp}>
@@ -164,7 +161,7 @@ export default function SignUp() {
             />
           </div>
 
-          <button
+          {/* <button
             type="submit"
             className="text-white font-MontserratSemiBold text-[16px] mt-6 mb-2 rounded-[5px] h-[52px] px-4 w-72 md:w-80 font-semibold"
             style={{
@@ -174,12 +171,15 @@ export default function SignUp() {
             }}
           >
             {loading ? 'Processing...' : 'Sign Up Now'}
+          </button> */}
+          <button type="submit" className="mt-6 mb-2">
+            <PrimaryButton title={loading ? 'Processing...' : 'Sign Up Now'} customClass={'h-[52px] w-72 md:w-80 font-semibold text-[16px]'} />
           </button>
         </form>
 
         <div className="text-center">
           <p className="text-sm text-black font-MontserratRegular">
-            Already have an account? <Link to="/login"><span className="font-MontserratSemiBold text-[#1b89ff]">Sign in</span></Link>
+            Already have an account? <Link to="/login"><span className="font-MontserratSemiBold text-black">Sign in</span></Link>
           </p>
         </div>
 

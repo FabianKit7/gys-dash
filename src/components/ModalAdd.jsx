@@ -197,7 +197,7 @@ const ModalAdd = ({ from, modalIsOpen, setIsOpen, title, subtitle, extraSubtitle
                 })}
               </div>}
 
-              <button className={`bg-[#ef5f3c] mt-4 w-64 sm:w-80 py-[15px] rounded-[5px] text-[1.125rem] font-semibold text-white ${processing && 'cursor-wait bg-[#ffa58e]'}`}
+              <button className={`bg-primary mt-4 w-64 sm:w-80 py-[15px] rounded-[5px] text-[1.125rem] font-semibold text-white ${processing && 'cursor-wait bg-primary/70'}`}
                 style={{
                   // backgroundColor: '#ef5f3c',
                   color: 'white',

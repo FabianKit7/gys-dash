@@ -103,7 +103,7 @@ export default function Settings() {
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Full Name</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">{user?.full_name}</div>
-                <div className="text-[#1b89ff] cursor-pointer"
+                <div className="text-black cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
                     setRefresh(!refresh)
@@ -116,7 +116,7 @@ export default function Settings() {
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Email</div>
               <div className="flex flex-col md:flex-row md:items-center md:gap-3">
                 <div className="text-[#757575]">{user?.email}</div>
-                <div className="text-[#1b89ff] cursor-pointer"
+                <div className="text-black cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
                     setRefresh(!refresh)
@@ -129,7 +129,7 @@ export default function Settings() {
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Password</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">************</div>
-                <div className="text-[#1b89ff] cursor-pointer"
+                <div className="text-black cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
                     setRefresh(!refresh)
@@ -142,7 +142,7 @@ export default function Settings() {
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Phone number</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">{user?.phone}</div>
-                <div className="text-[#1b89ff] cursor-pointer"
+                <div className="text-black cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
                     setRefresh(!refresh)
@@ -155,7 +155,7 @@ export default function Settings() {
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Subscription</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">Active</div>
-                <div className="text-[#1b89ff] cursor-pointer" onClick={() => setCancelModal(true)}>Cancel</div>
+                <div className="text-black cursor-pointer" onClick={() => setCancelModal(true)}>Cancel</div>
               </div>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function Settings() {
                     {!(['visa', 'mastercard', 'maestro'].includes(chargebeeCustomerData?.card?.card_type)) && <>({chargebeeCustomerData?.card?.card_type})</>}
                     <span className="">card ending with {chargebeeCustomerData?.card?.last4}</span>
                   </div>
-                  <div className="text-[#1b89ff] cursor-pointer"
+                  <div className="text-black cursor-pointer"
                     onClick={() => {
                       setShowModal(true);
                       setRefresh(!refresh)
@@ -209,7 +209,7 @@ export default function Settings() {
           >
             <h1 className="font-black font-MontserratBold text-[18px] md:text-[26px] text-black">Accounts</h1>
             <Link to={`/search/?username=add_account`}
-              className="px-[32px] md:h-[52px] py-2 md:py-0 text-sm md:text-base mt-2 md:mt-0 w-full md:w-fit grid place-items-center whitespace-nowrap rounded-[10px] bg-[#1b89ff] text-white font-bold"
+              className="px-[32px] md:h-[52px] py-2 md:py-0 text-sm md:text-base mt-2 md:mt-0 w-full md:w-fit grid place-items-center whitespace-nowrap rounded-[10px] bg-black text-white font-bold"
             >Add Account</Link>
           </div>
 
@@ -223,10 +223,10 @@ export default function Settings() {
                   <div className="border-b mb-2 pb-1 md:mb-0 md:border-b-0 flex items-center gap-2 md:gap-4 lg:gap-[30px]">
                     <div className="relative">
                       <img src={account?.profile_pic_url} alt={`@${account?.username}`} className="min-w-[50px] min-h-[50px] w-[50px] h-[50px] lg:min-w-[107px] lg:min-h-[107px] lg:w-[107px] lg:h-[107px] rounded-full" />
-                      <div className="hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full bg-[#23df85]"></div>
+                      <div className="hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full bg-primary"></div>
                     </div>
                     <div className="lg:text-[24px] w-full">
-                      <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-[#23df85]">Active</span></div>
+                      <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-primary">Active</span></div>
                       <div className="">
                         <img src="/instagram.svg" alt="" className="my-[3px] md:my-[5px] lg:my-[7px] mr-[8px] w-[16px] h-[16px] lg:w-[28px] lg:h-[28px] rounded-full" />
                       </div>

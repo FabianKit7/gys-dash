@@ -93,7 +93,7 @@ export default function ManagePage() {
         var v;
         if (growthDifference) {
           v = `
-          <div class="${growthDifference > 0 ? "text-[#23DF85]" : `${parseInt(growthDifference) === 0 ? "text-[#000]" : "text-[#E9C81B]"}`} font-black">${growthDifference}</div>
+          <div class="${growthDifference > 0 ? "text-primary/90" : `${parseInt(growthDifference) === 0 ? "text-[#000]" : "text-[#E9C81B]"}`} font-black">${growthDifference}</div>
           `
         } else {
           v = `
@@ -132,7 +132,7 @@ export default function ManagePage() {
           return (
             <div key={`retention_page-${status}`} className="h-[59px] rounded-[10px] bg-[#F8F8F8] text-[25px] font-bold font-MontserratBold text-black px-4 flex justify-center items-center relative">
               <div className="flex items-center justify-center capitalize cursor-pointer select-none" onClick={() => { setSectionName(status) }}>{status}
-                {status === sectionName && <span className="px-[15px] h-[37px] rounded-[10px] text-center text-white bg-[#1B89FF] select-none ml-5">{sectionTotal}</span>}
+                {status === sectionName && <span className="px-[15px] h-[37px] rounded-[10px] text-center text-white bg-primary select-none ml-5">{sectionTotal}</span>}
               </div>
             </div>
           )

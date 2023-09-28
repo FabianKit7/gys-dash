@@ -61,7 +61,7 @@ export default function WelcomeModal({ show, onHide, setShowWelcomeModal, showWe
 
       <div className="flex flex-col items-center gap-4 px-2 pt-3 pb-5">
         <div className="flex items-center justify-center">
-          <img src="/sproutysocial-light.svg" alt="logo" className="h-[40px]" />
+          <img src="/liftinf-logo-with-name.svg" alt="logo" className="h-[40px]" />
         </div>
 
         // <h1 className="text-3xl font-bold font-MontserratBold">HOW TO START</h1> 

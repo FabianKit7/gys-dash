@@ -53,7 +53,7 @@ export default function Search() {
           }}>
             <span className=""> {user?.full_name} </span>
             <div className={`${showMenu && ' border-red-300'} border-2 rounded-full`}>
-              <div className={`w-[32px] h-[32px] rounded-full bg-[#23DF85] text-white grid place-items-center`}>
+              <div className={`w-[32px] h-[32px] rounded-full bg-primary/90 text-white grid place-items-center`}>
                 <span className="text-[22px] pointer-events-none select-none font-[400] uppercase">{user?.full_name && (user?.full_name)?.charAt(0)}</span>
               </div>
             </div>
@@ -67,7 +67,7 @@ export default function Search() {
             <img alt="" className="w-[36px] h-[36px]" src={LOGO} />
           </div>
           <div className={`${showMenu && ' border-red-300'} border-2 rounded-full`}>
-            <div className={`w-[32px] h-[32px] rounded-full bg-[#23DF85] text-white grid place-items-center cursor-pointer`} onClick={() => {
+            <div className={`w-[32px] h-[32px] rounded-full bg-primary/90 text-white grid place-items-center cursor-pointer`} onClick={() => {
               setShowMenu(!showMenu);
             }}>
               <span className={`text-[22px] pointer-events-none select-none font-[400] uppercase`}>{user?.full_name && (user?.full_name)?.charAt(0)}</span>
@@ -81,7 +81,7 @@ export default function Search() {
           }}></div>
           <div className={`${!showMenu && 'opacity-0 pointer-events-none hidden'} absolute top-0 lg:top-14 z-10 left-5 lg:left-[unset] right-5 bg-white w-[calc(100%-40px)] lg:w-[350px] lg:max-w-[400px] rounded-[10px] shadow-[0_5px_10px_#0a17530d] transition-all duration-150 ease-in`} ref={parentRef} tabIndex={0}>
             <div className="flex items-center gap-3 p-5">
-              <div className="w-[50px] h-[50px] rounded-full bg-[#23DF85] text-white grid place-items-center">
+              <div className="w-[50px] h-[50px] rounded-full bg-primary/90 text-white grid place-items-center">
                 <span className="text-[22px] pointer-events-none select-none font-[400] uppercase">{user?.full_name && (user?.full_name)?.charAt(0)}</span>
               </div>
               <div className="">

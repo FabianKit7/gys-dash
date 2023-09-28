@@ -47,9 +47,9 @@ export default function ForgetPassword() {
         <div className="flex flex-col items-center justify-center h-screen">
             <div className="p-5 rounded-lg shadow-lg">
                 <div className="flex flex-col items-center justify-center pb-10">
-                    {/* <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="sprouty social" /> */}
+                    {/* <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="liftinfluence" /> */}
                     <div className="font-MADEOKINESANSPERSONALUSE text-[28px]"><strong className="text-[25px] text-left">SPROUTYSOCIAL</strong></div>
-                    <hr className="mb-7 w-full border-[#ef5f3c]" />
+                    <hr className="mb-7 w-full border-primary" />
 
                     <h5 className="font-bold text-[2.625rem] text-black font-MADEOKINESANSPERSONALUSE">Forgot Password?</h5>
                     <p className="text-center text-[0.75rem] font-MontserratRegular text-[#333] max-w-[320px]">Enter your email address and we will send you instructions to reset your password.</p>
@@ -84,7 +84,7 @@ export default function ForgetPassword() {
 
                         <div className="text-center font-MontserratSemiBold">
                             <p className="font-bold text-sm text-[#333]">
-                                Go back to <Link to="/SignUp"><span className="text-[#1b89ff]">Sign Up</span></Link>
+                                Go back to <Link to="/SignUp"><span className="text-black">Sign Up</span></Link>
                             </p>
                         </div>
                     </> :

@@ -56,7 +56,7 @@ export default function Settings() {
     const fetch = async () => {
       window.Chargebee.init({
         site: "sproutysocial",
-        // domain: 'app.sproutysocial.com',
+        // domain: 'app.liftinfluence.com',
         iframeOnly: true,
         publishableKey: "live_JtEKTrE7pAsvrOJar1Oc8zhdk5IbvWzE",
       })

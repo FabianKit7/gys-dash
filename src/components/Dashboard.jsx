@@ -383,7 +383,7 @@ export default function Dashboard() {
             <h3 className="text-[22px] font-bold font-MontserratBold text-black"> Account Summary </h3>
           </div>
 
-          <div className="relative rounded-[10px] w-fit text-[#1b89ff] text-lg font-bold">
+          <div className="relative rounded-[10px] w-fit text-black text-lg font-bold">
             <div
               className="flex items-center justify-center h-[52px] cursor-pointer"
               onClick={() => setShowDateOptions(!showDateOptions)}
@@ -682,7 +682,7 @@ export default function Dashboard() {
                     @{userData?.username}
                   </div>
                   <div className="flex items-center">
-                    <div className="font-semibold font-MontserratSemiBold text-[#23df85] capitalize">
+                    <div className="font-semibold font-MontserratSemiBold text-primary capitalize">
                       {userData?.userMode}
                     </div>
 
@@ -800,11 +800,11 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="mt-[10px] gap-[10px] flex flex-col items-center">
-                <Link to="https://calendly.com/sproutysocial/30min" className="bg-[#23df85] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <Link to="https://calendly.com/sproutysocial/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BsHeadset size={18} className="mr-1" />
                   <span>Schedule A Call</span>
                 </Link>
-                <a href="mailto:analyst@sproutysocial.com" className="bg-[#1b89ff] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <a href="mailto:analyst@sproutysocial.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BiMessageSquareDots size={18} className="mr-1" />
                   <span>Send An Email</span>
                 </a>
@@ -872,11 +872,11 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="mt-[10px] gap-[10px] flex items-center">
-                <Link to="https://calendly.com/sproutysocial/30min" className="bg-[#23df85] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <Link to="https://calendly.com/sproutysocial/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BsHeadset size={18} className="mr-1" />
                   <span>Schedule A Call</span>
                 </Link>
-                <a href="mailto:analyst@sproutysocial.com" className="bg-[#1b89ff] text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <a href="mailto:analyst@sproutysocial.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BiMessageSquareDots size={18} className="mr-1" />
                   <span>Send An Email</span>
                 </a>
@@ -899,7 +899,7 @@ const Starts = ({ user, setChart, chart, totalInteractions }) => {
     <div className="mt-4 bg-[#f8f8f8] text-[#757575] md:text-black md:bg-transparent lg:mt-0 w-full rounded-[10px]">
       <div className="flex items-center justify-between w-full gap-1 text-center lg:gap-4">
         <div
-          className={`${chart === 1 ? "bg-black lg:bg-[#1b89ff] text-white" : "text-[#757575] md:text-black"} md:w-[220px] lg:w-[180px] xl:w-[220px] cursor-pointer rounded-[10px] flex flex-col justify-center itext-center p-2 lg:pt-3 xl:pr-4 lg:pb-[2px] lg:pl-5 lg:shadow-[0_0_3px_#00000040]`}
+          className={`${chart === 1 ? "bg-primary lg:bg-primary text-white" : "text-[#757575] md:text-black"} md:w-[220px] lg:w-[180px] xl:w-[220px] cursor-pointer rounded-[10px] flex flex-col justify-center itext-center p-2 lg:pt-3 xl:pr-4 lg:pb-[2px] lg:pl-5 lg:shadow-[0_0_3px_#00000040]`}
           onClick={() => setChart(1)}
           style={{
             transition: 'all .15s ease-in',
@@ -910,14 +910,14 @@ const Starts = ({ user, setChart, chart, totalInteractions }) => {
             <div className="text-[24px] lg:text-4xl lg:leading-[54px] font-MontserratBold font-bold w-full text-center">
               {numFormatter(user.followers)}
             </div>
-            {/* <div className="absolute lg:static top-[calc(100%-10px)] left-[50%] translate-x-[-50%] py-1 px-2 rounded-[7px] bg-[#c8f7e1] text-[#23df85] mt-1 flex items-center gap-1 text-[10px] lg:text-[12px] font-bold font-MontserratBold lg:mr-[-32px] xl:mr-0">
+            {/* <div className="absolute lg:static top-[calc(100%-10px)] left-[50%] translate-x-[-50%] py-1 px-2 rounded-[7px] bg-[#c8f7e1] text-primary mt-1 flex items-center gap-1 text-[10px] lg:text-[12px] font-bold font-MontserratBold lg:mr-[-32px] xl:mr-0">
               123 <FaCaretUp color="#1B89FF" size={12} />
             </div> */}
           </div>
         </div>
 
         <div
-          className={`${chart === 2 ? "bg-black lg:bg-[#1b89ff] text-white" : "text-[#757575] md:text-black"} md:w-[220px] lg:w-[180px] xl:w-[220px] cursor-pointer rounded-[10px] flex flex-col justify-center itext-center p-2 lg:pt-3 xl:pr-4 lg:pb-[2px] lg:pl-5 lg:shadow-[0_0_3px_#00000040]`}
+          className={`${chart === 2 ? "bg-primary lg:bg-primary text-white" : "text-[#757575] md:text-black"} md:w-[220px] lg:w-[180px] xl:w-[220px] cursor-pointer rounded-[10px] flex flex-col justify-center itext-center p-2 lg:pt-3 xl:pr-4 lg:pb-[2px] lg:pl-5 lg:shadow-[0_0_3px_#00000040]`}
           onClick={() => setChart(2)}
           style={{
             transition: 'all .15s ease-in',
@@ -932,7 +932,7 @@ const Starts = ({ user, setChart, chart, totalInteractions }) => {
         </div>
 
         <div
-          className={`${chart === 3 ? "bg-black lg:bg-[#1b89ff] text-white" : "text-[#757575] md:text-black"} md:w-[220px] lg:w-[180px] xl:w-[220px] cursor-pointer rounded-[10px] flex flex-col justify-center itext-center p-2 lg:pt-3 xl:pr-4 lg:pb-[2px] lg:pl-5 lg:shadow-[0_0_3px_#00000040]`}
+          className={`${chart === 3 ? "bg-primary lg:bg-primary text-white" : "text-[#757575] md:text-black"} md:w-[220px] lg:w-[180px] xl:w-[220px] cursor-pointer rounded-[10px] flex flex-col justify-center itext-center p-2 lg:pt-3 xl:pr-4 lg:pb-[2px] lg:pl-5 lg:shadow-[0_0_3px_#00000040]`}
           onClick={() => setChart(3)}
           style={{
             transition: 'all .15s ease-in',
@@ -1055,7 +1055,7 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center">
             <div className="lg:hidden mr-[12px]">
-              {pageProp.title === "Targeting" && <img alt="" src="/ic_targeting.svg" className="bg-[#23df85] p-[8px] rounded-[8px]" />}
+              {pageProp.title === "Targeting" && <img alt="" src="/ic_targeting.svg" className="bg-primary p-[8px] rounded-[8px]" />}
               {pageProp.title === "Whitelist" && <img alt="" src="/ic_whitelist.svg" width="40px" height="40px" className="w-10 h-10 rounded-[8px]" />}
               {pageProp.title === "blacklist" && <img alt="" src="/ic_blacklist.svg" width="40px" height="40px" className="w-10 h-10 rounded-[8px]" />}
             </div>
@@ -1093,7 +1093,7 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
             </div>
           </div>
 
-          <div className={`${!selectedData.username && "hidden"} -top-2 opacity-100 max-h-[400px] overflow-y-auto absolute w-full left-0 translate-y-2 rounded-[10px] z-10 bg-white border-2 border-[#23df85]`}
+          <div className={`${!selectedData.username && "hidden"} -top-2 opacity-100 max-h-[400px] overflow-y-auto absolute w-full left-0 translate-y-2 rounded-[10px] z-10 bg-white border-2 border-primary`}
             style={{
               pointerEvents: 'all',
               // boxShadow: '0 0 3px #00000040',
@@ -1197,13 +1197,13 @@ const AddOthers = ({ pageProp, userId, user, addSuccess, setAddSuccess, setMobil
             })}
           </div>
 
-          {/* {pageProp.title === 'Targeting' && <div className="text-[#1b89ff] cursor-pointer mt-2 ml-5 text-[14px] font-medium font-MontserratSemiBold">
+          {/* {pageProp.title === 'Targeting' && <div className="text-black cursor-pointer mt-2 ml-5 text-[14px] font-medium font-MontserratSemiBold">
             Need help picking targets?
           </div>} */}
         </div>
 
         <button
-          className={`${selected ? "bg-[#23df85]" : "bg-gray-400"} text-white font-medium text-base mt-7 absolute bottom-0 font-MontserratSemiBold w-full rounded-[10px] h-[52px] max-h-[52px] border-none cursor-pointer`}
+          className={`${selected ? "bg-primary" : "bg-gray-400"} text-white font-medium text-base mt-7 absolute bottom-0 font-MontserratSemiBold w-full rounded-[10px] h-[52px] max-h-[52px] border-none cursor-pointer`}
           // disabled={selected ? true : false}
           style={{ transition: 'background-color .15s ease-in' }}
           onClick={() => add()}
@@ -1346,7 +1346,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
           <div className="flex items-center">
             <div className="bg-[#f8f8f8] font-bold font-MontserratBold text-[26px] flex items-center relatve h-[60px] rounded-[10px] px-6">
               Targeting
-              <span className="bg-[#23df85] text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
+              <span className="bg-primary text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
                 {targetingAccounts.length}
               </span>
             </div>
@@ -1374,7 +1374,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
             </span>
           </div>
 
-          <button className="bg-[#1b89ff] text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer" onClick={() => setFilterModal(true)}>
+          <button className="bg-black text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer" onClick={() => setFilterModal(true)}>
             Targeting Filters
             <img alt="" className="ml-2" src="/ic_filters.svg" />
           </button>
@@ -1382,7 +1382,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
 
         <div className="lg:hidden mt-[30px] mb-[12px]">
           <div className="flex items-center justify-center gap-[8px]">
-            <img alt="" src="/ic_targeting.svg" className="bg-[#23df85] p-[8px] rounded-[8px]" />
+            <img alt="" src="/ic_targeting.svg" className="bg-primary p-[8px] rounded-[8px]" />
             <h3 className="text-[24px] font-bold font-MontserratBold text-black"> Targeting </h3>
             <span className="ml-[8px] cursor-pointer group relative">
               <div className="flex items-center">
@@ -1410,7 +1410,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
             <div className="w-full flex justify-center bg-[#f8f8f8]">
               <div className="font-bold font-MontserratBold text-[16px] flex items-center relatve h-[60px] rounded-[10px] px-6">
                 Targeting
-                <span className="bg-[#23df85] text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
+                <span className="bg-primary text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
                   {targetingAccounts.length}
                 </span>
               </div>
@@ -1446,12 +1446,12 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
         </div>
 
         <div className="flex items-center w-full gap-2 mt-4 lg:hidden">
-          <button className={`bg-[#23df85] text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer`}
+          <button className={`bg-primary text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer`}
             onClick={() => setMobileAdd({ show: true, pageProp })}
           >
             Add New Source
           </button>
-          <button className="bg-[#1b89ff] w-fit text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[50px] min-h-[50px] border-none cursor-pointer" onClick={() => setFilterModal(true)}>
+          <button className="bg-black w-fit text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[50px] min-h-[50px] border-none cursor-pointer" onClick={() => setFilterModal(true)}>
             <img alt="" className="" src="/ic_filters.svg" />
           </button>
         </div>
@@ -1491,7 +1491,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
 
 const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
   const [total, setTotal] = useState({ whitelist: 0, blacklist: 0 })
-  const [pageProp, setPageProp] = useState({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue following that were followed by SproutySocial. We will never unfollow anyone you manually followed.' })
+  const [pageProp, setPageProp] = useState({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue following that were followed by Liftinfluence. We will never unfollow anyone you manually followed.' })
   const [showPageModal, setShowPageModal] = useState(false)
   const [targetingAccounts, setTargetingAccounts] = useState([]);
   const [addSuccess, setAddSuccess] = useState(false);
@@ -1537,7 +1537,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
                 onClick={() => setShowPageModal(true)}
               >
                 {pageProp.title}
-                <span className={`${pageProp.title === "Whitelist" ? "bg-[#1b89ff]" : "bg-[#000]"} text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]`}>
+                <span className={`${pageProp.title === "Whitelist" ? "bg-black" : "bg-[#000]"} text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]`}>
                   {total[(pageProp.title).toLowerCase()]}
                 </span>
                 <FaCaretDown className="w-[30px] h-[26px] ml-2" color="#C4C4C4" />
@@ -1549,11 +1549,11 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
               }}>
                 <div className="font-bold font-MontserratBold text-[26px] flex items-center cursor-pointer h-[60px] rounded-[10px] px-6 hover:bg-[#f8f8f8]"
                   onClick={() => {
-                    setPageProp({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue followingthat were followed by SproutySocial. We will never unfollow anyone you manually followed.' })
+                    setPageProp({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue followingthat were followed by Liftinfluence. We will never unfollow anyone you manually followed.' })
                     setShowPageModal(false)
                   }}>
                   Whitelist
-                  <span className="bg-[#1b89ff] text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
+                  <span className="bg-black text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
                     {total?.whitelist}
                   </span>
                   <FaCaretDown className="w-[30px] h-[26px] ml-2" color="#C4C4C4" />
@@ -1628,7 +1628,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
             <div className={`${pageProp.title === "Whitelist" && "bg-[#f8f8f8]"} w-full flex justify-center cursor-pointer`} onClick={() => setPageProp({ ...pageProp, title: "Whitelist" })}>
               <div className="font-bold font-MontserratBold text-[16px] flex items-center relatve h-[60px] rounded-[10px] px-2 md:px-6">
                 Whitelist
-                <span className="bg-[#23df85] text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
+                <span className="bg-primary text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
                   {total.whitelist}
                 </span>
               </div>
@@ -1636,7 +1636,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
             <div className={`${pageProp.title === "Blacklist" && "bg-[#f8f8f8]"} w-full flex justify-center cursor-pointer`} onClick={() => setPageProp({ ...pageProp, title: "Blacklist" })}>
               <div className="font-bold font-MontserratBold text-[16px] flex items-center relatve h-[60px] rounded-[10px] px-2 md:px-6">
                 Blacklist
-                <span className="bg-[#23df85] text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
+                <span className="bg-primary text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
                   {total.blacklist}
                 </span>
               </div>
@@ -1672,7 +1672,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
         </div>
 
         <div className="flex items-center w-full gap-2 my-4 lg:hidden">
-          <button className={`bg-[#23df85] text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer`}
+          <button className={`bg-primary text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer`}
             onClick={() => setMobileAdd({ show: true, pageProp })}
           >
             {pageProp.title} Account

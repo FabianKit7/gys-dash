@@ -146,7 +146,7 @@ export default function ManageAccounts() {
                                         <div className="flex items-center lg:flex-col gap-[14px]">
                                             <div className="relative w-[54px] h-[54px] lg:w-[160px] lg:h-[160px] lg:mt-10 lg:mx-auto">
                                                 <img src={account?.profile_pic_url} alt="" className="w-full h-full rounded-full p-[3px]" />
-                                                <div className="w-[20px] h-[20px] lg:w-[36px] lg:h-[36px] rounded-full border-[3px] lg:border-4 absolute right-0 bottom-0 lg:right-1 lg:bottom-1 bg-[#23df85]"></div>
+                                                <div className="w-[20px] h-[20px] lg:w-[36px] lg:h-[36px] rounded-full border-[3px] lg:border-4 absolute right-0 bottom-0 lg:right-1 lg:bottom-1 bg-primary"></div>
                                             </div>
                                             <div className="lg:text-center">
                                                 <div className="flex items-center justify-center gap-2 lg:hidden">
@@ -154,10 +154,10 @@ export default function ManageAccounts() {
                                                     <div className="text-[12px] lg:text-[18px] font-bold">Instagram Account</div>
                                                 </div>
                                                 <div className="lg:mt-5 text-[16px] lg:text-[24px] font-bold">{account?.full_name}</div>
-                                                <div className="text-[#1B89FF] text-[12px] lg:text-[18px] leading-[0.8] font-bold">@{account?.username}</div>
+                                                <div className="text-primary text-[12px] lg:text-[18px] leading-[0.8] font-bold">@{account?.username}</div>
                                             </div>
                                         </div>
-                                        <div className="lg:hidden w-[32px] h-[32px] rounded-lg bg-[#1B89FF] grid place-items-center cursor-pointer relative z-10" onClick={() => {
+                                        <div className="lg:hidden w-[32px] h-[32px] rounded-lg bg-primary grid place-items-center cursor-pointer relative z-10" onClick={() => {
                                             setAccountToSet(account)
                                             setShowSettingsModal(true);
                                         }}>
@@ -191,7 +191,7 @@ export default function ManageAccounts() {
                             <div className="grid w-full h-full text-white bg-black rounded-full place-items-center">
                                 <AiOutlinePlus size={50} className="w-[24px] h-[24px] lg:w-[50px] lg:h-[50px]" />
                             </div>
-                            <div className="w-[20px] h-[20px] lg:w-[36px] lg:h-[36px] rounded-full border-2 lg:border-4 absolute right-0 bottom-0 lg:right-1 lg:bottom-1 bg-[#23df85]"></div>
+                            <div className="w-[20px] h-[20px] lg:w-[36px] lg:h-[36px] rounded-full border-2 lg:border-4 absolute right-0 bottom-0 lg:right-1 lg:bottom-1 bg-primary"></div>
                         </div>
                         <div className="mt-2 lg:mt-[32px] text-[16px] lg:text-[24px] font-bold text-center">Add Account</div>
                     </Link>

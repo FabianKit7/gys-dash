@@ -134,7 +134,7 @@ export default function Subscriptions() {
                   } border-2 rounded-full`}
               >
                 <div
-                  className={`w-[32px] h-[32px] rounded-full bg-[#23DF85] text-white grid place-items-center`}
+                  className={`w-[32px] h-[32px] rounded-full bg-primary/90 text-white grid place-items-center`}
                 >
                   <span className="text-[22px] pointer-events-none select-none font-[400] uppercase">
                     {user?.full_name && user?.full_name?.charAt(0)}
@@ -160,7 +160,7 @@ export default function Subscriptions() {
                   } border-2 rounded-full`}
               >
                 <div
-                  className={`w-[32px] h-[32px] rounded-full bg-[#23DF85] text-white grid place-items-center cursor-pointer`}
+                  className={`w-[32px] h-[32px] rounded-full bg-primary/90 text-white grid place-items-center cursor-pointer`}
                   onClick={() => {
                     setShowMenu(!showMenu);
                   }}
@@ -177,7 +177,7 @@ export default function Subscriptions() {
             <div className="mt-[65px] mb-[150px]">
               <div className="bg-white lg:hidden">
                 <div className="flex flex-col gap-[1px]">
-                  <div className="border-l-8 border-l-[#23DF85] border-b h-[54px] pr-[20px] pl-3 flex items-center justify-between w-full bg-[#f8f8f8]">
+                  <div className="border-l-8 border-l-primary/90 border-b h-[54px] pr-[20px] pl-3 flex items-center justify-between w-full bg-[#f8f8f8]">
                     <div className="flex items-center gap-[10px]">
                       <img
                         src={userResults?.profile_pic_url}
@@ -195,7 +195,7 @@ export default function Subscriptions() {
                     <TbRefresh className="cursor-pointer" onClick={() => { navigate(`/search`) }} />
                   </div>
 
-                  <div className="border-l-8 border-l-[#23DF85] border-b h-[54px] pr-[20px] pl-3 flex items-center justify-between w-full bg-[#f8f8f8]">
+                  <div className="border-l-8 border-l-primary/90 border-b h-[54px] pr-[20px] pl-3 flex items-center justify-between w-full bg-[#f8f8f8]">
                     <div className="flex items-center gap-[10px]">
                       <div className="flex flex-col">
                         <div className="text-[12px] -mb-1">Plan:</div>
@@ -221,12 +221,12 @@ export default function Subscriptions() {
                 </p>
 
                 <div className="mb-[11px] flex gap-[10px] h-[80px] items-center">
-                  <div className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${paymentMethod.name === 'card' && "border-[#1b89ff] border-2"}`}
+                  <div className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${paymentMethod.name === 'card' && "border-black border-2"}`}
                     onClick={() => { setPaymentMethod({ id: 1, name: 'card' }) }}
                   >
                     <span
                       className={`${paymentMethod.name === 'card' ? 'top-[13px] left-[10px] w-[22px] h-[18px] translate-x-0 translate-y-0' : 'h-[25.5px] w-[32px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'}
-                        absolute transition-all duration-200 ease-in fill-[#1b89ff] font-[none]`}
+                        absolute transition-all duration-200 ease-in fill-black font-[none]`}
                     >
                       <svg
                         viewBox="0 0 28 28"
@@ -241,26 +241,26 @@ export default function Subscriptions() {
                     </span>
 
                     <div
-                      className={`${paymentMethod.name === 'card' ? "opacity-100 translate-y-0 text-[#1b89ff]" : 'opacity-0 translate-y-full'}
-                        absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-[#1b89ff] font-[none]`}
+                      className={`${paymentMethod.name === 'card' ? "opacity-100 translate-y-0 text-black" : 'opacity-0 translate-y-full'}
+                        absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
                     >
                       Card
                     </div>
                   </div>
 
-                  <div className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${paymentMethod.name === 'paypal' && "border-[#1b89ff] border-2"}`}
+                  <div className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${paymentMethod.name === 'paypal' && "border-black border-2"}`}
                     onClick={() => { setPaymentMethod({ id: 1, name: 'paypal' }) }}
                   >
                     <span
                       className={`${paymentMethod.name === 'paypal' ? 'top-[13px] left-[10px] translate-x-0 translate-y-0' : 'top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'}
-                        absolute transition-all duration-200 ease-in fill-[#1b89ff] font-[none]`}
+                        absolute transition-all duration-200 ease-in fill-black font-[none]`}
                     >
                       <img src={'/icons/paypal-icon.svg'} alt="" className={`${paymentMethod.name === 'paypal' ? "h-[23.7px]" : "h-[37px]"}`} />
                     </span>
 
                     <div
-                      className={`${paymentMethod.name === 'paypal' ? "opacity-100 translate-y-0 text-[#1b89ff]" : 'opacity-0 translate-y-full'}
-                        absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-[#1b89ff] font-[none]`}
+                      className={`${paymentMethod.name === 'paypal' ? "opacity-100 translate-y-0 text-black" : 'opacity-0 translate-y-full'}
+                        absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
                     >
                       PayPal
                     </div>
@@ -286,7 +286,7 @@ export default function Subscriptions() {
               {paymentMethod.name === 'card' ?
                 <div className="">
                   <button
-                    className={`${Loading ? 'bg-[#23DF85] cursor-wait' : 'bg-[#1b89ff] cursor-pointer'} w-full h-[50px] rounded-[10px] text-white flex items-center justify-center gap-2`}
+                    className={`${Loading ? 'bg-primary/90 cursor-wait' : 'bg-black cursor-pointer'} w-full h-[50px] rounded-[10px] text-white flex items-center justify-center gap-2`}
                     type="submit"
                     form="cardForm"
                   // onClick={() => { }}
@@ -338,7 +338,7 @@ export default function Subscriptions() {
                 tabIndex={0}
               >
                 <div className="flex items-center gap-3 p-5">
-                  <div className="w-[50px] h-[50px] rounded-full bg-[#23DF85] text-white grid place-items-center">
+                  <div className="w-[50px] h-[50px] rounded-full bg-primary/90 text-white grid place-items-center">
                     <span className="text-[22px] pointer-events-none select-none font-[400] uppercase">
                       {user?.full_name && user?.full_name?.charAt(0)}
                     </span>
@@ -395,7 +395,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
         <div className="mb-4 hidden lg:flex items-center gap-2 font-[600] font-MontserratRegular">
           <div className="">Select Your Account</div>
           <div className="">{`>`}</div>
-          <div className="text-[#1B89FF]">Complete Setup</div>
+          <div className="text-primary">Complete Setup</div>
           <div className="">{`>`}</div>
           <div className="">Enter Dashboard</div>
         </div>
@@ -439,7 +439,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                   <p className="pt-2 pb-4 text-sm font-MontserratRegular text-start">You may cancel during your free trial and won't be billed, no risk.</p>
 
                   {!showCreaditCardInput && <div className="flex flex-col gap-4 mb-4">
-                    <div className="cursor-pointer w-full h-[60px] rounded-[8px] bg-[#1b89ff] text-white flex items-center justify-center gap-2" onClick={() => { setShowCreaditCardInput(true) }}>
+                    <div className="cursor-pointer w-full h-[60px] rounded-[8px] bg-black text-white flex items-center justify-center gap-2" onClick={() => { setShowCreaditCardInput(true) }}>
                       <span className="w-[28px] h-[28px] rounded-[8px] fill-white">
                         <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path d="M0 7C0 6.07174 0.368749 5.1815 1.02513 4.52513C1.6815 3.86875 2.57174 3.5 3.5 3.5H24.5C25.4283 3.5 26.3185 3.86875 26.9749 4.52513C27.6313 5.1815 28 6.07174 28 7V15.75H0V7ZM20.125 8.75C19.8929 8.75 19.6704 8.84219 19.5063 9.00628C19.3422 9.17038 19.25 9.39294 19.25 9.625V11.375C19.25 11.6071 19.3422 11.8296 19.5063 11.9937C19.6704 12.1578 19.8929 12.25 20.125 12.25H23.625C23.8571 12.25 24.0796 12.1578 24.2437 11.9937C24.4078 11.8296 24.5 11.6071 24.5 11.375V9.625C24.5 9.39294 24.4078 9.17038 24.2437 9.00628C24.0796 8.84219 23.8571 8.75 23.625 8.75H20.125ZM0 19.25V21C0 21.9283 0.368749 22.8185 1.02513 23.4749C1.6815 24.1313 2.57174 24.5 3.5 24.5H24.5C25.4283 24.5 26.3185 24.1313 26.9749 23.4749C27.6313 22.8185 28 21.9283 28 21V19.25H0Z" ></path>
@@ -472,7 +472,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
 
             <div className="basis-[60%] grow-[4] rounded-[20px] shadow-[0_5px_10px_#0a17530d] p-4 lg:p-[50px_50px_50px] bg-white relative">
               <div className="w-full h-full overflow-auto">
-                <span className="text-[14px] py-[5px] px-3 mb-3 rounded-[8px] text-[#23df85] bg-[#23df8533]">7-Days Free Trial</span>
+                <span className="text-[14px] py-[5px] px-3 mb-3 rounded-[8px] text-primary bg-primary/30">7-Days Free Trial</span>
                 <div className="text-[20px] lg:text-[26px] font-bold text-black font-MontserratBold">Start Your 7-Days Trial</div>
                 <p className="text-[14px] mt-2 mb-5">
                   It's time to get the real exposure you've been waiting for. After signing up, you will be introduced to your personal account manager and start growing in under 2 minutes.
@@ -484,7 +484,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
 
                 <div className="flex flex-col gap-4 text-base text-black">
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" _ngcontent-gsj-c72="" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5" _ngcontent-gsj-c72=""></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5" _ngcontent-gsj-c72=""></rect>
@@ -493,7 +493,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     <p className="">Grow ~1-10k Real Monthly Followers</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5"></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5"></rect>
@@ -502,7 +502,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     <p>Target Followers Relevant To You</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5"></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5"></rect>
@@ -511,7 +511,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     <p>Detailed Analytics & Results Tracking</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5"></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5"></rect>
@@ -520,7 +520,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     <p>Automated 24/7 Growth, Set & Forget</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5"></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5"></rect>
@@ -529,7 +529,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     <p>No Fakes Or Bots, 100% Real People</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5"></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5"></rect>
@@ -538,7 +538,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     <p>Personal Account Manager</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5"></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5"></rect>
@@ -547,7 +547,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     <p>Boost Likes, Comments & DMs</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5"></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5"></rect>
@@ -556,7 +556,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                     <p>Safest Instagram Growth Service</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-[20px] h-[20px] green-checkbox fill-[#23df85] sroke-green font-[none]">
+                    <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
                       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect opacity="0.2" x="0.5" y="0.5" width="19" height="19" rx="9.5"></rect>
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5"></rect>
@@ -732,17 +732,6 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
 
     if (user) {
       var userIsNew = true
-      // const udata = await supabase.from("users").select().eq("username", userResults?.username).eq("email", user?.email);
-      // if (udata.data?.[0]?.subscribed) {
-      //   setIsModalOpen(true);
-      //   setErrorMsg({ title: 'Card Error', message: `You are already subscribed. If you wish to add a new Instagram account, you can do so by changing your username. Alternatively, if you prefer, you can add a new card through accessing the settings on the dashboard.` })
-      //   setLoading(false);
-      //   return;
-      // }else{
-      //   if (udata.error){ // means that user authenticated but do not have an account with that email yet
-      //     userIsNew=false
-      //   }
-      // }
 
       if (cardRef) {
         const token = await cardRef.current.tokenize().then(data => {
@@ -884,91 +873,6 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           setErrorMsg({ title: 'Alert', message: createCustomer?.message ?? 'An error occurred, please try again or contact support!' })
           setLoading(false);
         }
-
-        // const create_customer_data = {
-        //   allow_direct_debit: true,
-        //   // first_name: userResults?.full_name,
-        //   first_name: user?.full_name,
-        //   last_name: '',
-        //   email: user.email,
-        //   token_id: token
-        // }
-
-        // let customer = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_customer`,
-        //   urlEncode(create_customer_data))
-        //   .then((response) => response.data).catch(error => {
-        //     console.log(error);
-        //     return {message: 'error', error}
-        //   })
-
-        // if (customer.message === 'success') {
-        //   var profile_pic_url = '';
-        //   const create_subscription_for_customer_data = {
-        //     customer_id: customer?.customer?.id,
-        //     plan_id: "Monthly-Plan-7-Day-Free-Trial-USD-Monthly"
-        //     // plan_id: "Free-Trial-USD-Monthly" //Monthly-Plan-USD-Monthly
-        //     // plan_id: "Monthly-Plan-USD-Monthly"
-        //   }
-        //   let subscriptionResult = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_subscription_for_customer`,
-        //     urlEncode(create_subscription_for_customer_data))
-        //     .then((response) => response.data)
-        //   // console.log(subscriptionResult);
-        //   if (subscriptionResult.message === 'success') {
-        //     const uploadImageFromURLRes = await uploadImageFromURL(username, userResults?.profile_pic_url)
-        //     // console.log(uploadImageFromURLRes);
-
-        //     if (uploadImageFromURLRes?.status === 'success') {
-        //       profile_pic_url = uploadImageFromURLRes?.data
-        //     }
-
-        //     let data = {
-        //       nameOnCard,
-        //       chargebee_subscription: JSON.stringify(subscriptionResult.subscription),
-        //       chargebee_subscription_id: subscriptionResult.subscription?.id,
-        //       chargebee_customer: JSON.stringify(customer.customer),
-        //       chargebee_customer_id: customer?.customer?.id,
-
-        //       username,
-        //       email: user.email,
-        //       followers: userResults?.follower_count,
-        //       following: userResults?.following_count,
-        //       // profile_pic_url: userResults?.profile_pic_url,
-        //       profile_pic_url,
-        //       is_verified: userResults?.is_verified,
-        //       biography: userResults?.biography,
-        //       start_time: getStartingDay(),
-        //       posts: userResults?.media_count,
-        //       subscribed: true,
-        //     }
-
-        //     const updateUser = await supabase
-        //       .from("users")
-        //       .update(data).eq('id', user.id);
-        //     if (updateUser.error) {
-        //       console.log(updateUser.error);
-        //       setIsModalOpen(true);
-        //       setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
-        //     }
-        //     const ref = getRefCode()
-        //     console.log('success');
-        //     if (ref) {
-        //       navigate(`/thankyou?ref=${ref}`)
-        //     } else {
-        //       navigate(`/thankyou`)
-        //     }
-        //     setLoading(false);
-        //   } else {
-        //     console.log('Error creating subscription:', subscriptionResult.error);
-        //     // alert('An error occurred, please try again or contact support')
-        //     setIsModalOpen(true);
-        //     setErrorMsg({ title: 'Alert', message: 'An error occurred, please try again or contact support!' })
-        //   }
-        // } else {
-        //   console.log('Error creating customer:', customer.error);
-        //   // alert('An error occurred, please try again or contact support')
-        //   setIsModalOpen(true);
-        //   setErrorMsg({ title: 'Alert', message: 'An error occurred, please try again or contact support!' })
-        // }
       }
     } else {
       setIsModalOpen(true);
@@ -1034,7 +938,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
     </form>
 
     <div className={`${addCard ? "block" : "hidden lg:block"}`}>
-      <button className={`${Loading ? 'bg-[#23DF85] cursor-wait' : 'bg-[#1b89ff] cursor-pointer'} text-white font-MontserratSemiBold text-[.8rem] xl:text-[1.125rem] ${addCard ? "mt-[65px]" : "mt-5"} w-full py-4 rounded-[10px] font-[600] mb-4`}
+      <button className={`${Loading ? 'bg-primary/90 cursor-wait' : 'bg-black hover:bg-black cursor-pointer'} text-white font-MontserratSemiBold text-[.8rem] xl:text-[1.125rem] ${addCard ? "mt-[65px]" : "mt-5"} w-full py-4 rounded-full font-[600] mb-4`}
         onClick={() => {
           if (Loading) {
             setIsModalOpen(true);
