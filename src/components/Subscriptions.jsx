@@ -8,23 +8,12 @@ import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "react-click-outside-hook";
 import { FaAngleLeft } from "react-icons/fa";
 import AlertModal from './AlertModal'
-import { useRef } from "react";
-import { CardComponent, CardNumber, CardExpiry, CardCVV } from "@chargebee/chargebee-js-react-wrapper"
 import { getRefCode } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BACKEND_URL, LOGO, NOT_CONNECTED_TEMPLATE, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "../config";
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
-const urlEncode = function (data) {
-  var str = [];
-  for (var p in data) {
-    if (data.hasOwnProperty(p) && (!(data[p] === undefined || data[p] == null))) {
-      str.push(encodeURIComponent(p) + "=" + (data[p] ? encodeURIComponent(data[p]) : ""));
-    }
-  }
-  return str.join("&");
-}
 
 export default function Subscriptions() {
   const [user, setUser] = useState(null)
@@ -34,6 +23,23 @@ export default function Subscriptions() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState({ id: 1, name: 'card' })
   const [Loading, setLoading] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(null);
+
+  // setIsDesktop
+  useEffect(() => {
+    setIsDesktop(window.innerWidth > 768);
+    // Update the isDesktop state when the window is resized
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth > 768); // Adjust the threshold as needed
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (isClickedOutside) {
@@ -268,7 +274,7 @@ export default function Subscriptions() {
                 </div>
 
                 <div className={`${paymentMethod.name === 'card' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none hidden'} transition-all duration-150 ease-in`}>
-                  <ChargeBeeCard
+                  {!isDesktop && <ChargeBeeCard
                     user={user}
                     userResults={userResults}
                     username={username}
@@ -277,7 +283,7 @@ export default function Subscriptions() {
                     mobile={true}
                     Loading={Loading}
                     setLoading={setLoading}
-                  />
+                  />}
                 </div>
               </div>
             </div>
@@ -377,6 +383,7 @@ export default function Subscriptions() {
                 username={username}
                 Loading={Loading}
                 setLoading={setLoading}
+                isDesktop={isDesktop}
               />
             </div>
           </div>
@@ -386,7 +393,7 @@ export default function Subscriptions() {
   );
 }
 
-const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, username, Loading, setLoading }) => {
+const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, username, Loading, setLoading, isDesktop }) => {
   const [showCreaditCardInput, setShowCreaditCardInput] = useState(false)
 
   return (<>
@@ -456,7 +463,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                   </div>}
 
                   <div className={`${!showCreaditCardInput ? "opacity-0 pointer-events-none hidden" : 'opacity-100'} transition-all duration-150 ease-out`}>
-                    <ChargeBeeCard
+                    {isDesktop && <ChargeBeeCard
                       user={user}
                       userResults={userResults}
                       username={username}
@@ -464,7 +471,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                       setErrorMsg={setErrorMsg}
                       Loading={Loading}
                       setLoading={setLoading}
-                    />
+                    />}
                   </div>
                 </div>
               </div>
@@ -587,103 +594,57 @@ export const getStartingDay = () => {
 
 export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModalOpen, setErrorMsg, mobile, Loading, setLoading, setRefresh, refresh }) => {
   const navigate = useNavigate();
-  const cardRef = useRef();
   const [nameOnCard, setNameOnCard] = useState('')
-
-  const fonts = [
-    'https://fonts.googleapis.com/css?family=Open+Sans'
-  ]
-  // Style customizations
-  const styles = {
-    base: {
-      color: '#000',
-      fontWeight: 600,
-      fontFamily: 'Montserrat-Regular, Open Sans, Segoe UI, sans-serif',
-      fontSize: '16px',
-      fontSmoothing: 'antialiased',
-
-      ':focus': {
-        color: '#424770',
-      },
-
-      '::placeholder': {
-        color: mobile ? '#333' : '#757575',
-      },
-
-      ':focus::placeholder': {
-        color: '#CFD7DF',
-      },
-    },
-    invalid: {
-      color: '#f00',
-      ':focus': {
-        color: '#FA755A',
-      },
-      '::placeholder': {
-        color: '#FFCCA5',
-      },
-    },
-  }
+  const stripe = useStripe();
+  const elements = useElements();
 
   const handleAddCard = async () => {
     setLoading(true);
     if (user) {
-      if (cardRef) {
-        const token = await cardRef.current.tokenize().then(data => {
-          return data.token
-        }).catch(err => {
-          console.log(err);
-          alert(err.message)
-          // console.log(err?.message);
-          if (err === "Error: Could not mount master component") {
-            // alert("Please check your card")
+      const cardElement = elements.getElement(CardElement);
+
+      if (cardElement) {
+
+        try {
+          const { error, paymentMethod }
+            = await stripe.createPaymentMethod({
+              type: "card",
+              card: cardElement,
+            });
+          if (error) {
+            // setError(error.message);
             setIsModalOpen(true);
-            setErrorMsg({ title: 'Card Error', message: 'Please check your card' })
+            setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${error.message}` })
             setLoading(false);
             return;
           }
-          // alert(err)
+
+          // console.log("paymentMethod");
+          console.log(paymentMethod);
+          if (paymentMethod?.id) {
+            let updateCustomerPaymentMethodRes = await axios.post(`${BACKEND_URL}/api/stripe/attach_payment_method_to_customer`,
+              { customer_id: user?.customer_id, pm_id: paymentMethod?.id })
+              .then((response) => response.data).catch(error => {
+                console.log("attach_payment_method_to_customer error");
+                console.log(error);
+                return error
+              })
+            if (updateCustomerPaymentMethodRes?.id) {
+              alert('Updated successfully!')
+              setRefresh(!refresh)
+              setLoading(false);
+              setIsModalOpen(false);
+            } else {
+              console.log('Error add card:', updateCustomerPaymentMethodRes?.raw.message);
+              // alert('An error occurred, please try again or contact support')
+              setIsModalOpen(true);
+              setErrorMsg({ title: 'Failed to adding card', message: `An error occurred: ${updateCustomerPaymentMethodRes?.raw.message}` })
+            }
+          }
+        } catch (error) {
+          // setError(error.message);
           setIsModalOpen(true);
-          setErrorMsg({ title: 'Alert', message: err?.message })
-          // alert("something is wrong, please try again")
-          setLoading(false);
-          return;
-        });
-
-        if (!token) {
-          setLoading(false);
-          return;
-        }
-
-        const create_customer_data = {
-          customer_id: user?.chargebee_customer_id,
-          token_id: token,
-          replace_primary_payment_source: true
-        }
-
-        // console.log("create_customer_data");
-        // console.log(create_customer_data);
-
-        let updateCustomerPaymentMethodRes = await axios.post(`${BACKEND_URL}/api/updateCustomerPaymentMethod`,
-          urlEncode(create_customer_data))
-          .then((response) => response.data).catch(error => {
-            console.log(error);
-            return { message: 'error', error }
-          })
-
-        // console.log("updateCustomerPaymentMethodRes");
-        // console.log(updateCustomerPaymentMethodRes);
-
-
-        if (updateCustomerPaymentMethodRes?.payment_source?.status === 'valid') {
-          setRefresh(!refresh)
-          setLoading(false);
-          setIsModalOpen(false);
-        } else {
-          console.log('Error creating customer:', updateCustomerPaymentMethodRes);
-          // alert('An error occurred, please try again or contact support')
-          setIsModalOpen(true);
-          setErrorMsg({ title: 'Alert', message: 'An error occurred, please try again or contact support!' })
+          setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${error.message}` })
         }
       }
     } else {
@@ -693,31 +654,9 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
     setLoading(false);
   }
 
-  // const handleCardPay = async (setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard) => {
   const handleCardPay = async () => {
-
     if (addCard) {
       await handleAddCard()
-      return;
-    }
-
-    if (process.env.NODE_ENV !== 'production') {
-      let data = {
-        username: userResults?.username,
-        email: user.email,
-        full_name: user.full_name,
-        followers: userResults?.follower_count,
-        following: userResults?.following_count,
-        is_verified: userResults?.is_verified,
-        biography: userResults?.biography,
-        start_time: getStartingDay(),
-        posts: userResults?.media_count,
-        subscribed: true
-      }
-      await supabase
-        .from("users")
-        .update(data).eq('id', user.id);
-      navigate(`/thankyou`);
       return;
     }
 
@@ -732,153 +671,161 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
 
     if (user) {
       var userIsNew = true
+      const cardElement = elements.getElement(CardElement);
 
-      if (cardRef) {
-        const token = await cardRef.current.tokenize().then(data => {
-          return data.token
-        }).catch(err => {
-          console.log(err);
-          // console.log(err?.message);
-          if (err === "Error: Could not mount master component") {
-            // alert("Please check your card")
+      try {
+        const { error, paymentMethod }
+          = await stripe.createPaymentMethod({
+            type: "card",
+            card: cardElement,
+          });
+        if (error) {
+          // setError(error.message);
+          setIsModalOpen(true);
+          setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${error.message}` })
+          setLoading(false);
+          return;
+        }
+
+        // const { id } = paymentMethod;
+        // console.log("paymentMethod: ");
+        // console.log(paymentMethod);
+        if (paymentMethod?.id) {
+          let createSubscription = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription`, {
+            name: nameOnCard,
+            email: user?.email,
+            paymentMethod: paymentMethod.id,
+            price: 'price_1NoYJZFl4zfP5z2zdDBGKlts'
+          }
+          ).catch(err => {
+            console.error(err)
+            return err
+          })
+
+          // console.log("createSubscription");
+          // console.log(createSubscription);
+
+          if (!createSubscription.data) {
             setIsModalOpen(true);
-            setErrorMsg({ title: 'Card Error', message: 'Please check your card' })
+            setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${createSubscription.response.data.message}` })
             setLoading(false);
             return;
           }
-          // alert(err)
-          setIsModalOpen(true);
-          setErrorMsg({ title: 'Alert', message: err?.message })
-          // alert("something is wrong, please try again")
-          setLoading(false);
-          return;
-        });
 
-        if (!token) {
-          setLoading(false);
-          // alert('something is wrong');
-          // setIsModalOpen(true);
-          // setErrorMsg({ title: 'Alert', message: 'something is wrong' })
-          return;
-        }
-
-        const create_customer_data = {
-          allow_direct_debit: true,
-          first_name: user?.full_name,
-          // last_name: userResults?.username,
-          last_name: '',
-          email: user.email,
-          token_id: token,
-          plan_id: "Monthly-Plan-7-Day-Free-Trial-USD-Monthly"
-        }
-
-        let createCustomer = await axios.post(`${BACKEND_URL}/api/create_customer_and_subscription`,
-          urlEncode(create_customer_data))
-          .then((response) => response.data).catch((err) => {
-            // console.log(err);
+          const confirm = await stripe.confirmCardPayment(createSubscription?.data?.clientSecret)
+          console.log("confirmCardPayment");
+          console.log(confirm);
+          if (confirm.error) {
             setIsModalOpen(true);
-            setErrorMsg({ title: 'Alert', message: err?.message })
+            setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${confirm.error.message}` })
             setLoading(false);
-            return err?.response?.data.err
-          })
-
-        // console.log(createCustomer);
-        // setLoading(false);
-        // return
-
-        if (createCustomer.message === 'success') {
-          var customer_id = createCustomer?.result?.customer?.id
-
-          // console.log("createCustomer: ");
-          // console.log(createCustomer);
-          // console.log("createCustomer?.result?.customer?.id");
-          // console.log(customer_id);
-
-          if (!customer_id) {
-            let getCustomer = await axios.post(`${BACKEND_URL}/api/customer_list`, { email: user?.email })
-            if (getCustomer?.data?.id) {
-              customer_id = getCustomer?.data?.id
-            } else {
-              setIsModalOpen(true);
-              setErrorMsg({ title: 'Alert', message: "something went wrong, please try again or contact support." })
-              setLoading(false);
-              return;
-            }
+            return;
           }
 
-          let data = {
-            nameOnCard,
-            chargebee_subscription: JSON.stringify(createCustomer?.result?.subscription),
-            chargebee_subscription_id: createCustomer?.result?.subscription?.id,
-            chargebee_customer: JSON.stringify(createCustomer?.result?.customer),
-            chargebee_customer_id: customer_id,
-
-            username: userResults?.username,
-            email: user.email,
-            full_name: user.full_name,
-            followers: userResults?.follower_count,
-            following: userResults?.following_count,
-            is_verified: userResults?.is_verified,
-            biography: userResults?.biography,
-            start_time: getStartingDay(),
-            posts: userResults?.media_count,
-            subscribed: true
-          }
-
-          if (userIsNew) {
-            if (!user) {
-              setIsModalOpen(true);
-              setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
-              setLoading(false);
-              return;
-            }
-
-            const updateUser = await supabase
-              .from("users")
-              .update(data).eq('id', user.id);
-            if (updateUser?.error) {
-              // console.log(updateUser.error);
-              setIsModalOpen(true);
-              setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
-
-              return;
-            }
+          if (confirm?.paymentIntent?.status === "succeeded" && createSubscription?.data?.message === "Subscription successful!") {
+            await continueToSupabase(userIsNew, createSubscription.data.subscription)
+            setLoading(false);
           } else {
-            const addAccount = await supabase.from("users").insert({ ...data, user_id: user.id });
-            if (addAccount?.error) {
-              console.log(addAccount.error);
-              setIsModalOpen(true);
-              setErrorMsg({ title: 'Alert', message: `Error adding new account` })
-            }
+            console.log("createSubscription error");
+            console.log(createSubscription);
+            setIsModalOpen(true);
+            setErrorMsg({ title: 'Failed to create subscription', message: 'An error occured while creating your subscription' })
           }
-
-          let sendEmail = await axios.post(`${BACKEND_URL}/api/send_email`, { email: user?.email, subject: "Your account is not connected", htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name) }).catch(err => err)
-          if (sendEmail.status !== 200) {
-            console.log(sendEmail);
-          }
-
-          const ref = getRefCode()
-          if (ref) {
-            navigate(`/thankyou?ref=${ref}`)
-          } else {
-            navigate(`/thankyou`)
-          }
-          setLoading(false);
-
-        } else {
-          console.log('Error creating customer:', createCustomer);
-          // alert('An error occurred, please try again or contact support')
-          setIsModalOpen(true);
-          // setErrorMsg({ title: 'Alert', message: 'An error occurred, please try again or contact support!' })
-          setErrorMsg({ title: 'Alert', message: createCustomer?.message ?? 'An error occurred, please try again or contact support!' })
-          setLoading(false);
         }
+      } catch (error) {
+        // setError(error.message);
+        setIsModalOpen(true);
+        setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${error.message}` })
       }
     } else {
       setIsModalOpen(true);
       setErrorMsg({ title: 'Authentication Error', message: 'You have to login to continue' })
     }
     setLoading(false);
+  };
+
+  async function continueToSupabase(userIsNew, subscriptionObj) {
+    let data = {
+      nameOnCard,
+      subscription_id: subscriptionObj?.id,
+      customer_id: subscriptionObj?.customer,
+
+      username: userResults?.username,
+      email: user.email,
+      full_name: user.full_name,
+      followers: userResults?.follower_count,
+      following: userResults?.following_count,
+      is_verified: userResults?.is_verified,
+      biography: userResults?.biography,
+      start_time: getStartingDay(),
+      posts: userResults?.media_count,
+      subscribed: true
+    }
+
+    if (userIsNew) {
+      if (!user) {
+        setIsModalOpen(true);
+        setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
+        setLoading(false);
+        return;
+      }
+
+      // console.log({ data });
+
+      const updateUser = await supabase
+        .from("users")
+        .update(data).eq('id', user.id);
+      if (updateUser?.error) {
+        console.log(updateUser.error);
+        setIsModalOpen(true);
+        setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
+
+        return;
+      }
+    } else {
+      const addAccount = await supabase.from("users").insert({ ...data, user_id: user.id });
+      if (addAccount?.error) {
+        console.log(addAccount.error);
+        setIsModalOpen(true);
+        setErrorMsg({ title: 'Alert', message: `Error adding new account` })
+      }
+    }
+
+    let sendEmail = await axios.post(`${BACKEND_URL}/api/send_email`, { email: user?.email, subject: "Your account is not connected", htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name) }).catch(err => err)
+    if (sendEmail.status !== 200) {
+      console.log(sendEmail);
+    }
+
+    const ref = getRefCode()
+    if (ref) {
+      navigate(`/thankyou?ref=${ref}`)
+    } else {
+      navigate(`/thankyou`)
+    }
+    setLoading(false);
+  }
+
+  const elementOptions = {
+    style: {
+      base: {
+        iconColor: '#c4f0ff',
+        color: '#000',
+        fontWeight: '500',
+        fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+        fontSize: '16px',
+        fontSmoothing: 'antialiased',
+        ':-webkit-autofill': {
+          color: '#fce883',
+        },
+        '::placeholder': {
+          color: '#87BBFD',
+        },
+      },
+      invalid: {
+        iconColor: '#f00',
+        color: '#f00',
+      },
+    },
   };
 
   return (<>
@@ -901,40 +848,9 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
         // await handleCardPay(setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard);
         await handleCardPay();
       }}
-      id="cardForm">
-
-      <CardComponent
-        ref={cardRef}
-        className="fieldset field"
-        onChange={() => { }}
-        styles={styles}
-        locale={'en'}
-        placeholder={'placeholder'}
-        fonts={fonts}
-      >
-        <div className="ex1-field shadow-[0_2px_4px_#00000026] rounded-[8px] px-5 py-6 text-sm bg-[#f8f8f8] font-[500] transition-all duration-280 ease mb-5" id='num'>
-          <CardNumber className="ex1-input"
-            // onFocus={(e) => { console.log(e) }} onBlur={(e) => { console.log(e) }}
-            onChange={(e) => { }} />
-          {/* <label className="ex1-label font-MontserratLight">Card Number</label><i className="ex1-bar"></i> */}
-        </div>
-
-        <div className="flex items-center gap-4 mb-5 ex1-fields">
-          <div className="ex1-field w-full shadow-[0_2px_4px_#00000026] rounded-[8px] px-5 py-6 text-sm bg-[#f8f8f8] font-[500] transition-all duration-280 ease">
-            <CardExpiry className="ex1-input"
-              // onFocus={(e) => { console.log(e) }} onBlur={(e) => { console.log(e) }}
-              onChange={(e) => { }} />
-            {/* <label className="ex1-label font-MontserratLight">Expiry</label><i className="ex1-bar"></i> */}
-          </div>
-
-          <div className="ex1-field w-full shadow-[0_2px_4px_#00000026] rounded-[8px] px-5 py-6 text-sm bg-[#f8f8f8] font-[500] transition-all duration-280 ease">
-            <CardCVV className="ex1-input"
-              // onFocus={(e) => { console.log(e) }} onBlur={(e) => { console.log(e) }}
-              onChange={(e) => { }} />
-            {/* <label className="ex1-label font-MontserratLight">CVC</label><i className="ex1-bar"></i> */}
-          </div>
-        </div>
-      </CardComponent>
+      id="cardForm"
+    >
+      <CardElement options={elementOptions} />
     </form>
 
     <div className={`${addCard ? "block" : "hidden lg:block"}`}>
