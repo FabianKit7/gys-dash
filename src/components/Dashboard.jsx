@@ -749,7 +749,7 @@ export default function Dashboard() {
             />}
           </div>
 
-          <div className="w-full lg:hidden">
+          <div className="w-full hidden">
             <div className="shadow-[0_0_3px_#00000040] rounded-[10px] p-5 relative">
               <span className="absolute cursor-pointer top-5 right-5 group">
                 <div className="flex items-center">
@@ -800,11 +800,11 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="mt-[10px] gap-[10px] flex flex-col items-center">
-                <Link to="https://calendly.com/sproutysocial/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <Link to="https://calendly.com/liftinfluence/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BsHeadset size={18} className="mr-1" />
                   <span>Schedule A Call</span>
                 </Link>
-                <a href="mailto:analyst@sproutysocial.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <a href="mailto:analyst@liftinfluence.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BiMessageSquareDots size={18} className="mr-1" />
                   <span>Send An Email</span>
                 </a>
@@ -819,7 +819,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="hidden my-10 lg:block">
+          <div className="hidden my-10 ">
             <div>
               <div
                 className="p-[35px] relative rounded-[10px] w-[450px]"
@@ -872,11 +872,11 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="mt-[10px] gap-[10px] flex items-center">
-                <Link to="https://calendly.com/sproutysocial/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <Link to="https://calendly.com/liftinfluence/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BsHeadset size={18} className="mr-1" />
                   <span>Schedule A Call</span>
                 </Link>
-                <a href="mailto:analyst@sproutysocial.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <a href="mailto:analyst@liftinfluence.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BiMessageSquareDots size={18} className="mr-1" />
                   <span>Send An Email</span>
                 </a>

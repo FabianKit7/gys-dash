@@ -255,6 +255,7 @@ export default function Settings() {
           chargebeeCustomerData={chargebeeCustomerData}
         />
 
+        {/* 
         <div className={`${cancelModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} fixed top-0 left-0 w-full h-screen grid place-items-center`} style={{
           transition: "opacity .15s ease-in"
         }}
@@ -279,6 +280,35 @@ export default function Settings() {
               <BsFillEnvelopeFill />
               Send an email
             </a>
+          </div>
+        </div> */}
+
+        <div className={`${cancelModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} fixed top-0 left-0 w-full h-screen grid place-items-center`} style={{
+          transition: "opacity .15s ease-in"
+        }}
+        >
+          <div className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center" onClick={() => setCancelModal(false)}></div>
+          <div className="bg-white to-black py-4 md:py-7 md:pt-12 px-5 md:px-10 relative max-w-[300px] md:max-w-[500px] lg:max-w-[600px] font-MontserratRegular rounded-[10px]">
+            <FaTimesCircle className="absolute flex flex-col items-center top-3 right-3 cursor-pointer"
+              onClick={() => {
+                setCancelModal(false)
+              }} />
+            <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">Are you sure you want to cancel your subscription?</h1>
+
+            <div className="flex justify-center gap-4">
+              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3" onClick={() => {
+                setCancelModal(false)
+              }} >
+                {/* <BsFillEnvelopeFill /> */}
+                Close
+              </button>
+              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3" onClick={() => {
+                setCancelModal(false)
+              }} >
+                {/* <BsFillEnvelopeFill /> */}
+                Yes
+              </button>
+            </div>
           </div>
         </div>
       </div>

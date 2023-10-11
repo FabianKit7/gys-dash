@@ -114,6 +114,37 @@ body {
     content: '\ea3a';
 }
 
+.custom-select {
+    appearance: none;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #495057;
+}
+
+.custom-select:hover {
+    background-color: #e9ecef;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Hide the increment/decrement arrows for number input */
+.disableInc input[type=number]::-webkit-inner-spin-button,
+.disableInc input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.disableInc input[type=number] {
+    -moz-appearance: textfield;
+}
+
 ::after,
 ::before {
     border-width: 0;

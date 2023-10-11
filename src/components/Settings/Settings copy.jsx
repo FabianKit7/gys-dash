@@ -21,8 +21,8 @@ const urlEncode = function (data) {
 
 export default function Settings() {
   // const BASE_URL = "http://localhost:8000"
-  const BASE_URL = 'https://sproutysocial-api.onrender.com'
-  // const BASE_URL = 'https://sproutysocial-api.up.railway.app'
+  const BASE_URL = 'https://liftinfluence-api.onrender.com'
+  // const BASE_URL = 'https://liftinfluence-api.up.railway.app'
   const [supaData, setData] = useState("");
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
@@ -55,7 +55,7 @@ export default function Settings() {
   useEffect(() => {
     const fetch = async () => {
       window.Chargebee.init({
-        site: "sproutysocial",
+        site: "liftinfluence",
         // domain: 'app.liftinfluence.com',
         iframeOnly: true,
         publishableKey: "live_JtEKTrE7pAsvrOJar1Oc8zhdk5IbvWzE",

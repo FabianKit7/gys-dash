@@ -5,22 +5,46 @@ import { getRefCode } from "../helpers";
 import { supabase } from "../supabaseClient";
 import AlertModal from "./AlertModal";
 import PrimaryButton from "./PrimaryButton";
+import * as PhoneNumber from "libphonenumber-js";
 // import { BsFacebook } from "react-icons/bs";
+import countryCodes from "../CountryCodes.json"
+
+function isValidPhoneNumber(phoneNumber, countryCode) {
+  try {
+    const parsedNumber = PhoneNumber.parse(phoneNumber, countryCode);
+    return PhoneNumber.isValidNumber(parsedNumber);
+  } catch (error) {
+    return false;
+  }
+}
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState({ title: 'Alert', message: 'something went wrong' })
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [countryCode, setCountryCode] = useState({});
+  const [phone, setPhone] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
-
-
+  const [searchCountryTerm, setSearchCountryTerm] = useState('')
+  const [showCountriesList, setShowCountriesList] = useState(false)
   const navigate = useNavigate();
 
 
   const handleSignUp = async (e) => {
     e.preventDefault()
+    const phoneIsValid = isValidPhoneNumber((`${countryCode.dial_code}${phone}`), countryCode.code);
+    if (!phoneIsValid) {
+      setIsModalOpen(true);
+      setErrorMsg({
+        title: `Invalid phone number: `, message: `Phone number not valid for ${countryCode.name}`
+      })
+      return;
+    }
+    const phoneNumber = PhoneNumber.parsePhoneNumber(`${countryCode.dial_code}${phone}`)
+    var formattedPhone = phoneNumber.formatInternational()
+
     if (loading) return;
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
@@ -36,7 +60,7 @@ export default function SignUp() {
       return;
     }
 
-    const contd = await regContd(data?.user)
+    const contd = await regContd(data?.user, formattedPhone)
     if (contd?.status !== 200) {
       // alert(contd?.message)
       setIsModalOpen(true);
@@ -74,13 +98,14 @@ export default function SignUp() {
   //   setLoading(false);
   // }
 
-  const regContd = async (user) => {
+  const regContd = async (user, phone) => {
     if (user) {
       const { error } = await supabase
         .from("users")
         .insert({
           user_id: user?.id,
           full_name: fullName,
+          phone,
           email: email?.toLowerCase(),
           username: ''
         });
@@ -129,7 +154,7 @@ export default function SignUp() {
           <div className="mb-3 form-outline">
             <input
               type="text"
-              id="form2Example1"
+              id=""
               className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
               value={fullName}
               placeholder="Full Name"
@@ -137,10 +162,90 @@ export default function SignUp() {
               onChange={({ target }) => setFullName(target.value)}
             />
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div className="mb-3 form-outline rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] flex items-center gap-3 disableInc">
+            <div className="relative">
+              <div className="cursor-pointer custom-select" onClick={() => {
+                setShowCountriesList(!showCountriesList)
+              }}>{countryCode.dial_code}</div>
+
+              <div className={`${showCountriesList ? "pointer-events-auto h-auto opacity-100" : "pointer-events-none h-0 opacity-0"} absolute z-50 bg-white shadow-2xl top-full left-0 max-h-[40vh] rounded-lg pb-1 overflow-hidden transition-all`}>
+                <div className="h-[20%]">
+                  <input
+                    type="search"
+                    placeholder="seach by country name"
+                    className="h-[40px] rounded-lg my-3 mx-2 p-2 outline-none border border-gray-500" onChange={(e) => {
+                      const val = e.target.value;
+                      if (!val) {
+                        setSearchCountryTerm('')
+                      }
+
+                      setTimeout(() => {
+                        setSearchCountryTerm(e.target.value)
+                      }, 1000);
+                    }} />
+                </div>
+
+                <div className="max-h-[250px] h-[250px] overflow-auto">
+                  {countryCodes.filter(c => c.name.toLowerCase().startsWith(searchCountryTerm.toLowerCase())).map(country => <div key={`country_code-${country.name}`}
+                    className="flex gap-3 p-2 cursor-pointer hover:bg-blue-100/50"
+                    onClick={() => {
+                      setCountryCode(country);
+                      setShowCountriesList(false)
+                    }}>
+                    <div className="">{country.name}</div>
+                    <div className="">{country.dial_code}</div>
+                  </div>)}
+                </div>
+              </div>
+            </div>
+
+            <input
+              type="number"
+              pattern="[0-9]*"
+              id=""
+              className="outline-none border-none "
+              value={phone}
+              placeholder="phone number"
+              required
+              onChange={({ target }) => setPhone(target.value)}
+            />
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <div className="mb-3 form-outline">
             <input
               type="email"
-              id="form2Example1"
+              id=""
               className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
               value={email}
               placeholder="Email Address"

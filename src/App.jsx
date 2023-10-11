@@ -36,7 +36,7 @@ function App() {
       function () {
         // console.log('Tracking code initialized');
       },
-      { cookie_domain: '.sproutysocial.com', always_callback: true }, // detectOptions with always_callback set to true to ensure detectCallback is always called
+      { cookie_domain: '.liftinfluence.com', always_callback: true }, // detectOptions with always_callback set to true to ensure detectCallback is always called
       function (error, result) {
         // console.log("error: ", error);
         // console.log('Click tracked successfully');
