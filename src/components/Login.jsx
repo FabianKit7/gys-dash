@@ -131,7 +131,7 @@ export default function Login() {
             <input
               type="email"
               id="form2Example1"
-              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
+              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] outline-none"
               value={email}
               placeholder="Email Address"
               onChange={({ target }) => setEmail(target.value)}
@@ -141,8 +141,8 @@ export default function Login() {
           <div className="form-outline">
             <input
               type="password"
-              id="form2Example2"
-              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
+              id=""
+              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] outline-none"
               value={password}
               placeholder="Password"
               onChange={({ target }) => setPassword(target.value)}

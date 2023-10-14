@@ -202,7 +202,7 @@ export default function ConnectAccount({ show, setShow, user, message, setMessag
                         <div className="relative form-outline">
                             <input
                                 type={showPassword ? 'text' : 'password'}
-                                id="form2Example2"
+                                id=""
                                 className="rounded-[5px] h-[52px] px-4 pr-10 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
                                 // value={password}
                                 placeholder="Password"
@@ -261,7 +261,7 @@ export default function ConnectAccount({ show, setShow, user, message, setMessag
                         <div className="relative form-outline">
                             <input
                                 type="text"
-                                id="form2Example2"
+                                id=""
                                 className="rounded-[5px] h-[52px] px-4 pr-10 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
                                 // value={password}
                                 placeholder="Verification code"
@@ -292,7 +292,7 @@ export default function ConnectAccount({ show, setShow, user, message, setMessag
                         <div className="relative form-outline">
                             <input
                                 type="text"
-                                id="form2Example2"
+                                id=""
                                 className="rounded-[5px] h-[52px] px-4 pr-10 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
                                 // value={password}
                                 placeholder="Verification code"

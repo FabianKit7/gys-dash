@@ -74,7 +74,7 @@ export default function AdminLogin() {
                     <div className="form-outline mb-4">
                         <input
                             type="password"
-                            id="form2Example2"
+                            id=""
                             className="bg-inputbkgrd rounded-[10px] py-4 px-4 w-80"
                             value={password}
                             placeholder="Password"
