@@ -728,6 +728,9 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
               setIsModalOpen(true);
               setErrorMsg({ title: 'Failed to create subscription', message: 'An error occured while creating your subscription' })
             }
+          }else{
+            await continueToSupabase(userIsNew, createSubscription.data.subscription)
+            setLoading(false);
           }
         }
       } catch (error) {
