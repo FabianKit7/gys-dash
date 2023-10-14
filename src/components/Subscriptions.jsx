@@ -123,7 +123,6 @@ export default function Subscriptions() {
       <div id="affiliateScript"></div>
       {/* <CrispChat /> */}
 
-      <script src="https://js.chargebee.com/v2/chargebee.js"></script>
 
       <div className="text-[#757575] relative bg-[#f8f8f8]">
         <div className="max-w-[1600px] mx-auto">
