@@ -152,9 +152,7 @@ export default function SignUp() {
       message={errorMsg?.message}
     />
 
-    <div id="affiliateScript"></div>
-
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="md:flex flex-col items-center justify-center h-screen py-4 md:py-0">
       <div className="md:p-10 md:shadow-lg rounded-[10px] w-full md:w-[458px]">
         <div className="flex flex-col items-center justify-center">
           <div className="font-MADEOKINESANSPERSONALUSE text-[28px]">
@@ -163,7 +161,7 @@ export default function SignUp() {
           <hr className="mt-1 md:mb-7 w-full border-primary" />
 
           <h5 className="font-semibold text-[2rem] text-center text-black font-MontserratSemiBold mt-[30px]">Partner With Us</h5>
-          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Join more than <span className="font-bold">3,000</span> users that trust Liftinfluence to grow on Instagram. <br className="md:hidden" /> Create an account.</p>
+          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Join more than <span className="font-bold">3,000</span> users that trust LiftInfluence to grow on Instagram. <br className="md:hidden" /> Create an account.</p>
         </div>
 
         <form action="" className="flex flex-col items-center justify-start" onSubmit={handleSignUp}>
@@ -180,7 +178,7 @@ export default function SignUp() {
           </div>
 
 
-          <div className="flex items-center justify-between gap-3 w-full mb-3 max-w-[320px]">
+          <div className="flex items-center justify-between gap-3 mb-3 w-72 md:w-80">
             <div className="w-[30%] h-[52px] rounded-[5px] px-4 border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] grid place-items-center">
               <div className="relative">
                 <div className="cursor-pointer flex items-center justify-evenly gap-2" onClick={() => {
@@ -297,46 +295,9 @@ export default function SignUp() {
             Already have an account? <Link to="/login"><span className="font-MontserratSemiBold text-black">Sign in</span></Link>
           </p>
         </div>
-
-        {/* signup with oAuth */}
-
-        {/* <div className="relative items-center justify-center hidden my-8 del-flex">
-          <hr className="w-full" />
-          <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] px-4 bg-white text-black">OR</div>
-        </div>
-
-        <div className="flex items-center justify-center mt-8 mb-[12px]">
-          <button
-            onClick={() => handleOAuthSignIn('google')}
-            type="button"
-            className="flex items-center justify-center gap-2 font-MontserratSemiBold text-[16px] rounded-[5px] h-[52px] px-6 w-72 md:w-80 font-semibold bg-white text-black"
-            style={{
-              border: '1px solid #ef5f3c',
-              color: 'white',
-              boxShadow: '0 10px 30px -12px rgb(255 132 102 / 47%)'
-            }}
-          >
-            <FcGoogle />
-            <span>Continue with Google</span>
-          </button>
-        </div>
-
-        <div className="flex items-center justify-center mt-8 mb-[12px]">
-          <button
-            onClick={() => handleOAuthSignIn('facebook')}
-            type="button"
-            className="flex items-center justify-center gap-2 font-MontserratSemiBold text-[16px] rounded-[5px] h-[52px] px-6 w-72 md:w-80 font-semibold bg-white text-black"
-            style={{
-              border: '1px solid #ef5f3c',
-              color: 'white',
-              boxShadow: '0 10px 30px -12px rgb(255 132 102 / 47%)'
-            }}
-          >
-            <BsFacebook />
-            <span>Continue with Facebook</span>
-          </button>
-        </div> */}
       </div>
+      <br />
+      <br />
     </div>
   </>
   );

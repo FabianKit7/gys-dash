@@ -1491,7 +1491,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
 
 const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
   const [total, setTotal] = useState({ whitelist: 0, blacklist: 0 })
-  const [pageProp, setPageProp] = useState({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue following that were followed by Liftinfluence. We will never unfollow anyone you manually followed.' })
+  const [pageProp, setPageProp] = useState({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue following that were followed by LiftInfluence. We will never unfollow anyone you manually followed.' })
   const [showPageModal, setShowPageModal] = useState(false)
   const [targetingAccounts, setTargetingAccounts] = useState([]);
   const [addSuccess, setAddSuccess] = useState(false);
@@ -1549,7 +1549,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
               }}>
                 <div className="font-bold font-MontserratBold text-[26px] flex items-center cursor-pointer h-[60px] rounded-[10px] px-6 hover:bg-[#f8f8f8]"
                   onClick={() => {
-                    setPageProp({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue followingthat were followed by Liftinfluence. We will never unfollow anyone you manually followed.' })
+                    setPageProp({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue followingthat were followed by LiftInfluence. We will never unfollow anyone you manually followed.' })
                     setShowPageModal(false)
                   }}>
                   Whitelist
