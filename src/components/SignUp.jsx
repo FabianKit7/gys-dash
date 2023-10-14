@@ -33,17 +33,6 @@ export default function SignUp() {
   const [showCountriesList, setShowCountriesList] = useState(false)
   const navigate = useNavigate();
 
-  function countryCodeToFlag(countryCode) {
-    const base = 127397; // Offset code for regional indicator symbols
-    const flagEmoji = countryCode
-      .toUpperCase()
-      .split('')
-      .map(char => String.fromCodePoint(char.charCodeAt(0) + base))
-      .join('');
-
-    return flagEmoji;
-  }
-
   useEffect(() => {
     const fetchUserCountry = async () => {
       try {
@@ -213,7 +202,7 @@ export default function SignUp() {
                   <div className="h-[20%]">
                     <input
                       type="search"
-                      placeholder="seach by country name"
+                      placeholder="Search by Country"
                       className="h-[40px] rounded-lg my-3 mx-2 p-2 outline-none border border-gray-500" onChange={(e) => {
                         const val = e.target.value;
                         if (!val) {
@@ -228,13 +217,20 @@ export default function SignUp() {
 
                   <div className="max-h-[250px] h-[250px] overflow-auto">
                     {countryCodes.filter(c => c.name.toLowerCase().startsWith(searchCountryTerm.toLowerCase())).map(country => <div key={`country_code-${country.name}`}
-                      className="flex gap-3 p-2 cursor-pointer hover:bg-blue-100/50"
+                      className="flex gap-3 p-2 cursor-pointer hover:bg-blue-100/50 "
                       onClick={() => {
                         setCountryCode(country);
                         setShowCountriesList(false)
                       }}>
-                      <div className="">{country.name}</div>
-                      <div className="">{country.dial_code}</div>
+                      <div className="min-w-[35%] flex items-center gap-1">
+                        <TinyFlag
+                          country={country?.code || ''}
+                          alt={`${country?.namee || ''} Flag`}
+                          fallbackImageURL={`https://cdn.jsdelivr.net/npm/react-flagkit@1.0.2/img/SVG/${country?.code || ''}.svg`}
+                        />
+                        <div className="">({country.dial_code})</div>
+                      </div>
+                      <div className="w-full">{country.name}</div>
                     </div>)}
                   </div>
                 </div>

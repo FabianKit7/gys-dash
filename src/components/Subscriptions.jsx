@@ -11,7 +11,7 @@ import AlertModal from './AlertModal'
 import { getRefCode } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BACKEND_URL, LOGO, NOT_CONNECTED_TEMPLATE, PRICE_ID, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "../config";
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { useStripe, useElements, CardElement, AddressElement } from '@stripe/react-stripe-js';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -728,7 +728,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
               setIsModalOpen(true);
               setErrorMsg({ title: 'Failed to create subscription', message: 'An error occured while creating your subscription' })
             }
-          }else{
+          } else {
             await continueToSupabase(userIsNew, createSubscription.data.subscription)
             setLoading(false);
           }
@@ -830,12 +830,10 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
   };
 
   return (<>
-    <div className={`ex1-field shadow-[0_2px_4px_#00000026] rounded-[8px] px-5 py-6 text-sm ${mobile ? 'placeholder-[#333]' : 'placeholder-[#757575]'} bg-[#f8f8f8] font-[500] transition-all duration-280 ease mb-5`} id='num'>
+    {/* <div className={`ex1-field shadow-[0_2px_4px_#00000026] rounded-[8px] px-5 py-6 text-sm ${mobile ? 'placeholder-[#333]' : 'placeholder-[#757575]'} bg-[#f8f8f8] font-[500] transition-all duration-280 ease mb-5`} id='num'>
       <input type="text" className="w-full bg-transparent border-none outline-none" placeholder="Name on Card" value={nameOnCard}
-        // onFocus={(e) => { console.log(e) }} onBlur={(e) => { console.log(e) }}
         onChange={(e) => { setNameOnCard(e.target.value) }} />
-      {/* <label className="ex1-label font-MontserratLight">Card Number</label><i className="ex1-bar"></i> */}
-    </div>
+    </div> */}
 
     <form
       onSubmit={async (e) => {
@@ -850,9 +848,47 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
         await handleCardPay();
       }}
       id="cardForm"
-      className="shadow-[0_2px_4px_#00000026] rounded-[8px] px-3 py-6"
+      className=""
     >
-      <CardElement options={elementOptions} />
+      <div className="shadow-[0_2px_4px_#00000026] rounded-[8px] px-3 py-6 mb-5">
+        <AddressElement
+          options={{
+            mode: 'billing',
+            style: {
+              TabLabel: {
+                color: '#fff'
+              },
+            },
+            TabLabel: {
+              color: '#fff'
+            },
+            defaultValues: {
+              name: user?.full_name || ''
+            }
+            // autocomplete: {
+            //   mode: "google_maps_api",
+            //   apiKey: "{YOUR_GOOGLE_MAPS_API_KEY}",
+            // },
+          }}
+          onChange={(event) => {
+            if (event.complete) {
+              // Extract potentially complete address
+              // const address = event.value.address;
+              const name = event.value.name;
+              // console.log("event.value");
+              // console.log(event.value);
+              // console.log(address);
+              setNameOnCard(name)
+              // const oneLineAddress = `${address.line1}, ${address.line2}, ${address.city}, ${address.state}, ${address.country} ${address.postal_code}`;
+
+              // setAddress(oneLineAddress)
+            }
+          }}
+        />
+      </div>
+      <div className="shadow-[0_2px_4px_#00000026] rounded-[8px] px-3 py-6">
+        <CardElement options={elementOptions} />
+      </div>
     </form>
 
     <div className={`${addCard ? "block" : "hidden lg:block"}`}>
