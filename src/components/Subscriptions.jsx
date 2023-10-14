@@ -10,7 +10,7 @@ import { FaAngleLeft } from "react-icons/fa";
 import AlertModal from './AlertModal'
 import { getRefCode } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { BACKEND_URL, LOGO, NOT_CONNECTED_TEMPLATE, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "../config";
+import { BACKEND_URL, LOGO, NOT_CONNECTED_TEMPLATE, PRICE_ID, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "../config";
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -688,13 +688,14 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
 
         // const { id } = paymentMethod;
         // console.log("paymentMethod: ");
-        // console.log(paymentMethod);
+        console.log("paymentMethod");
+        console.log(paymentMethod);
         if (paymentMethod?.id) {
           let createSubscription = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription`, {
             name: nameOnCard,
             email: user?.email,
             paymentMethod: paymentMethod.id,
-            price: 'price_1NoYJZFl4zfP5z2zdDBGKlts'
+            price: PRICE_ID
           }
           ).catch(err => {
             console.error(err)
