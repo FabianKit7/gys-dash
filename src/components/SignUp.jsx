@@ -9,7 +9,6 @@ import * as PhoneNumber from "libphonenumber-js";
 // import { BsFacebook } from "react-icons/bs";
 import countryCodes from "../CountryCodes.json"
 import axios from "axios";
-import { FaAngleDown } from "react-icons/fa";
 import TinyFlag from "tiny-flag-react";
 
 function isValidPhoneNumber(phoneNumber, countryCode) {
@@ -33,7 +32,6 @@ export default function SignUp() {
   const [searchCountryTerm, setSearchCountryTerm] = useState('')
   const [showCountriesList, setShowCountriesList] = useState(false)
   const navigate = useNavigate();
-  const [cFlag, setCFlag] = useState('')
 
   function countryCodeToFlag(countryCode) {
     const base = 127397; // Offset code for regional indicator symbols
@@ -51,11 +49,7 @@ export default function SignUp() {
       try {
         const response = await axios.get('https://ipinfo.io?token=3ca9e388b8033f');
         const { country } = response.data;
-        // console.log("response.data");
-        // console.log(response.data);
-        setCFlag(countryCodeToFlag(country));
         setCountryCode(countryCodes.find(c => c.code === country));
-        // setUserCountry(country);
       } catch (error) {
         console.error('Error fetching user country:', error);
       }
@@ -177,10 +171,10 @@ export default function SignUp() {
           <div className="font-MADEOKINESANSPERSONALUSE text-[28px]">
             <img src="/liftinf-logo-with-name.svg" alt="" className="w-[220px]" />
           </div>
-          <hr className="mb-7 w-full border-primary" />
+          <hr className="mt-1 md:mb-7 w-full border-primary" />
 
           <h5 className="font-semibold text-[2rem] text-center text-black font-MontserratSemiBold mt-[30px]">Partner With Us</h5>
-          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Join more than <span className="font-bold">25,000</span> users that trust Liftinfluence to grow on Instagram. <br className="md:hidden" /> Create an account.</p>
+          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Join more than <span className="font-bold">3,000</span> users that trust Liftinfluence to grow on Instagram. <br className="md:hidden" /> Create an account.</p>
         </div>
 
         <form action="" className="flex flex-col items-center justify-start" onSubmit={handleSignUp}>
@@ -254,7 +248,7 @@ export default function SignUp() {
                 id=""
                 className="outline-none border-none w-full"
                 value={phone}
-                placeholder="phone number"
+                placeholder="Phone Number"
                 required
                 onChange={({ target }) => setPhone(target.value)}
               />

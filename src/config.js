@@ -11,6 +11,10 @@ export const X_RAPID_API_KEY = process.env.REACT_APP_X_RAPID_API_KEY
 
 
 // export const BACKEND_URL = process.env.REACT_APP_BASE_URL;
+// export const STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+// export const PRICE_ID = "price_1O19OjCnqUVSKo0r00jGNiwV"
+
+
 export const BACKEND_URL = process.env.NODE_ENV !== 'production' ? "http://localhost:8000" : process.env.REACT_APP_BASE_URL;
 export const STRIPE_PUBLISHABLE_KEY = process.env.NODE_ENV !== 'production' ? "pk_test_51NxVGcCnqUVSKo0rSv7GutaMAUUrmXeYBFhQMI4nMzyfEiQGka6b8GryR3ESbSegoibBeK9F2TF6eoNCWrAeJzOb00DAPmHDiu" : process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 

@@ -673,11 +673,10 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
       const cardElement = elements.getElement(CardElement);
 
       try {
-        const { error, paymentMethod }
-          = await stripe.createPaymentMethod({
-            type: "card",
-            card: cardElement,
-          });
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+          type: "card",
+          card: cardElement,
+        });
         if (error) {
           // setError(error.message);
           setIsModalOpen(true);
@@ -685,11 +684,8 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           setLoading(false);
           return;
         }
-
-        // const { id } = paymentMethod;
-        // console.log("paymentMethod: ");
-        console.log("paymentMethod");
-        console.log(paymentMethod);
+        // console.log("paymentMethod");
+        // console.log(paymentMethod);
         if (paymentMethod?.id) {
           let createSubscription = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription`, {
             name: nameOnCard,
@@ -712,24 +708,26 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
             return;
           }
 
-          const confirm = await stripe.confirmCardPayment(createSubscription?.data?.clientSecret)
-          console.log("confirmCardPayment");
-          console.log(confirm);
-          if (confirm.error) {
-            setIsModalOpen(true);
-            setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${confirm.error.message}` })
-            setLoading(false);
-            return;
-          }
+          if (createSubscription?.data?.clientSecret) {
+            const confirm = await stripe.confirmCardPayment(createSubscription?.data?.clientSecret)
+            console.log("confirmCardPayment");
+            console.log(confirm);
+            if (confirm.error) {
+              setIsModalOpen(true);
+              setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${confirm.error.message}` })
+              setLoading(false);
+              return;
+            }
 
-          if (confirm?.paymentIntent?.status === "succeeded" && createSubscription?.data?.message === "Subscription successful!") {
-            await continueToSupabase(userIsNew, createSubscription.data.subscription)
-            setLoading(false);
-          } else {
-            console.log("createSubscription error");
-            console.log(createSubscription);
-            setIsModalOpen(true);
-            setErrorMsg({ title: 'Failed to create subscription', message: 'An error occured while creating your subscription' })
+            if (confirm?.paymentIntent?.status === "succeeded" && createSubscription?.data?.message === "Subscription successful!") {
+              await continueToSupabase(userIsNew, createSubscription.data.subscription)
+              setLoading(false);
+            } else {
+              console.log("createSubscription error");
+              console.log(createSubscription);
+              setIsModalOpen(true);
+              setErrorMsg({ title: 'Failed to create subscription', message: 'An error occured while creating your subscription' })
+            }
           }
         }
       } catch (error) {

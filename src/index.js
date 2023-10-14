@@ -12,6 +12,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { STRIPE_PUBLISHABLE_KEY } from "./config";
 
+console.log("STRIPE_PUBLISHABLE_KEY");
+console.log(STRIPE_PUBLISHABLE_KEY);
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY)
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
