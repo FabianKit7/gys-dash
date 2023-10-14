@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { FaTimes, FaTimesCircle } from "react-icons/fa";
-import { BsFillEnvelopeFill, BsTrash3 } from "react-icons/bs";
+import { BsTrash3 } from "react-icons/bs";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import Nav from "../Nav";
 import ChangeModal from "./ChangeModal";
 import axios from "axios";
 import InfiniteRangeSlider from "../InfiniteRangeSlider";
-import { BACKEND_URL, EMAIL } from "../../config";
+import { BACKEND_URL } from "../../config";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
