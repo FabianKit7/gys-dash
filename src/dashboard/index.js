@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
 import { deleteUserDetails, updateUserProfilePicUrl } from '../helpers';
 import { TbRefresh } from 'react-icons/tb'
+import { BACKEND_URL } from '../config';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -816,7 +817,6 @@ export const Chargebee = ({ k, user, setShowChargebee }) => {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [message, setMessage] = useState('')
 
-  const baseUrl = 'https://liftinfluence-api.up.railway.app'
   // console.log(user);
   useEffect(() => {
     const fetch = async () => {
@@ -827,7 +827,7 @@ export const Chargebee = ({ k, user, setShowChargebee }) => {
 
       // console.log(currentUser?.email);
       if (user?.email) {
-        let customer = await axios.post(`${baseUrl}/api/customer_list`,
+        let customer = await axios.post(`${BACKEND_URL}/api/customer_list`,
           urlEncode({ email: user?.email }))
           .then((response) => response.data)
         // console.log(user?.email)
@@ -835,7 +835,7 @@ export const Chargebee = ({ k, user, setShowChargebee }) => {
         setCustomer(customer)
 
         if (customer?.id) {
-          let subscription = await axios.post(`${baseUrl}/api/subscription_list`,
+          let subscription = await axios.post(`${BACKEND_URL}/api/subscription_list`,
             urlEncode({ customer_id: customer?.id }))
             .then((response) => response.data)
           // console.log(subscription)

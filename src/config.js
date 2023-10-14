@@ -6,14 +6,13 @@ export const ANALYST_NAME = "Mike P"
 export const EMAIL = "hello@liftinfluence.com"
 
 export const SCRAPER_API_URL = "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile"
-export const X_RAPID_API_KEY = '47e2a82623msh562f6553fe3aae6p10b5f4jsn431fcca8b82e'
 export const X_RAPID_API_HOST = 'instagram-bulk-profile-scrapper.p.rapidapi.com'
+export const X_RAPID_API_KEY = process.env.REACT_APP_X_RAPID_API_KEY
 
 
-// export const BACKEND_URL = process.env.NODE_ENV === 'production' ? 'https://liftinfluence-api.up.railway.app' : 'http://localhost:8000';
-
-// export const BACKEND_URL = process.env.NODE_ENV !== 'production' ? "http://localhost:8000" : process.env.REACT_APP_BASE_URL;
-export const BACKEND_URL = process.env.REACT_APP_BASE_URL;
+// export const BACKEND_URL = process.env.REACT_APP_BASE_URL;
+export const BACKEND_URL = process.env.NODE_ENV !== 'production' ? "http://localhost:8000" : process.env.REACT_APP_BASE_URL;
+export const STRIPE_PUBLISHABLE_KEY = process.env.NODE_ENV !== 'production' ? "pk_test_51NxVGcCnqUVSKo0rSv7GutaMAUUrmXeYBFhQMI4nMzyfEiQGka6b8GryR3ESbSegoibBeK9F2TF6eoNCWrAeJzOb00DAPmHDiu" : process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 
 
 // email templates

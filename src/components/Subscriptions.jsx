@@ -848,6 +848,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
         await handleCardPay();
       }}
       id="cardForm"
+      className="shadow-[0_2px_4px_#00000026] rounded-[8px] px-3 py-6"
     >
       <CardElement options={elementOptions} />
     </form>

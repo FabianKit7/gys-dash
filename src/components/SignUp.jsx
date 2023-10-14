@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { getRefCode } from "../helpers";
@@ -8,6 +8,9 @@ import PrimaryButton from "./PrimaryButton";
 import * as PhoneNumber from "libphonenumber-js";
 // import { BsFacebook } from "react-icons/bs";
 import countryCodes from "../CountryCodes.json"
+import axios from "axios";
+import { FaAngleDown } from "react-icons/fa";
+import TinyFlag from "tiny-flag-react";
 
 function isValidPhoneNumber(phoneNumber, countryCode) {
   try {
@@ -30,6 +33,36 @@ export default function SignUp() {
   const [searchCountryTerm, setSearchCountryTerm] = useState('')
   const [showCountriesList, setShowCountriesList] = useState(false)
   const navigate = useNavigate();
+  const [cFlag, setCFlag] = useState('')
+
+  function countryCodeToFlag(countryCode) {
+    const base = 127397; // Offset code for regional indicator symbols
+    const flagEmoji = countryCode
+      .toUpperCase()
+      .split('')
+      .map(char => String.fromCodePoint(char.charCodeAt(0) + base))
+      .join('');
+
+    return flagEmoji;
+  }
+
+  useEffect(() => {
+    const fetchUserCountry = async () => {
+      try {
+        const response = await axios.get('https://ipinfo.io?token=3ca9e388b8033f');
+        const { country } = response.data;
+        // console.log("response.data");
+        // console.log(response.data);
+        setCFlag(countryCodeToFlag(country));
+        setCountryCode(countryCodes.find(c => c.code === country));
+        // setUserCountry(country);
+      } catch (error) {
+        console.error('Error fetching user country:', error);
+      }
+    };
+
+    fetchUserCountry();
+  }, []);
 
 
   const handleSignUp = async (e) => {
@@ -139,7 +172,7 @@ export default function SignUp() {
     <div id="affiliateScript"></div>
 
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="p-5 md:p-10 md:shadow-lg rounded-[10px] w-full md:w-[458px]">
+      <div className="md:p-10 md:shadow-lg rounded-[10px] w-full md:w-[458px]">
         <div className="flex flex-col items-center justify-center">
           <div className="font-MADEOKINESANSPERSONALUSE text-[28px]">
             <img src="/liftinf-logo-with-name.svg" alt="" className="w-[220px]" />
@@ -155,7 +188,7 @@ export default function SignUp() {
             <input
               type="text"
               id=""
-              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
+              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] outline-none"
               value={fullName}
               placeholder="Full Name"
               required
@@ -164,89 +197,76 @@ export default function SignUp() {
           </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <div className="mb-3 form-outline rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] flex items-center gap-3 disableInc">
-            <div className="relative">
-              <div className="cursor-pointer custom-select" onClick={() => {
-                setShowCountriesList(!showCountriesList)
-              }}>{countryCode.dial_code}</div>
-
-              <div className={`${showCountriesList ? "pointer-events-auto h-auto opacity-100" : "pointer-events-none h-0 opacity-0"} absolute z-50 bg-white shadow-2xl top-full left-0 max-h-[40vh] rounded-lg pb-1 overflow-hidden transition-all`}>
-                <div className="h-[20%]">
-                  <input
-                    type="search"
-                    placeholder="seach by country name"
-                    className="h-[40px] rounded-lg my-3 mx-2 p-2 outline-none border border-gray-500" onChange={(e) => {
-                      const val = e.target.value;
-                      if (!val) {
-                        setSearchCountryTerm('')
-                      }
-
-                      setTimeout(() => {
-                        setSearchCountryTerm(e.target.value)
-                      }, 1000);
-                    }} />
+          <div className="flex items-center justify-between gap-3 w-full mb-3 max-w-[320px]">
+            <div className="w-[30%] h-[52px] rounded-[5px] px-4 border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] grid place-items-center">
+              <div className="relative">
+                <div className="cursor-pointer flex items-center justify-evenly gap-2" onClick={() => {
+                  setShowCountriesList(!showCountriesList)
+                }}>
+                  <div className="w-4 h-auto">
+                    <TinyFlag
+                      country={countryCode?.code || ''}
+                      alt={`${countryCode?.namee || ''} Flag`}
+                      fallbackImageURL={`https://cdn.jsdelivr.net/npm/react-flagkit@1.0.2/img/SVG/${countryCode?.code || ''}.svg`}
+                    />
+                  </div>
+                  <div className="text-xs">
+                    {countryCode.dial_code}
+                  </div>
                 </div>
 
-                <div className="max-h-[250px] h-[250px] overflow-auto">
-                  {countryCodes.filter(c => c.name.toLowerCase().startsWith(searchCountryTerm.toLowerCase())).map(country => <div key={`country_code-${country.name}`}
-                    className="flex gap-3 p-2 cursor-pointer hover:bg-blue-100/50"
-                    onClick={() => {
-                      setCountryCode(country);
-                      setShowCountriesList(false)
-                    }}>
-                    <div className="">{country.name}</div>
-                    <div className="">{country.dial_code}</div>
-                  </div>)}
+                <div className={`${showCountriesList ? "pointer-events-auto h-auto opacity-100" : "pointer-events-none h-0 opacity-0"} absolute z-50 bg-white shadow-2xl top-full left-0 max-h-[40vh] rounded-lg pb-1 overflow-hidden transition-all`}>
+                  <div className="h-[20%]">
+                    <input
+                      type="search"
+                      placeholder="seach by country name"
+                      className="h-[40px] rounded-lg my-3 mx-2 p-2 outline-none border border-gray-500" onChange={(e) => {
+                        const val = e.target.value;
+                        if (!val) {
+                          setSearchCountryTerm('')
+                        }
+
+                        setTimeout(() => {
+                          setSearchCountryTerm(e.target.value)
+                        }, 1000);
+                      }} />
+                  </div>
+
+                  <div className="max-h-[250px] h-[250px] overflow-auto">
+                    {countryCodes.filter(c => c.name.toLowerCase().startsWith(searchCountryTerm.toLowerCase())).map(country => <div key={`country_code-${country.name}`}
+                      className="flex gap-3 p-2 cursor-pointer hover:bg-blue-100/50"
+                      onClick={() => {
+                        setCountryCode(country);
+                        setShowCountriesList(false)
+                      }}>
+                      <div className="">{country.name}</div>
+                      <div className="">{country.dial_code}</div>
+                    </div>)}
+                  </div>
                 </div>
               </div>
             </div>
 
-            <input
-              type="number"
-              pattern="[0-9]*"
-              id=""
-              className="outline-none border-none "
-              value={phone}
-              placeholder="phone number"
-              required
-              onChange={({ target }) => setPhone(target.value)}
-            />
+            <div className="w-full h-[52px] rounded-[5px] px-4 border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] flex items-center disableInc">
+              <input
+                type="number"
+                pattern="[0-9]*"
+                id=""
+                className="outline-none border-none w-full"
+                value={phone}
+                placeholder="phone number"
+                required
+                onChange={({ target }) => setPhone(target.value)}
+              />
+            </div>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
           <div className="mb-3 form-outline">
             <input
               type="email"
               id=""
-              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
+              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] outline-none"
               value={email}
               placeholder="Email Address"
               required
@@ -258,7 +278,7 @@ export default function SignUp() {
             <input
               type="password"
               id="form2Example2"
-              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)]"
+              className="rounded-[5px] h-[52px] px-4 w-72 md:w-80 text-[1rem] bg-transparent border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] outline-none"
               value={password}
               placeholder="Password"
               required
