@@ -124,7 +124,7 @@ export default function Login() {
           <hr className="mt-1 md:mb-7 w-full border-primary" />
 
           <h5 className="font-semibold text-[2rem] text-center text-black font-MontserratSemiBold mt-[30px]">Welcome Back</h5>
-          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Start growing <span className="font-bold">~1-10k</span> real and targeted Instagram <span className="font-bold">followers</span> every month.</p>
+          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Start growing real and targeted Instagram <span className="font-bold">followers</span> every month.</p>
         </div>
         <form action="" className="flex flex-col items-center justify-start" onSubmit={handleLogin}>
           <div className="mb-3 form-outline font-MontserratRegular">

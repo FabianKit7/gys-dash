@@ -219,7 +219,7 @@ export default function Subscriptions() {
                   Start Your Free 7-Day Trial
                 </h1>
                 <p className="mt-1 mb-3 text-black text-[14px] font-normal">
-                  Grow ~1-10k Real & Targeted Followers Every Month. Analytics &
+                  Grow Real & Targeted Followers Every Month. Analytics &
                   Results Tracking. Boost Likes, Comments & DMs. Automated 24/7
                   Growth, Set & Forget. Personal Account Manager. No Fakes Or
                   Bots, 100% Real People.
@@ -296,11 +296,10 @@ export default function Subscriptions() {
                     form="cardForm"
                   // onClick={() => { }}
                   >
-                    <div className="">{Loading ? "Loading..." : "Pay $0.00 & Start Free Trial"}</div>
+                    <div className="">{Loading ? "Loading..." : "Start 7 days Free Trial"}</div>
                   </button>
                   <div className="mt-2 text-center text-black">
-                    Then $24.99 per week, billed monthly. <br /> Cancel any time, no
-                    risk.
+                    Then $99.99 per month, billed monthly. <br /> Cancel any time, no risk.
                   </div>
                 </div>
                 :
@@ -315,7 +314,7 @@ export default function Subscriptions() {
                     <img src={'/icons/paypal-btn.svg'} alt="" className="h-[25px]" />
                   </button>
                   <div className="mt-2 text-center text-black">
-                    Start Free 7-Day Trial. Then $24.99 per week, billed monthly. Cancel any time, no risk.
+                    Start Free 7-Day Trial. Then $99.99 per month, billed monthly. Cancel any time, no risk.
                   </div>
                 </div>
               }
@@ -485,7 +484,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                 </p>
                 <div className="text-[72px] leading-[70px] text-black font-bold font-MontserratBold">Free</div>
                 <p className="text-[14px] mb-5">
-                  Then $24.99 per week, billed monthly.
+                  Then $99.99 per month, billed monthly.
                 </p>
 
                 <div className="flex flex-col gap-4 text-base text-black">
@@ -496,7 +495,7 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
                         <rect x="4.5" y="4.5" width="11" height="11" rx="5.5" _ngcontent-gsj-c72=""></rect>
                       </svg>
                     </span>
-                    <p className="">Grow ~1-10k Real Monthly Followers</p>
+                    <p className="">Grow Real Monthly Followers</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-[20px] h-[20px] green-checkbox fill-primary sroke-green font-[none]">
@@ -902,7 +901,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           // await handleCardPay(setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard);
           handleCardPay();
         }}>
-        <span> {Loading ? "Processing..." : `${addCard ? "Add Payment Method" : "Pay $0.00 & Start Free Trial"}`}  </span>
+        <span> {Loading ? "Processing..." : `${addCard ? "Add Payment Method" : "Start 7 days Free Trial"}`}  </span>
       </button>
       {/* {showCardComponent && <></>} */}
       {Loading && <div className="flex items-center justify-center gap-2 py-3">
