@@ -658,6 +658,26 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
       return;
     }
 
+    // if (process.env.NODE_ENV !== 'production') {
+    //   let data = {
+    //     username: userResults?.username,
+    //     email: user.email,
+    //     full_name: user.full_name,
+    //     followers: userResults?.follower_count,
+    //     following: userResults?.following_count,
+    //     is_verified: userResults?.is_verified,
+    //     biography: userResults?.biography,
+    //     start_time: getStartingDay(),
+    //     posts: userResults?.media_count,
+    //     subscribed: true
+    //   }
+    //   await supabase
+    //     .from("users")
+    //     .update(data).eq('id', user.id);
+    //   navigate(`/thankyou`);
+    //   return;
+    // }
+
     setLoading(true);
     if (userResults?.name === "INVALID_USERNAME") {
       console.log("INVALID_USERNAME")

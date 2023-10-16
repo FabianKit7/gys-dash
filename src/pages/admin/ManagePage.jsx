@@ -5,6 +5,7 @@ import { supabase } from '../../supabaseClient'
 import { Link, useNavigate } from 'react-router-dom'
 import copy from 'copy-to-clipboard';
 import axios from 'axios'
+import * as PhoneNumber from "libphonenumber-js";
 import { ACTIVE_TEMPLATE, BACKEND_URL, CHECKING_TEMPLATE, INCORRECT_PASSWORD_TEMPLATE, LOGO, TWO_FACTOR_TEMPLATE } from '../../config'
 
 export const calculateLast7DaysGrowth = (sessionData) => {
@@ -47,7 +48,7 @@ export default function ManagePage() {
       const authUser = authUserRes?.data?.user
       const getSuperUser = await supabase.from('users').select().eq("email", authUser.email)
       const superUser = getSuperUser?.data?.[0]
-      if(!superUser || !superUser?.admin) return navigate("/login")
+      if (!superUser || !superUser?.admin) return navigate("/login")
       setFetchingUser(false)
     };
 
@@ -81,6 +82,21 @@ export default function ManagePage() {
 
   // last_7_days_growth_
   useEffect(() => {
+    const formatUserPhoneNumber = (phone) => {
+      const findNumber = PhoneNumber.findPhoneNumbersInText(phone)
+      const html = `
+        <div className="cursor-pointer flex items-center justify-evenly gap-2">
+                <div className="w-4 h-auto">
+                  <img src="https://cdn.jsdelivr.net/npm/react-flagkit@1.0.2/img/SVG/${findNumber[0].number.country}.svg" alt="flag" />
+                </div >
+        <div className="text-xs">
+          ${phone}
+        </div>
+              </div >
+        `;
+      return html;
+    }
+
     if (users.length > 0) {
       users.forEach(async user => {
         const resData = await supabase
@@ -100,7 +116,9 @@ export default function ManagePage() {
           <div class="text-[#000] font-black">N/A</div>
           `
         }
-        document.getElementById(`last_7_days_growth_${user?.username}`).innerHTML = v
+        try { document.getElementById(`last_7_days_growth_${user?.username}`).innerHTML = v } catch (error) { }
+
+        try { document.getElementById(`phone_${user?.username} `).innerHTML = formatUserPhoneNumber(user?.phone || '') } catch (error) { }
       })
     }
   }, [users])
@@ -130,7 +148,7 @@ export default function ManagePage() {
       <div className="mt-[30px] h-[82px] w-full rounded-[10px] border shadow-[0px_0px_5px_0px_#E7E7E7] px-5 flex items-center gap-2">
         {statuses.map(status => {
           return (
-            <div key={`retention_page-${status}`} className="h-[59px] rounded-[10px] bg-[#F8F8F8] text-[25px] font-bold font-MontserratBold text-black px-4 flex justify-center items-center relative">
+            <div key={`retention_page - ${status} `} className="h-[59px] rounded-[10px] bg-[#F8F8F8] text-[25px] font-bold font-MontserratBold text-black px-4 flex justify-center items-center relative">
               <div className="flex items-center justify-center capitalize cursor-pointer select-none" onClick={() => { setSectionName(status) }}>{status}
                 {status === sectionName && <span className="px-[15px] h-[37px] rounded-[10px] text-center text-white bg-primary select-none ml-5">{sectionTotal}</span>}
               </div>
@@ -152,6 +170,7 @@ export default function ManagePage() {
             <th>Password</th>
             <th>2FA Code</th>
             <th>Last 7 Days Growth</th>
+            <th>Phone</th>
             <th>Tags</th>
             <th colSpan={2}>
               <div className="text-center">Actions</div>
@@ -166,61 +185,82 @@ export default function ManagePage() {
             }
 
             return (
-              <tr key={`${user?.username}_row`} className='rounded-[10px] bg-[#F8F8F8] h-[64px] w-full'>
+              <tr key={`${user?.username} _row`} className='rounded-[10px] bg-[#F8F8F8] h-[64px] w-full'>
                 <td>
                   <img src={user?.profile_pic_url} alt="" className="w-[30px] h-[30px] min-w-[30px] min-h-[30px] rounded-full bg-black ml-4" />
                 </td>
+
                 <td>
                   <div className="relative cursor-pointer max-w-[180px] break-words" onClick={() => {
                     copy(user?.username, {
                       debug: true,
                       message: 'Press #{key} to copy',
                     })
-                    setMessage({ sectionName: `username-${user?.username}`, value: 'copied' })
+                    setMessage({ sectionName: `username - ${user?.username} `, value: 'copied' })
                     setTimeout(() => {
                       setMessage({ sectionName: '', value: '' })
                     }, 1000);
                   }}>@{user?.username}
-                    {message.sectionName === `username-${user?.username}` && <div className="absolute font-bold text-black">{message.value}</div>}
+                    {message.sectionName === `username - ${user?.username} ` && <div className="absolute font-bold text-black">{message.value}</div>}
                   </div>
                 </td>
+
                 <td>
                   <div className="max-w-[200px] break-words">
-                    <a href={`mailto:${user?.email}`} className="">{user?.email}</a>
+                    <a href={`mailto:${user?.email} `} className="">{user?.email}</a>
                   </div>
                 </td>
+
                 <td>
                   <div className="relative cursor-pointer min-w-[100px]" onClick={() => {
                     copy(user?.instagramPassword, {
                       debug: true,
                       message: 'Press #{key} to copy',
                     })
-                    setMessage({ sectionName: `password-${user?.username}`, value: 'copied' })
+                    setMessage({ sectionName: `password - ${user?.username} `, value: 'copied' })
                     setTimeout(() => {
                       setMessage({ sectionName: '', value: '' })
                     }, 1000);
                   }}>*****
-                    {message.sectionName === `password-${user?.username}` && <div className="absolute font-bold text-black">{message.value}</div>}
+                    {message.sectionName === `password - ${user?.username} ` && <div className="absolute font-bold text-black">{message.value}</div>}
                   </div>
                 </td>
+
                 <td>
                   <div className="relative cursor-pointer min-w-[100px]" onClick={() => {
                     copy(user?.backupcode, {
                       debug: true,
                       message: 'Press #{key} to copy',
                     })
-                    setMessage({ sectionName: `backupcode-${user?.username}`, value: 'copied' })
+                    setMessage({ sectionName: `backupcode - ${user?.username} `, value: 'copied' })
                     setTimeout(() => {
                       setMessage({ sectionName: '', value: '' })
                     }, 1000);
                   }}>{user?.backupcode.length > 7 ? user?.backupcode.substring(0, 6) + "..." : user?.backupcode || "N/A"}
-                    {message.sectionName === `backupcode-${user?.username}` && <div className="absolute font-bold text-black">{message.value}</div>}
+                    {message.sectionName === `backupcode - ${user?.username} ` && <div className="absolute font-bold text-black">{message.value}</div>}
                   </div>
                 </td>
+
                 <td>
-                  <div className='min-w-[100px]' id={`last_7_days_growth_${user?.username}`}>N/A
+                  <div className='min-w-[100px]' id={`last_7_days_growth_${user?.username} `}>N/A
                   </div>
                 </td>
+
+                <td>
+                  <div className='relative cursor-pointer' id={`phone_${user?.username} `} onClick={() => {
+                    copy(user?.phone, {
+                      debug: true,
+                      message: 'Press #{key} to copy',
+                    })
+                    setMessage({ sectionName: `phonenumber - ${user?.username} `, value: 'copied' })
+                    setTimeout(() => {
+                      setMessage({ sectionName: '', value: '' })
+                    }, 1000);
+                  }}>
+                    {message.sectionName === `phonenumber - ${user?.username} ` && <div className="absolute font-bold text-black">{message.value}</div>}
+                  </div>
+                </td>
+
                 <td>
                   <div className="relative group">
                     {user?.tag?.tag1 && <div className="absolute top-0 left-0 hidden w-full h-full bg-black/20 group-hover:grid place-items-center">
@@ -230,10 +270,10 @@ export default function ManagePage() {
                     </div>}
                     {user?.tag?.tag1 ?
                       <div className="flex items-center gap-2">
-                        <div style={{ backgroundColor: user?.tag?.color }} className={`text-white w-[55px] h-[30px] rounded-lg flex items-center justify-center gap-1 text-xs font-semibold`}>
+                        <div style={{ backgroundColor: user?.tag?.color }} className={`text - white w - [55px] h - [30px] rounded - lg flex items - center justify - center gap - 1 text - xs font - semibold`}>
                           {user?.tag?.tag1} <FaCaretUp size={10} />
                         </div>
-                        <div style={{ backgroundColor: user?.tag?.color }} className={`text-white w-[55px] h-[30px] rounded-lg flex items-center justify-center gap-1 text-xs font-semibold`}>
+                        <div style={{ backgroundColor: user?.tag?.color }} className={`text - white w - [55px] h - [30px] rounded - lg flex items - center justify - center gap - 1 text - xs font - semibold`}>
                           {user?.tag?.tag2} <FaCaretUp size={10} />
                         </div>
                       </div>
@@ -245,7 +285,7 @@ export default function ManagePage() {
                   </div>
                 </td>
                 <td>
-                  <Link to={`/dashboard/${user?.username}?uuid=${user?.user_id}`} target='_blank' className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black">
+                  <Link to={`/ dashboard / ${user?.username}?uuid = ${user?.user_id} `} target='_blank' className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black">
                     <img src="/icons/user-settings.svg" alt="" className="w-[18px] h-[18px]" />
                   </Link>
                 </td>
@@ -309,8 +349,8 @@ const TagModal = ({ setShowAddTagModal, userToAddTagFor, refreshUsers, setRefres
           <div className="flex items-center gap-2">
             {colors.map(colorC => {
               return (
-                <div key={colorC} className={`${color === colorC ? "border-black" : "border-transparent"} border-2 rounded-lg px-1 py-[2px] grid place-items-center`}>
-                  <label htmlFor={colorC} style={{ backgroundColor: colorC }} className={`w-8 h-3 cursor-pointer rounded-lg`} onClick={() => {
+                <div key={colorC} className={`${color === colorC ? "border-black" : "border-transparent"} border - 2 rounded - lg px - 1 py - [2px] grid place - items - center`}>
+                  <label htmlFor={colorC} style={{ backgroundColor: colorC }} className={`w - 8 h - 3 cursor - pointer rounded - lg`} onClick={() => {
                     setColor(colorC);
                   }}></label>
                   <input type="radio" className='hidden' name="color" id={colorC} value={colorC} defaultChecked onChange={(e) => {
@@ -371,10 +411,10 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
           <img src={LOGO} alt="Loading" className="w-10 h-10 animate-spin" />
         </div>}
 
-        <div className={`${showModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} transition-all absolute right-0 z-10 mt-2 border border-[#bbbbbb] rounded-[10px] bg-[#fff] text-[25px] font-bold font-MontserratBold text-black min-h-[100px] flex flex-col gap-3`}>
+        <div className={`${showModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} transition - all absolute right - 0 z - 10 mt - 2 border border - [#bbbbbb] rounded - [10px] bg - [#fff] text - [25px] font - bold font - MontserratBold text - black min - h - [100px] flex flex - col gap - 3`}>
           {statuses.map(status => {
             return (
-              <div key={`status-${status}`} className={`${user?.status === status ? "bg-[#cdcdcd] hover:bg-[#dfdfdf]" : "hover:bg-[#cdcdcd] bg-[#F8F8F8]"} h-[59px] rounded-[10px] text-[25px] font-bold font-MontserratBold text-black px-4 flex items-center capitalize cursor-pointer`}
+              <div key={`status - ${status} `} className={`${user?.status === status ? "bg-[#cdcdcd] hover:bg-[#dfdfdf]" : "hover:bg-[#cdcdcd] bg-[#F8F8F8]"} h - [59px] rounded - [10px] text - [25px] font - bold font - MontserratBold text - black px - 4 flex items - center capitalize cursor - pointer`}
                 onClick={async () => {
                   setProcessing(true)
                   const res = await supabase
@@ -407,7 +447,7 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
                       htmlContent = INCORRECT_PASSWORD_TEMPLATE(user?.full_name, user?.username)
                     }
 
-                    let sendEmail = await axios.post(`${BACKEND_URL}/api/send_email`,
+                    let sendEmail = await axios.post(`${BACKEND_URL} /api/send_email`,
                       {
                         email: user?.email,
                         subject,
