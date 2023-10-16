@@ -305,7 +305,7 @@ export const messageSlack = async (message) => {
     webhookUrl: process.env.REACT_APP_SLACK_WEBHOOK_URL,
     message
   }).then(r => {
-    if (r?.data?.e?.status === null || r?.data?.e?.status === 404){
+    if (r?.data?.e?.status === null || r?.data?.e?.status === 404) {
       console.log('error while sending message to Slack');
       console.log(r);
       return r
@@ -400,4 +400,17 @@ export function sumTotalInteractions(arr) {
     }
   }
   return sum;
+}
+
+export async function cancelSubscription(user) {
+  let cancelled = await axios.post(`${BACKEND_URL}/api/stripe/cancel_subscription`, { subscription_id: user?.subscription_id || '' }
+  ).catch(err => {
+    console.error(err)
+    return err
+  })
+  if (cancelled.status === 200) {
+    return { status: 200, message: 'Your subscription has been cancelled!' }
+  } else {
+    return { status: 500, message: 'An error occured please try again or contact our support' }
+  }
 }

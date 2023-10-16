@@ -8,6 +8,7 @@ import ChangeModal from "./ChangeModal";
 import axios from "axios";
 import InfiniteRangeSlider from "../InfiniteRangeSlider";
 import { BACKEND_URL } from "../../config";
+import { cancelSubscription } from "../../helpers";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -294,6 +295,7 @@ export default function Settings() {
                 setCancelModal(false)
               }} />
             <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">Are you sure you want to cancel your subscription?</h1>
+            <p className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600" id="cancelMsg"></p>
 
             <div className="flex justify-center gap-4">
               <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3" onClick={() => {
@@ -302,11 +304,20 @@ export default function Settings() {
                 {/* <BsFillEnvelopeFill /> */}
                 Close
               </button>
-              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3" onClick={() => {
-                setCancelModal(false)
+              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all" onClick={async () => {
+                const loadingdots = document.querySelector('#loadingdots');
+                loadingdots.style.display = 'block'
+                const res = await cancelSubscription(user)
+                loadingdots.style.display = 'none'
+                const cancelMsgElement = document.querySelector('#cancelMsg');
+                cancelMsgElement.textContent = res.message
+
+                setTimeout(() => {
+                  setCancelModal(false)
+                }, 2000);
               }} >
                 {/* <BsFillEnvelopeFill /> */}
-                Yes
+                Yes <span id="loadingdots" className="animate-pulse tracking-widest font-black" style={{ display: 'none'}}>...</span>
               </button>
             </div>
           </div>
