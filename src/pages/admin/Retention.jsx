@@ -251,11 +251,11 @@ const CheckActiveUsers = () => {
       var count = 0;
       while (count < data.length) {
         const user = data[count];
-        const chargebee_customer_id = user.chargebee_customer_id;
+        const customer_id = user.customer_id;
         const baseUrl = BACKEND_URL
-        if (chargebee_customer_id) {
+        if (customer_id) {
           let subscription = await axios.post(`${baseUrl}/api/subscription_list`,
-            { customer_id: chargebee_customer_id })
+            { customer_id: customer_id })
             .then((response) => response.data)
           const status = (subscription?.status === 'active' && subscription?.due_invoices_count > 0) ?
             `Invoice Due ( ${subscription?.due_invoices_count} )` : subscription?.status
@@ -287,30 +287,30 @@ const CheckActiveUsers = () => {
     if (loading || !user) return
 
     setLoading(true)
-    var chargebee_subscription_id = user.chargebee_subscription_id
-    if (!chargebee_subscription_id && user?.chargebee_customer_id) {
+    var subscription_id = user?.subscription_id
+    if (!subscription_id && user?.customer_id) {
       const url = `${BACKEND_URL}/api/subscription_list`
       let subscription = await axios.post(url,
-        { customer_id: user?.chargebee_customer_id })
+        { customer_id: user?.customer_id })
         .then((response) => response.data)
       console.log(subscription)
       if (subscription?.id) {
-        chargebee_subscription_id = subscription?.id
+        subscription_id = subscription?.id
       }
     }
-    if (!chargebee_subscription_id) {
+    if (!subscription_id) {
       alert("Subscription id not found!");
       setLoading(false)
       return
     }
 
-    console.log(user?.chargebee_customer_id);
-    console.log(chargebee_subscription_id);
+    console.log(user?.customer_id);
+    console.log(subscription_id);
 
     // TODO cancel user in chargebee then supabase
     let cancelRes = await axios.post(`${baseUrl}/api/cancel_subscription_for_customer`,
       {
-        subscription_id: chargebee_subscription_id
+        subscription_id: subscription_id
       }).catch(err => err)
     if (cancelRes.status !== 200) {
       console.log(cancelRes);

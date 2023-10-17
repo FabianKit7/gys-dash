@@ -168,7 +168,7 @@ export default function Admin() {
 
   // const updateChargebeeCustomerId = async () => {
   //   setLoading(true)
-  //   const { data, error } = await supabase.from("users").select().eq("subscribed", true).is("chargebee_customer_id", null).limit(1000)
+  //   const { data, error } = await supabase.from("users").select().eq("subscribed", true).is("customer_id", null).limit(1000)
   //   if (error) {
   //     console.log(error);
   //     alert(error?.message)
@@ -177,11 +177,11 @@ export default function Admin() {
   //   console.log(data);
     
   //   data.forEach(async (user) => {
-  //     // get chargebee_customer_id
+  //     // get customer_id
   //     let getCustomer = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/customer_list`, { email: user?.email })
   //     if (getCustomer?.data?.id) {
   //       const update = {
-  //         chargebee_customer_id: getCustomer?.data?.id
+  //         customer_id: getCustomer?.data?.id
   //       }
   //       const updateUser = await supabase
   //         .from("users")

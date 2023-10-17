@@ -53,10 +53,10 @@ export default function Settings() {
       } else {
         setUser(data[0])
 
-        if (!currentUser?.chargebee_customer_id) return;
+        if (!currentUser?.customer_id) return;
 
         const retrieve_customer_data = {
-          customerId: currentUser?.chargebee_customer_id,
+          customerId: currentUser?.customer_id,
         }
         setShowRangeSlider(true)
         let chargebeeCustomerData = await axios.post(`${BACKEND_URL}/api/retrieve_customer`,

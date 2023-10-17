@@ -285,7 +285,7 @@ export default function ManagePage() {
                   </div>
                 </td>
                 <td>
-                  <Link to={`/ dashboard / ${user?.username}?uuid = ${user?.user_id} `} target='_blank' className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black">
+                  <Link to={`/dashboard/${user?.username}?uuid=${user?.user_id}`} target='_blank' className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black">
                     <img src="/icons/user-settings.svg" alt="" className="w-[18px] h-[18px]" />
                   </Link>
                 </td>

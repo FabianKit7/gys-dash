@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal';
 import axios from 'axios';
 import { getStartingDay } from '../Subscriptions';
-import { BACKEND_URL, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from '../../config';
+import { BACKEND_URL, PRICE_ID, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from '../../config';
 import PrimaryButton from '../PrimaryButton';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -164,25 +164,24 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           return;
         }
       } else {
-        
-        
+
+
         // console.log(user);
-        // console.log("user chargebee_customer_id: ");
-        // console.log(user?.chargebee_customer_id);
-        
-        
-        if (!user?.chargebee_customer_id) {
+        // console.log("user customer_id: ");
+        // console.log(user?.customer_id);
+
+
+        if (!user?.customer_id) {
           setIsModalOpen(true);
-          setErrorMsg({ title: 'Alert', message: 'No CB_ID found' })
+          setErrorMsg({ title: 'Alert', message: 'No C_ID found' })
           setProcessing(false);
           return;
         }
         let data = {
-          customer_id: user?.chargebee_customer_id,
-          plan_id: "Monthly-Plan-7-Day-Free-Trial-USD-Monthly"
+          customer_id: user?.customer_id,
+          price: PRICE_ID
         }
-        let createSubscription = await axios.post(`${BACKEND_URL}/api/create_subscription`,
-          urlEncode(data))
+        let createSubscription = await axios.post(`${BACKEND_URL}/api/create_subscription_for_customer`, data)
           .then((response) => response.data).catch((err) => {
             // console.log(err);
             setIsModalOpen(true);
@@ -202,8 +201,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
             posts: vuser?.media_count,
             profile_pic_url,
             start_time: getStartingDay(),
-            chargebee_subscription: JSON.stringify(createSubscription?.result?.subscription),
-            chargebee_subscription_id: createSubscription?.result?.subscription?.id,
+            subscription_id: createSubscription?.result?.subscription?.id,
             status: 'pending',
             userMode: 'auto',
             first_account: false
