@@ -185,7 +185,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           .then((response) => response.data).catch((err) => {
             // console.log(err);
             setIsModalOpen(true);
-            setErrorMsg({ title: 'Alert', message: err?.message })
+            setErrorMsg({ title: 'Alert', message: err?.response?.data?.message || err?.message || "Something went wrong!" })
             setProcessing(false);
             return err?.response?.data.err
           })
