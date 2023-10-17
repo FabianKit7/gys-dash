@@ -308,7 +308,7 @@ const CheckActiveUsers = () => {
     console.log(subscription_id);
 
     // TODO cancel user in chargebee then supabase
-    let cancelRes = await axios.post(`${baseUrl}/api/cancel_subscription_for_customer`,
+    let cancelRes = await axios.post(`${baseUrl}/api/stripe/cancel_subscription_for_customer`,
       {
         subscription_id: subscription_id
       }).catch(err => err)

@@ -181,7 +181,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           customer_id: user?.customer_id,
           price: PRICE_ID
         }
-        let createSubscription = await axios.post(`${BACKEND_URL}/api/create_subscription_for_customer`, data)
+        let createSubscription = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription_for_customer`, data)
           .then((response) => response.data).catch((err) => {
             // console.log(err);
             setIsModalOpen(true);
