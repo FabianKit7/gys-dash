@@ -170,7 +170,7 @@ export default function Settings() {
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Subscription</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
-                <div className="text-[#757575]">{user.status.toLowerCase() === 'cancelled' ? 'Cancelled' : 'Active'}</div>
+                <div className="text-[#757575]">{user?.status.toLowerCase() === 'cancelled' ? 'Cancelled' : 'Active'}</div>
                 <div className="text-black cursor-pointer" onClick={() => setCancelModal(true)}>Cancel</div>
               </div>
             </div>
@@ -242,7 +242,7 @@ export default function Settings() {
                       <div className="hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full bg-primary"></div>
                     </div>
                     <div className="lg:text-[24px] w-full">
-                      <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-primary">Active</span></div>
+                      <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-primary">{user?.status.toLowerCase() === 'active' && user?.status}</span></div>
                       <div className="">
                         <img src="/instagram.svg" alt="" className="my-[3px] md:my-[5px] lg:my-[7px] mr-[8px] w-[16px] h-[16px] lg:w-[28px] lg:h-[28px] rounded-full" />
                       </div>
