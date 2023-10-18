@@ -363,7 +363,7 @@ export default function Settings() {
                 setReActivateModal(false)
               }} />
             <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">Are you sure you want to re-activate your subscription?</h1>
-            <p className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600" id="cancelMsg"></p>
+            <p className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600" id="reActivateMsg"></p>
 
             <div className="flex justify-center gap-4">
               <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3" onClick={() => {
@@ -381,10 +381,10 @@ export default function Settings() {
                 loadingdots.style.display = 'block'
                 const res = await reActivateSubscription(user)
                 loadingdots.style.display = 'none'
-                const cancelMsgElement = document.querySelector('#cancelMsg');
-                cancelMsgElement.textContent = res.message
+                const reActivateMsgElement = document.querySelector('#reActivateMsg');
+                reActivateMsgElement.textContent = res.message
 
-                if (cancelMsgElement.status === 200) {
+                if (reActivateMsgElement.status === 200) {
                   const updateUser = await supabase
                     .from("users")
                     .update({ status: 'checking' })
