@@ -72,7 +72,7 @@ export default function Admin() {
       const username = file?.username
       try {
         const data = file?.data
-        let lastItem = data[data?.length - 1];
+        let lastItem = data[data?.length-1];
         const currentDate = new Date(lastItem.finish_time);
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth() + 1;

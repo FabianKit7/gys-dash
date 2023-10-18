@@ -33,7 +33,7 @@ export default function ColumnChart({ type, sessionsData, days }) {
     sessionsData?.slice(-days).forEach(items => {
       const dateParts = (items?.start_time)?.split(/[- :]/); // Split date string into parts
       // const year = parseInt(dateParts[0]);
-      const month = parseInt(dateParts[1]) - 1; // Adjust month (zero-based index)
+      const month = parseInt(dateParts[1])-1; // Adjust month (zero-based index)
       const day = parseInt(dateParts[2]);
 
       // const sessionDate = new Date(year, month, day); // Create Date object
@@ -141,7 +141,7 @@ export default function ColumnChart({ type, sessionsData, days }) {
 
   return (
     <div className="w-full rounded-lg">
-      <div className="rounded-md text-gray-800 w-full">
+      <div className="w-full text-gray-800 rounded-md">
         <div className="md:px-3">
           <Chart
             options={options}

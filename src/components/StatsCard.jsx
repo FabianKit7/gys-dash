@@ -17,7 +17,7 @@ const StatsCard = ({ userData, sessionsData }) => {
 
             if (!_7daysGrowth) {
                 var l7dDate = new Date(lastData?.start_time);
-                var day = l7dDate.getTime() - (day7 * 24 * 60 * 60 * 1000);
+                var day = l7dDate.getTime()-(day7 * 24 * 60 * 60 * 1000);
                 l7dDate.setTime(day);
                 l7dDate = new Date(l7dDate.getFullYear(), l7dDate.getMonth() + 1, l7dDate.getDate());
 
@@ -28,16 +28,16 @@ const StatsCard = ({ userData, sessionsData }) => {
                     return l
                 })
                 const l7d = f[0]
-                if (!l7d) return setDay7(day7 - 1)
+                if (!l7d) return setDay7(day7-1)
 
-                var final = lastData?.profile?.followers - l7d?.profile?.followers
+                var final = lastData?.profile?.followers-l7d?.profile?.followers
                 // console.log({ final });
                 set_7daysGrowth(final)
             }
 
             if (!_30daysGrowth){
                 var l30dDate = new Date(lastData?.start_time);
-                var day2 = l30dDate.getTime() - (day30 * 24 * 60 * 60 * 1000);
+                var day2 = l30dDate.getTime()-(day30 * 24 * 60 * 60 * 1000);
                 l30dDate.setTime(day2);
                 l30dDate = new Date(l30dDate.getFullYear(), l30dDate.getMonth() + 1, l30dDate.getDate());
     
@@ -48,9 +48,9 @@ const StatsCard = ({ userData, sessionsData }) => {
                     return l
                 })
                 const l30d = f2[0]
-                if (!l30d) return setDay30(day30 - 1)
+                if (!l30d) return setDay30(day30-1)
     
-                var final2 = lastData?.profile?.followers - l30d?.profile?.followers
+                var final2 = lastData?.profile?.followers-l30d?.profile?.followers
                 // console.log({ final2 });
                 set_30daysGrowth(final2)
             }
@@ -88,17 +88,17 @@ const StatsCard = ({ userData, sessionsData }) => {
 
     return (
         <>
-            <div className="container mx-auto p-0">
-                <div className="section mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-6">
-                    <div className="shadow-stats flex flex-col items-center lg:items-start rounded-lg p-4">
+            <div className="container p-0 mx-auto">
+                <div className="grid justify-center grid-cols-1 gap-6 mt-12 section md:grid-cols-2 lg:grid-cols-4">
+                    <div className="flex flex-col items-center p-4 rounded-lg shadow-stats lg:items-start">
                         <div className="flex gap-[10px]">
                             <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
-                                <BsArrowUp className="absolute text-btngreen font-semibold" />
+                                <BsArrowUp className="absolute font-semibold text-btngreen" />
                             </div>
                             <h2 className="font-bold text-[28px] font-MontserratBold text-gray-800">Status</h2>
                         </div>
-                        <p className="pt-4 pb-4 font-normal text-sm font-MontserratRegular text-center lg:text-start w-full">Your status is <span className="font-bold font-MontserratSemiBold">{userData?.status}</span></p>
-                        <p className="font-normal text-sm opacity-90 font-MontserratLight text-center lg:text-start">
+                        <p className="w-full pt-4 pb-4 text-sm font-normal text-center font-MontserratRegular lg:text-start">Your status is <span className="font-bold font-MontserratSemiBold">{userData?.status}</span></p>
+                        <p className="text-sm font-normal text-center opacity-90 font-MontserratLight lg:text-start">
                             {userData?.status === 'checking' && <span>We're checking your password right now</span>}
                             {userData?.status === 'pending' && <span>Please <span className="text-red-600">input your password</span> in order to allow us to log in.</span>}
                             {userData?.status === 'paused' && 'Please contact support or renew your plan'}
@@ -106,15 +106,15 @@ const StatsCard = ({ userData, sessionsData }) => {
                             {userData?.status === 'active' && 'Your status is Active.'}
                         </p>
                     </div>
-                    <div className="shadow-stats flex flex-col items-center lg:items-start rounded-lg p-4">
+                    <div className="flex flex-col items-center p-4 rounded-lg shadow-stats lg:items-start">
                         <div className="flex gap-[10px]">
                             {_7daysGrowth >= 0 ?
                                 <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
-                                    <BsArrowUp className="absolute text-btngreen font-semibold" />
+                                    <BsArrowUp className="absolute font-semibold text-btngreen" />
                                 </div>
                                 :
                                 <div className="rounded-[50%] bg-bgiconred p-3 relative w-10 h-10">
-                                    <BsArrowDown className="absolute text-btnred font-semibold" />
+                                    <BsArrowDown className="absolute font-semibold text-btnred" />
                                 </div>
                             }
 
@@ -125,18 +125,18 @@ const StatsCard = ({ userData, sessionsData }) => {
                             }
                             <h2 className="font-bold text-[30px] text-gray-800">{nFormatter(Math.abs(_7daysGrowth)) || 'NAN'}</h2>
                         </div>
-                        <p className="pt-4 pb-4 font-normal text-sm font-MontserratRegular text-center lg:text-start w-full">Last <span className="font-MontserratSemiBold font-bold">7 days</span> Follower Growth</p>
-                        <p className="font-normal text-sm opacity-90 font-MontserratLight text-center lg:text-start"><span className="font-bold hidden">{_7daysGrowthPercent}</span>How much followers your account received in the last 7 days period.</p>
+                        <p className="w-full pt-4 pb-4 text-sm font-normal text-center font-MontserratRegular lg:text-start">Last <span className="font-bold font-MontserratSemiBold">7 days</span> Follower Growth</p>
+                        <p className="text-sm font-normal text-center opacity-90 font-MontserratLight lg:text-start"><span className="hidden font-bold">{_7daysGrowthPercent}</span>How much followers your account received in the last 7 days period.</p>
                     </div>
-                    <div className="shadow-stats flex flex-col items-center lg:items-start rounded-lg p-4">
+                    <div className="flex flex-col items-center p-4 rounded-lg shadow-stats lg:items-start">
                         <div className="flex gap-[10px]">
                             {_30daysGrowth >= 0 ?
                                 <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
-                                    <BsArrowUp className="absolute text-btngreen font-semibold" />
+                                    <BsArrowUp className="absolute font-semibold text-btngreen" />
                                 </div>
                                 :
                                 <div className="rounded-[50%] bg-bgiconred p-3 relative w-10 h-10">
-                                    <BsArrowDown className="absolute text-btnred font-semibold" />
+                                    <BsArrowDown className="absolute font-semibold text-btnred" />
                                 </div>
                             }
 
@@ -147,18 +147,18 @@ const StatsCard = ({ userData, sessionsData }) => {
                             }
                             <h2 className="font-bold text-[30px] text-gray-800">{nFormatter(Math.abs(_30daysGrowth)) || 'NAN'}</h2>
                         </div>
-                        <p className="pt-4 pb-4 font-normal text-sm font-MontserratRegular text-center lg:text-start w-full">Last <span className="font-MontserratSemiBold font-bold">30 days</span> Follower Growth</p>
-                        <p className="font-normal text-sm opacity-90 font-MontserratLight text-center lg:text-start"><span className="font-bold hidden">{_30daysGrowthPercent}</span>How much followers your account received in the last 30 days period.</p>
+                        <p className="w-full pt-4 pb-4 text-sm font-normal text-center font-MontserratRegular lg:text-start">Last <span className="font-bold font-MontserratSemiBold">30 days</span> Follower Growth</p>
+                        <p className="text-sm font-normal text-center opacity-90 font-MontserratLight lg:text-start"><span className="hidden font-bold">{_30daysGrowthPercent}</span>How much followers your account received in the last 30 days period.</p>
                     </div>
-                    <div className="shadow-stats flex flex-col items-center lg:items-start rounded-lg p-4">
+                    <div className="flex flex-col items-center p-4 rounded-lg shadow-stats lg:items-start">
                         <div className="flex gap-[10px]">
                             <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
-                                <BsArrowUp className="absolute text-btngreen font-semibold" />
+                                <BsArrowUp className="absolute font-semibold text-btngreen" />
                             </div>
                             <h2 className="font-bold text-[30px] text-gray-800">{nFormatter(total_interactions)}</h2>
                         </div>
-                        <p className="pt-4 pb-4 font-normal text-sm font-MontserratRegular text-center lg:text-start w-full"><span className="font-bold">Total</span> Interactions</p>
-                        <p className="font-normal text-sm opacity-90 font-MontserratLight text-center lg:text-start">Total interactions made by your personal manager on the account.</p>
+                        <p className="w-full pt-4 pb-4 text-sm font-normal text-center font-MontserratRegular lg:text-start"><span className="font-bold">Total</span> Interactions</p>
+                        <p className="text-sm font-normal text-center opacity-90 font-MontserratLight lg:text-start">Total interactions made by your personal manager on the account.</p>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ const MultiRangeSlider = ({ min, max, onChange, margic, setMargic }) => {
 
   // Convert to percentage
   const getPercent = useCallback(
-    (value) => Math.round(((value - min) / (max - min)) * 100),
+    (value) => Math.round(((value-min) / (max-min)) * 100),
     [min, max]
   );
 
@@ -26,7 +26,7 @@ const MultiRangeSlider = ({ min, max, onChange, margic, setMargic }) => {
 
       if (range.current) {
         range.current.style.left = `${minPercent}%`;
-        range.current.style.width = `${maxPercent - minPercent}%`;
+        range.current.style.width = `${maxPercent-minPercent}%`;
       }
     }
   }, [minVal, getPercent]);
@@ -38,7 +38,7 @@ const MultiRangeSlider = ({ min, max, onChange, margic, setMargic }) => {
       const maxPercent = getPercent(maxVal);
 
       if (range.current) {
-        range.current.style.width = `${maxPercent - minPercent}%`;
+        range.current.style.width = `${maxPercent-minPercent}%`;
       }
     }
   }, [maxVal, getPercent]);
@@ -59,13 +59,13 @@ const MultiRangeSlider = ({ min, max, onChange, margic, setMargic }) => {
         value={minVal}
         ref={minValRef}
         onChange={(event) => {
-          const value = Math.min(+event.target.value, maxVal - 1);
+          const value = Math.min(+event.target.value, maxVal-1);
           setMinVal(value);
           event.target.value = value.toString();
         }}
         onMouseDownCapture={() => (setMargic(false))}
         className={classnames("thumb thumb--zindex-3", {
-          "thumb--zindex-5": minVal > max - 100
+          "thumb--zindex-5": minVal > max-100
         })}
       />
       <input

@@ -46,11 +46,11 @@ export const dateFormatter = (timeFrame) => {
 
     let prevMonth // will be obj
 
-    if (!months[today.getMonth() - 1].month) {
-      prevMonth = months[months.length - 1]
+    if (!months[today.getMonth()-1].month) {
+      prevMonth = months[months.length-1]
       previousMonth = prevMonth.month
     } else {
-      prevMonth = months[today.getMonth() - 1].month
+      prevMonth = months[today.getMonth()-1].month
     }
     return prevMonth
   }
@@ -65,14 +65,14 @@ export const dateFormatter = (timeFrame) => {
   if (timeFrame === "Monthly") {
     // ex. Month ---  Mar
     currentDate = `${months[today.getMonth()].month}`
-    previousDate = `${months[today.getMonth() - 1].month
-      ? months[today.getMonth() - 1].month
+    previousDate = `${months[today.getMonth()-1].month
+      ? months[today.getMonth()-1].month
       : "Dec"
       }`
   } else if (timeFrame === "Daily") {
     // ex. Day and Month ---  25 Mar
     currentDate = `${today.getDate()} ${months[today.getMonth()].month}`
-    previousDate = `${today.getDate() - 1 ? today.getDate() - 1 : getPrevDay().days
+    previousDate = `${today.getDate()-1 ? today.getDate()-1 : getPrevDay().days
       } ${previousMonth ? previousMonth : months[today.getMonth()].month}`
   }
 
@@ -88,7 +88,7 @@ export const getRateDiff = (currRate, prevRate) => {
     // subtract from 100 to get the value of by HOW MUCH the current value increased
     return {
       change: "more",
-      value: percent - 100,
+      value: percent-100,
     }
   }
 
@@ -97,7 +97,7 @@ export const getRateDiff = (currRate, prevRate) => {
     // get the value of by HOW MUCH it decreased compared to the before value
     return {
       change: "less",
-      value: 100 - percent,
+      value: 100-percent,
     }
   }
 
@@ -119,7 +119,7 @@ export const countDays = (day) => {
 
   var date1 = new Date(day)
   var date2 = new Date(today)
-  var Difference_In_Time = date2.getTime() - date1.getTime()
+  var Difference_In_Time = date2.getTime()-date1.getTime()
   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24)
 
   return Difference_In_Days === 1
