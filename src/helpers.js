@@ -414,3 +414,16 @@ export async function cancelSubscription(user) {
     return { status: 500, message: 'An error occured please try again or contact our support' }
   }
 }
+
+export async function reActivateSubscription(user) {
+  let reActivate = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription_for_customer`, { customer_id: user?.customer_id || '' }
+  ).catch(err => {
+    console.error(err)
+    return err
+  })
+  if (reActivate.status === 200) {
+    return { status: 200, message: 'Your subscription has been re-activated!' }
+  } else {
+    return { status: 500, message: 'An error occured please try again or contact our support' }
+  }
+}

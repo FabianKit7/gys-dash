@@ -8,7 +8,7 @@ import ChangeModal from "./ChangeModal";
 import axios from "axios";
 import InfiniteRangeSlider from "../InfiniteRangeSlider";
 import { BACKEND_URL } from "../../config";
-import { cancelSubscription } from "../../helpers";
+import { cancelSubscription, reActivateSubscription } from "../../helpers";
 import AlertModal from "../AlertModal";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -33,6 +33,7 @@ export default function Settings() {
   const [showModal, setShowModal] = useState(false)
   const [modalToShow, setModalToShow] = useState('')
   const [cancelModal, setCancelModal] = useState(false)
+  const [reActivateModal, setReActivateModal] = useState(false)
   const [refresh, setRefresh] = useState(false)
   const [chargebeeCustomerData, setChargebeeCustomerData] = useState()
   const [showRangeSlider, setShowRangeSlider] = useState(false)
@@ -171,7 +172,8 @@ export default function Settings() {
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Subscription</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">{user?.status.toLowerCase() === 'cancelled' ? 'Cancelled' : 'Active'}</div>
-                <div className="text-black cursor-pointer" onClick={() => setCancelModal(true)}>Cancel</div>
+                {user?.status.toLowerCase() === 'cancelled' ? <div className="text-black cursor-pointer" onClick={() => setReActivateModal(true)}>Re-activate</div> :
+                  <div className="text-black cursor-pointer" onClick={() => setCancelModal(true)}>Cancel</div>}
               </div>
             </div>
           </div>
@@ -305,7 +307,7 @@ export default function Settings() {
         >
           <div className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center" onClick={() => setCancelModal(false)}></div>
           <div className="bg-white to-black py-4 md:py-7 md:pt-12 px-5 md:px-10 relative max-w-[300px] md:max-w-[500px] lg:max-w-[600px] font-MontserratRegular rounded-[10px]">
-            <FaTimesCircle className="absolute flex flex-col items-center top-3 right-3 cursor-pointer"
+            <FaTimesCircle className="absolute flex flex-col items-center cursor-pointer top-3 right-3"
               onClick={() => {
                 setCancelModal(false)
               }} />
@@ -344,7 +346,62 @@ export default function Settings() {
                 }, 2000);
               }} >
                 {/* <BsFillEnvelopeFill /> */}
-                Yes <span id="loadingdots" className="animate-pulse tracking-widest font-black" style={{ display: 'none' }}>...</span>
+                Yes <span id="loadingdots" className="font-black tracking-widest animate-pulse" style={{ display: 'none' }}>...</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className={`${reActivateModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} fixed top-0 left-0 w-full h-screen grid place-items-center`} style={{
+          transition: "opacity .15s ease-in"
+        }}
+        >
+          <div className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center" onClick={() => setReActivateModal(false)}></div>
+          <div className="bg-white to-black py-4 md:py-7 md:pt-12 px-5 md:px-10 relative max-w-[300px] md:max-w-[500px] lg:max-w-[600px] font-MontserratRegular rounded-[10px]">
+            <FaTimesCircle className="absolute flex flex-col items-center cursor-pointer top-3 right-3"
+              onClick={() => {
+                setReActivateModal(false)
+              }} />
+            <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">Are you sure you want to re-activate your subscription?</h1>
+            <p className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600" id="cancelMsg"></p>
+
+            <div className="flex justify-center gap-4">
+              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3" onClick={() => {
+                setReActivateModal(false)
+              }} >
+                {/* <BsFillEnvelopeFill /> */}
+                Close
+              </button>
+              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all" onClick={async () => {
+                if (!user?.customer_id) {
+                  setReActivateModal(false);
+                }
+
+                const loadingdots = document.querySelector('#loadingdots');
+                loadingdots.style.display = 'block'
+                const res = await reActivateSubscription(user)
+                loadingdots.style.display = 'none'
+                const cancelMsgElement = document.querySelector('#cancelMsg');
+                cancelMsgElement.textContent = res.message
+
+                if (cancelMsgElement.status === 200) {
+                  const updateUser = await supabase
+                    .from("users")
+                    .update({ status: 'checking' })
+                    .eq('id', user.id);
+                  if (updateUser?.error) {
+                    console.log(updateUser.error);
+                    setIsModalOpen(true);
+                    setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
+                  }
+                }
+
+                setTimeout(() => {
+                  setReActivateModal(false)
+                }, 2000);
+              }} >
+                {/* <BsFillEnvelopeFill /> */}
+                Yes <span id="loadingdots" className="font-black tracking-widest animate-pulse" style={{ display: 'none' }}>...</span>
               </button>
             </div>
           </div>
