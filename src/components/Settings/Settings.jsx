@@ -9,6 +9,7 @@ import axios from "axios";
 import InfiniteRangeSlider from "../InfiniteRangeSlider";
 import { BACKEND_URL } from "../../config";
 import { cancelSubscription } from "../../helpers";
+import AlertModal from "../AlertModal";
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -26,6 +27,8 @@ export default function Settings() {
   let { username } = useParams();
   const currentUsername = username
   const navigate = useNavigate()
+  const [errorMsg, setErrorMsg] = useState({ title: 'Alert', message: 'something went wrong' })
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState()
   const [showModal, setShowModal] = useState(false)
   const [modalToShow, setModalToShow] = useState('')
@@ -81,6 +84,15 @@ export default function Settings() {
 
   return (
     <>
+      <AlertModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+        title={errorMsg?.title}
+        message={errorMsg?.message}
+      />
+
       <div className="max-w-[1400px] mx-auto">
         <Nav />
 
@@ -126,6 +138,7 @@ export default function Settings() {
                 >Change</div>
               </div>
             </div>
+
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Password</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
@@ -139,6 +152,7 @@ export default function Settings() {
                 >Change</div>
               </div>
             </div>
+
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Phone number</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
@@ -152,10 +166,11 @@ export default function Settings() {
                 >Change</div>
               </div>
             </div>
+
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Subscription</div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
-                <div className="text-[#757575]">Active</div>
+                <div className="text-[#757575]">{user.status.toLowerCase() === 'cancelled' ? 'Cancelled' : 'Active'}</div>
                 <div className="text-black cursor-pointer" onClick={() => setCancelModal(true)}>Cancel</div>
               </div>
             </div>
@@ -312,12 +327,24 @@ export default function Settings() {
                 const cancelMsgElement = document.querySelector('#cancelMsg');
                 cancelMsgElement.textContent = res.message
 
+                if (cancelMsgElement.status === 200) {
+                  const updateUser = await supabase
+                    .from("users")
+                    .update({ status: 'cancelled' })
+                    .eq('id', user.id);
+                  if (updateUser?.error) {
+                    console.log(updateUser.error);
+                    setIsModalOpen(true);
+                    setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
+                  }
+                }
+
                 setTimeout(() => {
                   setCancelModal(false)
                 }, 2000);
               }} >
                 {/* <BsFillEnvelopeFill /> */}
-                Yes <span id="loadingdots" className="animate-pulse tracking-widest font-black" style={{ display: 'none'}}>...</span>
+                Yes <span id="loadingdots" className="animate-pulse tracking-widest font-black" style={{ display: 'none' }}>...</span>
               </button>
             </div>
           </div>
