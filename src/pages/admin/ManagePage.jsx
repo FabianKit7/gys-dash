@@ -702,7 +702,7 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
                       }
 
                       let sendEmail = await axios
-                        .post(`${BACKEND_URL} /api/send_email`, {
+                        .post(`${BACKEND_URL}/api/send_email`, {
                           email: user?.email,
                           subject,
                           htmlContent,
