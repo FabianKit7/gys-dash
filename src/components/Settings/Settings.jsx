@@ -329,7 +329,7 @@ export default function Settings() {
                 const cancelMsgElement = document.querySelector('#cancelMsg');
                 cancelMsgElement.textContent = res.message
 
-                if (cancelMsgElement.status === 200) {
+                if (res.status === 200) {
                   const updateUser = await supabase
                     .from("users")
                     .update({ status: 'cancelled' })
@@ -384,7 +384,7 @@ export default function Settings() {
                 const reActivateMsgElement = document.querySelector('#reActivateMsg');
                 reActivateMsgElement.textContent = res.message
 
-                if (reActivateMsgElement.status === 200) {
+                if (res.status === 200) {
                   const updateUser = await supabase
                     .from("users")
                     .update({ status: 'checking' })
