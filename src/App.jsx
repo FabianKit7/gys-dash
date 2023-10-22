@@ -21,6 +21,7 @@ import { useState } from "react";
 import ManageAccounts from "./pages/ManageAccounts";
 import ManagePage from "./pages/admin/ManagePage";
 import Retention from "./pages/admin/Retention";
+// import EmailUnsubscribe from "./pages/Unsubscribe";
 // import { getCookie } from "./helpers";
 
 
@@ -64,6 +65,7 @@ function App() {
           {/* <Route path="/" element={<Home />} /> */}
           <Route index element={<Login />} />
           <Route path="/search" element={<Search />} />
+          {/* <Route path="/unsubscribe" element={<EmailUnsubscribe />} /> */}
           <Route path="/login" exact element={<Login />} />
           <Route path="/signUp" exact element={<SignUp />} />
           <Route path="/forget-password" exact element={<ForgetPassword />} />
