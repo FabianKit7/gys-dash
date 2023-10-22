@@ -721,9 +721,9 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           // console.log("createSubscription");
           // console.log(createSubscription);
 
-          if (!createSubscription.data) {
+          if (!createSubscription?.data) {
             setIsModalOpen(true);
-            setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${createSubscription.response.data.message}` })
+            setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${createSubscription?.response?.data?.message}` })
             setLoading(false);
             return;
           }
