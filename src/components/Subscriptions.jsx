@@ -708,6 +708,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
         if (paymentMethod?.id) {
           let createSubscription = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription`, {
             name: nameOnCard,
+            username,
             email: user?.email,
             paymentMethod: paymentMethod.id,
             price: PRICE_ID
