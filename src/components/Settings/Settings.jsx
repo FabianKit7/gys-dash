@@ -63,7 +63,7 @@ export default function Settings() {
           customerId: currentUser?.customer_id,
         }
         setShowRangeSlider(true)
-        let chargebeeCustomerData = await axios.post(`${BACKEND_URL}/api/retrieve_customer`,
+        let chargebeeCustomerData = await axios.post(`${BACKEND_URL}/api/stripe/retrieve_customer`,
           urlEncode(retrieve_customer_data))
           .then((response) => response.data).catch((err) => {
             console.log(err);
