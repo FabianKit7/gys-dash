@@ -241,10 +241,10 @@ export default function Settings() {
                   <div className="border-b mb-2 pb-1 md:mb-0 md:border-b-0 flex items-center gap-2 md:gap-4 lg:gap-[30px]">
                     <div className="relative">
                       <img src={account?.profile_pic_url} alt={`@${account?.username}`} className="min-w-[50px] min-h-[50px] w-[50px] h-[50px] lg:min-w-[107px] lg:min-h-[107px] lg:w-[107px] lg:h-[107px] rounded-full" />
-                      <div className="hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full bg-primary"></div>
+                      <div className="hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full bg-green-600"></div>
                     </div>
                     <div className="lg:text-[24px] w-full">
-                      <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-primary">{user?.status.toLowerCase() === 'active' && user?.status}</span></div>
+                      <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-green-600">{user?.status.toLowerCase() === 'active' && user?.status}</span></div>
                       <div className="">
                         <img src="/instagram.svg" alt="" className="my-[3px] md:my-[5px] lg:my-[7px] mr-[8px] w-[16px] h-[16px] lg:w-[28px] lg:h-[28px] rounded-full" />
                       </div>

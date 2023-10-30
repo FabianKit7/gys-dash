@@ -216,7 +216,7 @@ export default function Subscriptions() {
               <div className="px-5 pt-4 bg-white">
                 <h1 className="text-black text-[20px] font-bold font-MontserratSemiBold">
                   {' '}
-                  Start Your Free 7-Day Trial
+                  Start Your Followers Growth
                 </h1>
                 <p className="mt-1 mb-3 text-black text-[14px] font-normal">
                   Grow Real & Targeted Followers Every Month. Analytics &
@@ -291,15 +291,15 @@ export default function Subscriptions() {
               {paymentMethod.name === 'card' ?
                 <div className="">
                   <button
-                    className={`${Loading ? 'bg-primary/90 cursor-wait' : 'bg-black cursor-pointer'} w-full h-[50px] rounded-[10px] text-white flex items-center justify-center gap-2`}
+                    className={`${Loading ? 'bg-primary/90 cursor-wait' : 'bg-black cursor-pointer'} w-full h-[50px] rounded-full text-white flex items-center justify-center gap-2`}
                     type="submit"
                     form="cardForm"
                   // onClick={() => { }}
                   >
-                    <div className="">{Loading ? "Loading..." : "Start 7 days Free Trial"}</div>
+                    <div className="">{Loading ? "Loading..." : "Start My Growth"}</div>
                   </button>
                   <div className="mt-2 text-center text-black">
-                    Then $99.99 per month, billed monthly. <br /> Cancel any time, no risk.
+                    $99.99 per month, billed monthly. <br /> Cancel any time, no risk.
                   </div>
                 </div>
                 :
@@ -314,7 +314,7 @@ export default function Subscriptions() {
                     <img src={'/icons/paypal-btn.svg'} alt="" className="h-[25px]" />
                   </button>
                   <div className="mt-2 text-center text-black">
-                    Start Free 7-Day Trial. Then $99.99 per month, billed monthly. Cancel any time, no risk.
+                    Start Your Followers Growth. $99.99 per month, billed monthly. Cancel any time, no risk.
                   </div>
                 </div>
               }
@@ -477,14 +477,14 @@ const Content = ({ user, userResults, navigate, setIsModalOpen, setErrorMsg, use
 
             <div className="basis-[60%] grow-[4] rounded-[20px] shadow-[0_5px_10px_#0a17530d] p-4 lg:p-[50px_50px_50px] bg-white relative">
               <div className="w-full h-full overflow-auto">
-                <span className="text-[14px] py-[5px] px-3 mb-3 rounded-[8px] text-primary bg-primary/30">7-Days Free Trial</span>
-                <div className="text-[20px] lg:text-[26px] font-bold text-black font-MontserratBold">Start Your 7-Days Trial</div>
+                <span className="text-[14px] py-[5px] px-3 mb-3 rounded-[8px] text-primary bg-primary/30">Get 1000+ followers</span>
+                <div className="text-[20px] lg:text-[26px] font-bold text-black font-MontserratBold">Start Your Followers Growth</div>
                 <p className="text-[14px] mt-2 mb-5">
                   It's time to get the real exposure you've been waiting for. After signing up, you will be introduced to your personal account manager and start growing in under 2 minutes.
                 </p>
-                <div className="text-[72px] leading-[70px] text-black font-bold font-MontserratBold">Free</div>
+                <div className="text-[72px] leading-[70px] text-black font-bold font-MontserratBold">$99.99</div>
                 <p className="text-[14px] mb-5">
-                  Then $99.99 per month, billed monthly.
+                  Billed monthly, 30-days refund guarantee.
                 </p>
 
                 <div className="flex flex-col gap-4 text-base text-black">
@@ -922,7 +922,7 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           // await handleCardPay(setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard);
           handleCardPay();
         }}>
-        <span> {Loading ? "Processing..." : `${addCard ? "Add Payment Method" : "Start 7 days Free Trial"}`}  </span>
+        <span> {Loading ? "Processing..." : `${addCard ? "Add Payment Method" : "Start My Growth"}`}  </span>
       </button>
       {/* {showCardComponent && <></>} */}
       {Loading && <div className="flex items-center justify-center gap-2 py-3">
