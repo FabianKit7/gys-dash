@@ -731,12 +731,19 @@ export const ChargeBeeCard = ({ user, userResults, addCard, username, setIsModal
           if (createSubscription?.data?.clientSecret) {
             const confirm = await stripe.confirmCardPayment(createSubscription?.data?.clientSecret)
             console.log("confirmCardPayment");
-            console.log(confirm);
+            console.error(confirm);
             if (confirm.error) {
-              setIsModalOpen(true);
-              setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${confirm.error.message}` })
-              setLoading(false);
-              return;
+              if (confirm.error.message === `A payment method of type card was expected to be present, but this PaymentIntent does not have a payment method and none was provided. Try again providing either the payment_method or payment_method_data parameters.`) {
+                setIsModalOpen(true);
+                setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: please check if you have enough fund on your card` })
+                setLoading(false);
+                return;
+              } else {
+                setIsModalOpen(true);
+                setErrorMsg({ title: 'Failed to create subscription', message: `An error occured: ${confirm.error.message}` })
+                setLoading(false);
+                return;
+              }
             }
 
             if (confirm?.paymentIntent?.status === "succeeded" && createSubscription?.data?.message === "Subscription successful!") {
