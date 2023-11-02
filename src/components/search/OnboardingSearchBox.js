@@ -101,6 +101,10 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
         },
       };
       const userResults = await Axios.request(options);
+
+      console.log("userResults");
+      console.log(userResults);
+
       const vuser = userResults?.data?.[0]
 
       // console.log(userResults);
@@ -108,7 +112,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
       if (!vuser?.username) {
         // alert('Username not found!');
         setIsModalOpen(true);
-        setErrorMsg({ title: 'Alert', message: 'Username not found!' })
+        setErrorMsg({ title: 'Alert', message: `Username: ${vuser.username} not found!` })
         setProcessing(false);
         return
       }
@@ -316,7 +320,12 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                   {debouncedQuery && <div className="flex items-center gap-2 pb-2 border-b cursor-pointer"
                     onClick={async () => {
                       setProcessing(true)
-                      const a = await getAccount(debouncedQuery)
+                      var filteredSelected = debouncedQuery;
+                      if (filteredSelected.startsWith('@')) {
+                        filteredSelected = filteredSelected.substring(1)
+                      }
+                      const a = await getAccount(filteredSelected)
+
                       setProcessing(false)
                       if (a?.data?.[0]?.username) {
                         setSelected(a?.data?.[0]?.username);
