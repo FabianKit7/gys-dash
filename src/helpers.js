@@ -3,7 +3,7 @@ import axios from "axios"
 import _ from 'lodash';
 // import { slackClient } from "./slackClient";
 import { supabase } from "./supabaseClient"
-import { BACKEND_URL, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "./config";
+import { BACKEND_URL, PRICE_ID, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "./config";
 
 export const numFormatter = (num = 0) => {
   if (num > 999 && num <= 999949) {
@@ -416,7 +416,7 @@ export async function cancelSubscription(user) {
 }
 
 export async function reActivateSubscription(user) {
-  let reActivate = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription_for_customer`, { customer_id: user?.customer_id || '' }
+  let reActivate = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription_for_customer`, { customer_id: user?.customer_id || '', price: user?.current_plan_id || PRICE_ID || '' }
   ).catch(err => {
     console.error(err)
     return err

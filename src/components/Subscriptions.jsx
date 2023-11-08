@@ -1079,7 +1079,8 @@ export const ChargeBeeCard = ({
             ) {
               await continueToSupabase(
                 userIsNew,
-                createSubscription.data.subscription
+                createSubscription.data.subscription,
+                selectedPlan.planId
               );
               setLoading(false);
             } else {
@@ -1094,7 +1095,8 @@ export const ChargeBeeCard = ({
           } else {
             await continueToSupabase(
               userIsNew,
-              createSubscription.data.subscription
+              createSubscription.data.subscription,
+              selectedPlan.planId
             );
             setLoading(false);
           }
@@ -1117,11 +1119,12 @@ export const ChargeBeeCard = ({
     setLoading(false);
   };
 
-  async function continueToSupabase(userIsNew, subscriptionObj) {
+  async function continueToSupabase(userIsNew, subscriptionObj, plan) {
     let data = {
       nameOnCard,
       subscription_id: subscriptionObj?.id,
       customer_id: subscriptionObj?.customer,
+      current_plan_id: plan,
 
       username: userResults?.username,
       email: user.email,
