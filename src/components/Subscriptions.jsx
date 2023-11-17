@@ -13,6 +13,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import {
   BACKEND_URL,
   LOGO,
+  NOT_CONNECTED_SMS_TEMPLATE,
   NOT_CONNECTED_TEMPLATE,
   // PRICE_ID,
   SCRAPER_API_URL,
@@ -547,28 +548,28 @@ const Content = ({
   setSelectedPlanType,
 }) => {
   const [showCreaditCardInput, setShowCreaditCardInput] = useState(false);
-    const featureA = [
-      '400+ Real Monthly Followers',
-      'Get Higher Engagement on Posts',
-      'Grow 250% Faster',
-      'Fully Customized Targeting',
-      'Real & Organic Growth',
-      'Instagram Support & Consulting',
-      'Growth Analytics',
-      'Instant Setup',
-      'Safe & Secure',
-    ];
-    const featureB = [
-      '1000+ Real Monthly Followers',
-      'Reach Explore Page',
-      'Grow 500% Faster',
-      'Fully Customized Targeting',
-      'Real & Organic Growth',
-      'Dedicated Account Manager',
-      'Growth Analytics',
-      'Instant Setup',
-      'Safe & Secure',
-    ];
+  const featureA = [
+    '400+ Real Monthly Followers',
+    'Get Higher Engagement on Posts',
+    'Grow 250% Faster',
+    'Fully Customized Targeting',
+    'Real & Organic Growth',
+    'Instagram Support & Consulting',
+    'Growth Analytics',
+    'Instant Setup',
+    'Safe & Secure',
+  ];
+  const featureB = [
+    '1000+ Real Monthly Followers',
+    'Reach Explore Page',
+    'Grow 500% Faster',
+    'Fully Customized Targeting',
+    'Real & Organic Growth',
+    'Dedicated Account Manager',
+    'Growth Analytics',
+    'Instant Setup',
+    'Safe & Secure',
+  ];
 
   return (
     <>
@@ -1186,6 +1187,13 @@ export const ChargeBeeCard = ({
     if (sendEmail.status !== 200) {
       console.log(sendEmail);
     }
+
+    const url = `${BACKEND_URL}/api/send_sms`;
+    const sms_data = {
+      recipient: user?.phone,
+      content: NOT_CONNECTED_SMS_TEMPLATE(),
+    };
+    await axios.post(url, sms_data);
 
     const ref = getRefCode();
     if (ref) {

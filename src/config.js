@@ -33,21 +33,73 @@ const live_prices = [
     // { planId: '', value: '311', name: 'Elite', type: '3 months' },
     // { planId: '', value: '277', name: 'Elite', type: '6 months' },
 ]
-const test_prices = [
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '147', name: 'Start', type: '1 month' },
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '133', name: 'Start', type: '3 months' },
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '117', name: 'Start', type: '6 months' },
+// const test_prices = [
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '147', name: 'Start', type: '1 month' },
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '133', name: 'Start', type: '3 months' },
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '117', name: 'Start', type: '6 months' },
 
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '247', name: 'Professional', type: '1 month' },
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '221', name: 'Professional', type: '3 months' },
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '199', name: 'Professional', type: '6 months' },
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '247', name: 'Professional', type: '1 month' },
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '221', name: 'Professional', type: '3 months' },
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '199', name: 'Professional', type: '6 months' },
 
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '347', name: 'Elite', type: '1 month' },
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '311', name: 'Elite', type: '3 months' },
-    { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '277', name: 'Elite', type: '6 months' }
-]
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '347', name: 'Elite', type: '1 month' },
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '311', name: 'Elite', type: '3 months' },
+//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '277', name: 'Elite', type: '6 months' }
+// ]
 
 export const SUBSCRIPTION_PLANS = live_prices;
+
+// SMS templates
+export const INCORRECT_PASSWORD_SMS_TEMPLATE = () => {
+  return `
+  It seems the Instagram password you entered is incorrect. Please re-enter your password in your LiftInfluence dashboard for us to proceed.
+`;
+};
+
+export const TWOFAC_BACKUP_SMS_TEMPLATE = () => {
+  return `
+  LiftInfluence needs your Instagram backup code to complete the login process. Please enter it in your dashboard. Find the guide here: https://help.instagram.com/1006568999411025
+`;
+};
+
+export const TWOFAC_CODE_SMS_TEMPLATE = () => {
+  return `
+  We're almost there! Please enter the two-factor authentication code you received from Instagram in your LiftInfluence dashboard.
+`;
+};
+
+export const CHECKING_SMS_TEMPLATE = () => {
+  return `
+  To start your growth on LiftInfluence, please check your Instagram activity for a foreign login request and confirm by clicking 'This was me'.
+`;
+};
+
+export const ACTIVE_SMS_TEMPLATE = () => {
+  return `
+  Great news! Your account is now active on LiftInfluence. Expect to see your Instagram growth begin within the next 8 hours!
+`;
+};
+
+export const CANCELLED_SMS_TEMPLATE = () => {
+  return `
+  We are sorry to see you go! 😞 Your LiftInfluence subscription has been successfully cancelled.
+`;
+};
+
+export const TRUSTPILOT_SMS_TEMPLATE = () => {
+  return `
+  👋We hope you're enjoying LiftInfluence! Mind leaving us a review on Trustpilot? We'll extend your subscription by 7 days if you do so: https://www.trustpilot.com/review/liftinfluence.com
+`;
+};
+
+export const NOT_CONNECTED_SMS_TEMPLATE = (full_name) => {
+  return `
+  ${
+    full_name && `${full_name}, `
+  }Welcome to LiftInfluence! To get started, please connect your Instagram account. Let's start with your growth now!
+`;
+};
+
 
 // email templates
 export const INCORRECT_PASSWORD_TEMPLATE = (full_name, username) => {
