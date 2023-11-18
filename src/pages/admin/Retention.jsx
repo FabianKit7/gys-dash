@@ -659,7 +659,7 @@ export const SendSMSModal = ({ k, user, setShowChargebee }) => {
     setProcessing({ state: true, type: template_name });
     const url = `${BACKEND_URL}/api/send_sms`;
     const data = {
-      recipient: '+38631512279', //user?.phone,
+      recipient: user?.phone,
       content: template,
     };
     const resp = await axios.post(url, data);
