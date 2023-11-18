@@ -21,6 +21,9 @@ import {
   INCORRECT_PASSWORD_SMS_TEMPLATE,
   LOGO,
   NOT_CONNECTED_SMS_TEMPLATE,
+  RETENTION_SMS_1,
+  RETENTION_SMS_2,
+  RETENTION_SMS_3,
   TRUSTPILOT_SMS_TEMPLATE,
   TWOFAC_BACKUP_SMS_TEMPLATE,
   TWOFAC_CODE_SMS_TEMPLATE,
@@ -631,6 +634,18 @@ export const SendSMSModal = ({ k, user, setShowChargebee }) => {
       name: 'Not Connected SMS',
       template: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
     },
+    {
+      name: 'Retention #1 SMS',
+      template: RETENTION_SMS_1(),
+    },
+    {
+      name: 'Retention #2 SMS',
+      template: RETENTION_SMS_2(),
+    },
+    {
+      name: 'Retention #3 SMS',
+      template: RETENTION_SMS_3(),
+    },
   ];
 
   useEffect(() => {
@@ -644,7 +659,7 @@ export const SendSMSModal = ({ k, user, setShowChargebee }) => {
     setProcessing({ state: true, type: template_name });
     const url = `${BACKEND_URL}/api/send_sms`;
     const data = {
-      recipient: user?.phone,
+      recipient: '+38631512279', //user?.phone,
       content: template,
     };
     const resp = await axios.post(url, data);

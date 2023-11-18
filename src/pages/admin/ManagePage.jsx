@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from './components/header';
-import { FaCaretUp, FaPen, FaPlus, FaTimes } from 'react-icons/fa';
+import { FaCaretUp, FaPen, FaPlus, FaSms, FaTimes } from 'react-icons/fa';
 import { supabase } from '../../supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
@@ -14,6 +14,7 @@ import {
   LOGO,
   TWO_FACTOR_TEMPLATE,
 } from '../../config';
+import { SendSMSModal } from './Retention';
 
 export const calculateLast7DaysGrowth = (sessionData) => {
   if (!sessionData) return;
@@ -57,6 +58,8 @@ export default function ManagePage() {
   const [message, setMessage] = useState({ sectionName: '', value: '' });
   const [showAddTagModal, setShowAddTagModal] = useState(false);
   const [userToAddTagFor, setUserToAddTagFor] = useState();
+  const [showChargebee, setShowChargebee] = useState(false);
+  const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
     const getData = async () => {
@@ -173,6 +176,14 @@ export default function ManagePage() {
         />
       )}
 
+      {showChargebee && (
+        <SendSMSModal
+          k={selectedUser?.id}
+          user={selectedUser}
+          setShowChargebee={setShowChargebee}
+        />
+      )}
+
       <div className="font-MontserratRegular max-w-[1600px] mx-auto">
         <Header
           setUsers={setUsers}
@@ -223,7 +234,7 @@ export default function ManagePage() {
               <th>Last 7 Days Growth</th>
               <th>Phone</th>
               <th>Tags</th>
-              <th colSpan={2}>
+              <th colSpan={3}>
                 <div className="text-center">Actions</div>
               </th>
             </tr>
@@ -416,6 +427,22 @@ export default function ManagePage() {
                           <FaPlus size={15} color="white" />
                         </div>
                       )}
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black cursor-pointer"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setShowChargebee(true);
+                      }}
+                    >
+                      {/* <img
+                      src="/icons/monetization.svg"
+                      alt=""
+                      className="w-[18px] h-[18px]"
+                    /> */}
+                      <FaSms fill="white" className="w-[18px] h-[18px]" />
                     </div>
                   </td>
                   <td>

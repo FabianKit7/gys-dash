@@ -100,6 +100,24 @@ export const NOT_CONNECTED_SMS_TEMPLATE = (full_name) => {
 `;
 };
 
+export const RETENTION_SMS_1 = () => {
+  return `
+  Hi👋 We've noticed you haven't completed your registration at LiftInfluence. Go back to our website and complete it within a minute! It's a service, not a marriage..
+`;
+};
+
+export const RETENTION_SMS_2 = () => {
+  return `
+  Hey👋 Complete your LiftInfluence registration today and get an additional 7 days of growth to your first month. Let's start growing your Instagram presence!
+`;
+};
+
+export const RETENTION_SMS_3 = () => {
+  return `
+  Get additional 14 days of Instagram growth by completing your LiftInfluence registration within the next day. We are eager to see you! 🥳
+`;
+};
+
 
 // email templates
 export const INCORRECT_PASSWORD_TEMPLATE = (full_name, username) => {
