@@ -72,6 +72,7 @@ export default function Retention() {
         .from('users')
         .select('*')
         .eq('status', sectionName.toLocaleLowerCase())
+        .order('created_at', { ascending: false })
         .limit(3000);
       error && console.log(error);
       if (error) return;
@@ -659,7 +660,7 @@ export const SendSMSModal = ({ k, user, setShowChargebee }) => {
     setProcessing({ state: true, type: template_name });
     const url = `${BACKEND_URL}/api/send_sms`;
 
-    console.log(user?.phone?.toString()?.replace(/\s/g, ''));
+    // console.log(user?.phone?.toString()?.replace(/\s/g, ''));
 
     const data = {
       recipient: user?.phone?.toString()?.replace(/\s/g, ''),

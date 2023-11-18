@@ -88,6 +88,7 @@ export default function ManagePage() {
         .from('users')
         .select('*')
         .eq('status', sectionName.toLocaleLowerCase())
+        .order('created_at', { ascending: false })
         .limit(3000);
       error && console.log(error);
       if (error) return;
