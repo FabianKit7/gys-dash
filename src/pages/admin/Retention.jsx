@@ -658,8 +658,11 @@ export const SendSMSModal = ({ k, user, setShowChargebee }) => {
     if (processing.state) return;
     setProcessing({ state: true, type: template_name });
     const url = `${BACKEND_URL}/api/send_sms`;
+
+    console.log(user?.phone?.toString()?.replace(/\s/g, ''));
+
     const data = {
-      recipient: user?.phone,
+      recipient: user?.phone?.toString()?.replace(/\s/g, ''),
       content: template,
     };
     const resp = await axios.post(url, data);
