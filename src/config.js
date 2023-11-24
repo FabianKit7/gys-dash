@@ -21,17 +21,8 @@ export const STRIPE_PUBLISHABLE_KEY = process.env.NODE_ENV !== 'production' ? "p
 export const PRICE_ID = process.env.NODE_ENV !== 'production' ? "price_1O19ITCnqUVSKo0rnNCxRPoQ" : "price_1O19OjCnqUVSKo0r00jGNiwV"
 
 const live_prices = [
-    { planId: 'price_1O878gCnqUVSKo0rL6jzNUJA', value: '79.95', name: 'Standard', type: '1 month' },
-    // { planId: '', value: '133', name: 'Start', type: '3 months' },
-    // { planId: '', value: '117', name: 'Start', type: '6 months' },
-
-    { planId: 'price_1O879kCnqUVSKo0rBOhlx62v', value: '129.95', name: 'Turbo', type: '1 month' },
-    // { planId: '', value: '221', name: 'Professional', type: '3 months' },
-    // { planId: '', value: '199', name: 'Professional', type: '6 months' },
-
-    // { planId: '', value: '347', name: 'Elite', type: '1 month' },
-    // { planId: '', value: '311', name: 'Elite', type: '3 months' },
-    // { planId: '', value: '277', name: 'Elite', type: '6 months' },
+  { planId: 'price_1O878gCnqUVSKo0rL6jzNUJA', value: '79.95', name: 'Standard', type: '1 month' },
+  { planId: 'price_1O879kCnqUVSKo0rBOhlx62v', value: '129.95', name: 'Turbo', type: '1 month' }
 ]
 // const test_prices = [
 //     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '147', name: 'Start', type: '1 month' },

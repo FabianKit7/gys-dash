@@ -21,6 +21,7 @@ import { useState } from "react";
 import ManageAccounts from "./pages/ManageAccounts";
 import ManagePage from "./pages/admin/ManagePage";
 import Retention from "./pages/admin/Retention";
+import FreeTrialAllowed from "./pages/admin/FreeTrialAllowed";
 // import EmailUnsubscribe from "./pages/Unsubscribe";
 // import { getCookie } from "./helpers";
 
@@ -59,7 +60,11 @@ function App() {
   return (
     <>
       {/* <div className="max-w-[1600px] mx-auto p-5 font-MontserratRegular"> */}
-      <div className={`${addPadding ? 'p-4 md:p-5 max-w-[1400px] mx-auto' : 'p-0'} font-MontserratRegular`}>
+      <div
+        className={`${
+          addPadding ? 'p-4 md:p-5 max-w-[1400px] mx-auto' : 'p-0'
+        } font-MontserratRegular`}
+      >
         {/* <nav>slkdfjl</nav> */}
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
@@ -74,12 +79,21 @@ function App() {
           <Route path="/:username/settings" exact element={<Settings />} />
           <Route path="/thankyou" exact element={<Thankyou />} />
           <Route path="/dashboard/:username" exact element={<Dashboard />} />
-          <Route path="/dashboard/:username/manage" exact element={<ManageAccounts />} />
+          <Route
+            path="/dashboard/:username/manage"
+            exact
+            element={<ManageAccounts />}
+          />
 
           <Route path="/admin" exact element={<Admin />} />
           <Route path="/admin/manage" exact element={<ManagePage />} />
+          <Route
+            path="/admin/freeTrialAllowed"
+            exact
+            element={<FreeTrialAllowed />}
+          />
           <Route path="/admin/retention" exact element={<Retention />} />
-          
+
           <Route path="/chat/:username" exact element={<Chat />} />
           <Route path="/dashboard" exact element={<DashboardApp />} />
           <Route path="/dashboard/edit/:username" exact element={<Edit />} />

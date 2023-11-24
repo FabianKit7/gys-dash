@@ -5,8 +5,9 @@ import { RefreshModal } from '../../../dashboard'
 import { supabase } from '../../../supabaseClient'
 import { messageSlack } from '../../../helpers'
 import { LOGO } from '../../../config'
+import { TbLogout } from 'react-icons/tb'
 
-export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading }) {
+export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading, disableSearch }) {
     const [openRefreshModal, setOpenRefreshModal] = useState(false)
 
     const hangleSearch = async () => {
@@ -84,40 +85,89 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
     }
 
     return (
-        <div className="">
-            {openRefreshModal && <RefreshModal openRefreshModal={openRefreshModal} setOpenRefreshModal={setOpenRefreshModal} />}
+      <div className="">
+        {openRefreshModal && (
+          <RefreshModal
+            openRefreshModal={openRefreshModal}
+            setOpenRefreshModal={setOpenRefreshModal}
+          />
+        )}
 
-            <nav className="flex items-center justify-between">
-                <Link to={"/"} className="navbar-brand" href="#">
-                    <div className="font-MADEOKINESANSPERSONALUSE text-[20px] md:text-[25px]">
-                        <img alt="" className="md:hidden w-[36px] h-[36px]" src={LOGO} />
-                        <img src="/liftinf-logo-with-name.svg" alt="" className="hidden md:inline  w-[346px]" />
-                    </div>
-                </Link>
+        <nav className="flex items-center justify-between">
+          <Link to={'/'} className="navbar-brand" href="#">
+            <div className="font-MADEOKINESANSPERSONALUSE text-[20px] md:text-[25px]">
+              <img alt="" className="md:hidden w-[36px] h-[36px]" src={LOGO} />
+              <img
+                src="/liftinf-logo-with-name.svg"
+                alt=""
+                className="hidden md:inline  w-[346px]"
+              />
+            </div>
+          </Link>
 
-                <div className="flex justify-end items-center text-[18px] font-semibold font-MontserratSemiBold tracking-[-0.36px]">
-                    <button className="rounded-[10px] bg-black text-white w-[203px] h-[59px]" onClick={sendReport}>Send Report</button>
+          <div className="flex justify-end items-center text-[18px] font-semibold font-MontserratSemiBold tracking-[-0.36px]">
+            <button
+              className="rounded-[10px] bg-black text-white w-[203px] h-[59px]"
+              onClick={sendReport}
+            >
+              Send Report
+            </button>
 
-                    <button className="rounded-[10px] bg-black text-white w-[203px] h-[59px] ml-5" onClick={() => setOpenRefreshModal(!openRefreshModal)}>Refresh Account</button>
-                    <button className="rounded-[10px] bg-black text-white w-[203px] h-[59px] ml-5" onClick={async () => {
-                        await supabase.auth.signOut();
-                        window.onbeforeunload = function () {
-                            localStorage.clear();
-                        }
-                        window.location.pathname = "/login";
-                    }}>Log Out</button>
-                </div>
-            </nav>
+            <button
+              className="rounded-[10px] bg-black text-white w-[203px] h-[59px] ml-5"
+              onClick={() => setOpenRefreshModal(!openRefreshModal)}
+            >
+              Refresh Account
+            </button>
+            <Link
+              to={'/admin/freeTrialAllowed'}
+              className="rounded-[10px] bg-black text-white w-[203px] h-[59px] ml-5 grid place-items-center"
+            >
+              Free Trial
+            </Link>
+            <button
+              className="rounded-[10px] bg-black text-white w-auto px-3 h-[59px] ml-5"
+              title="logout"
+              onClick={async () => {
+                await supabase.auth.signOut();
+                window.onbeforeunload = function () {
+                  localStorage.clear();
+                };
+                window.location.pathname = '/login';
+              }}
+            >
+              <TbLogout size={40} />
+            </button>
+          </div>
+        </nav>
 
-            <form className="h-[82px] w-full rounded-[10px] border shadow-[0px_0px_5px_0px_#E7E7E7] flex items-center px-[28px] py-[23px] mt-[22px]" onSubmit={(e) => { e.preventDefault(); hangleSearch() }}>
-                <button type='submit' className="w-[40px] h-[40px] grid place-items-center rounded-[10px] bg-black">
-                    <img src="/icons/user-search.svg" alt="" className="w-[24px] h-[24px]" />
-                </button>
-                <input
-                    value={searchTerm}
-                    onChange={(e) => { setSearchTerm(e.target.value) }}
-                    type="search" className="placeholder-[#C4C4C4] text-[#363636] outline-none border-none ml-5 w-full" placeholder='Search by @account, email or CB Customer ID' />
-            </form>
-        </div>
-    )
+        {!disableSearch && <form
+          className="h-[82px] w-full rounded-[10px] border shadow-[0px_0px_5px_0px_#E7E7E7] flex items-center px-[28px] py-[23px] mt-[22px]"
+          onSubmit={(e) => {
+            e.preventDefault();
+            hangleSearch();
+          }}
+        >
+          <button
+            type="submit"
+            className="w-[40px] h-[40px] grid place-items-center rounded-[10px] bg-black"
+          >
+            <img
+              src="/icons/user-search.svg"
+              alt=""
+              className="w-[24px] h-[24px]"
+            />
+          </button>
+          <input
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+            type="search"
+            className="placeholder-[#C4C4C4] text-[#363636] outline-none border-none ml-5 w-full"
+            placeholder="Search by @account, email or CB Customer ID"
+          />
+        </form>}
+      </div>
+    );
 }
