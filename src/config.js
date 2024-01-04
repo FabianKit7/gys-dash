@@ -1,9 +1,9 @@
 
 
 export const LOGO = "/logo.svg" 
-export const LOGO_WITH_NAME = "/liftinf-logo-with-name.svg" 
+export const LOGO_WITH_NAME = "/color-logo-no-background.svg" 
 export const ANALYST_NAME = "Mike P"
-export const EMAIL = "hello@liftinfluence.com"
+export const EMAIL = "hello@grow-your-social.com"
 
 export const SCRAPER_API_URL = "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile"
 export const X_RAPID_API_HOST = 'instagram-bulk-profile-scrapper.p.rapidapi.com'
@@ -43,43 +43,43 @@ export const SUBSCRIPTION_PLANS = live_prices;
 // SMS templates
 export const INCORRECT_PASSWORD_SMS_TEMPLATE = () => {
   return `
-  It seems the Instagram password you entered is incorrect. Please re-enter your password in your LiftInfluence dashboard for us to proceed.
+  It seems the Instagram password you entered is incorrect. Please re-enter your password in your Grow-your-social dashboard for us to proceed.
 `;
 };
 
 export const TWOFAC_BACKUP_SMS_TEMPLATE = () => {
   return `
-  LiftInfluence needs your Instagram backup code to complete the login process. Please enter it in your dashboard. Find the guide here: https://help.instagram.com/1006568999411025
+  Grow-your-social needs your Instagram backup code to complete the login process. Please enter it in your dashboard. Find the guide here: https://help.instagram.com/1006568999411025
 `;
 };
 
 export const TWOFAC_CODE_SMS_TEMPLATE = () => {
   return `
-  We're almost there! Please enter the two-factor authentication code you received from Instagram in your LiftInfluence dashboard.
+  We're almost there! Please enter the two-factor authentication code you received from Instagram in your Grow-your-social dashboard.
 `;
 };
 
 export const CHECKING_SMS_TEMPLATE = () => {
   return `
-  To start your growth on LiftInfluence, please check your Instagram activity for a foreign login request and confirm by clicking 'This was me'.
+  To start your growth on Grow-your-social, please check your Instagram activity for a foreign login request and confirm by clicking 'This was me'.
 `;
 };
 
 export const ACTIVE_SMS_TEMPLATE = () => {
   return `
-  Great news! Your account is now active on LiftInfluence. Expect to see your Instagram growth begin within the next 8 hours!
+  Great news! Your account is now active on Grow-your-social. Expect to see your Instagram growth begin within the next 8 hours!
 `;
 };
 
 export const CANCELLED_SMS_TEMPLATE = () => {
   return `
-  We are sorry to see you go! 😞 Your LiftInfluence subscription has been successfully cancelled.
+  We are sorry to see you go! 😞 Your Grow-your-social subscription has been successfully cancelled.
 `;
 };
 
 export const TRUSTPILOT_SMS_TEMPLATE = () => {
   return `
-  👋We hope you're enjoying LiftInfluence! Mind leaving us a review on Trustpilot? We'll extend your subscription by 7 days if you do so: https://www.trustpilot.com/review/liftinfluence.com
+  👋We hope you're enjoying Grow-your-social! Mind leaving us a review on Trustpilot? We'll extend your subscription by 7 days if you do so: https://www.trustpilot.com/review/grow-your-social.com
 `;
 };
 
@@ -87,25 +87,25 @@ export const NOT_CONNECTED_SMS_TEMPLATE = (full_name) => {
   return `
   ${
     full_name && `${full_name}, `
-  }Welcome to LiftInfluence! To get started, please connect your Instagram account. Let's start with your growth now!
+  }Welcome to Grow-your-social! To get started, please connect your Instagram account. Let's start with your growth now!
 `;
 };
 
 export const RETENTION_SMS_1 = () => {
   return `
-  Hi👋 We've noticed you haven't completed your registration at LiftInfluence. Go back to our website and complete it within a minute! It's a service, not a marriage..
+  Hi👋 We've noticed you haven't completed your registration at Grow-your-social. Go back to our website and complete it within a minute! It's a service, not a marriage..
 `;
 };
 
 export const RETENTION_SMS_2 = () => {
   return `
-  Hey👋 Complete your LiftInfluence registration today and get an additional 7 days of growth to your first month. Let's start growing your Instagram presence!
+  Hey👋 Complete your Grow-your-social registration today and get an additional 7 days of growth to your first month. Let's start growing your Instagram presence!
 `;
 };
 
 export const RETENTION_SMS_3 = () => {
   return `
-  Get additional 14 days of Instagram growth by completing your LiftInfluence registration within the next day. We are eager to see you! 🥳
+  Get additional 14 days of Instagram growth by completing your Grow-your-social registration within the next day. We are eager to see you! 🥳
 `;
 };
 
@@ -120,7 +120,7 @@ export const INCORRECT_PASSWORD_TEMPLATE = (full_name, username) => {
 
 <p class="MsoNormal"><span lang="EN">We regret to inform you that the password
 provided for @<b>${username}</b>, to access our service is incorrect. We kindly request
-you to attempt re-logging into your dashboard by following this <a href="http://app.liftinfluence.com"><span style="color:#1155CC">link</span></a>.
+you to attempt re-logging into your dashboard by following this <a href="http://app.grow-your-social.com"><span style="color:#1155CC">link</span></a>.
 Once the correct password is provided, our team will proceed to log in to your
 account within the next 24 hours.</span></p>
 
@@ -133,7 +133,7 @@ do not hesitate to contact us at ${EMAIL}.</span></p>
 
 <p class="MsoNormal"><span lang="EN">Best regards,</span></p>
 
-<p class="MsoNormal"><span class="SpellE"><span lang="EN">LiftInfluence</span></span><span lang="EN"> Team</span></p>
+<p class="MsoNormal"><span class="SpellE"><span lang="EN">Grow-your-social</span></span><span lang="EN"> Team</span></p>
 </div>
 `
 }
@@ -181,7 +181,7 @@ do not hesitate to contact us at ${EMAIL}.</span></p>
 // <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
 
 // <p class="MsoNormal"><span lang="EN">After completing the steps above we kindly
-// request you to attempt re-logging into your dashboard by following this <a href="http://app.liftinfluence.com"><span style="color:#1155CC">link</span></a></span></p>
+// request you to attempt re-logging into your dashboard by following this <a href="http://app.grow-your-social.com"><span style="color:#1155CC">link</span></a></span></p>
 
 // <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
 
@@ -199,7 +199,7 @@ do not hesitate to contact us at ${EMAIL}.</span></p>
 
 // <p class="MsoNormal"><span lang="EN">Kind regards,</span></p>
 
-// <p class="MsoNormal"><span class="SpellE"><span lang="EN">LiftInfluence</span></span><span lang="EN"> Team</span></p>
+// <p class="MsoNormal"><span class="SpellE"><span lang="EN">Grow-your-social</span></span><span lang="EN"> Team</span></p>
 // </div>
 
 // `
@@ -245,7 +245,7 @@ export const TWO_FACTOR_TEMPLATE = (full_name, username) => {
         select "Backup codes".<o:p /></span></p>
 
         <p class="MsoNormal"><span lang="EN">5. Copy one 8-digit code and paste it into
-        your <span class="SpellE">LiftInfluence</span> dashboard.<o:p /></span></p>
+        your <span class="SpellE">Grow-your-social</span> dashboard.<o:p /></span></p>
 
         <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
 
@@ -260,7 +260,7 @@ export const TWO_FACTOR_TEMPLATE = (full_name, username) => {
         <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
 
         <p class="MsoNormal"><span lang="EN">After completing the steps above we kindly
-        request you to attempt re-logging into your dashboard by following this <a href="https://app.liftinfluence.com/">link</a></span></p>
+        request you to attempt re-logging into your dashboard by following this <a href="https://app.grow-your-social.com/">link</a></span></p>
 
         <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
 
@@ -280,7 +280,7 @@ export const TWO_FACTOR_TEMPLATE = (full_name, username) => {
 
         <p class="MsoNormal"><span lang="EN">Kind regards,<o:p /></span></p>
 
-        <p class="MsoNormal"><span class="SpellE"><span lang="EN">LiftInfluence</span></span><span lang="EN"> Team</span></p>
+        <p class="MsoNormal"><span class="SpellE"><span lang="EN">Grow-your-social</span></span><span lang="EN"> Team</span></p>
 
         <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
 
@@ -299,7 +299,7 @@ export const NOT_CONNECTED_TEMPLATE = (full_name) => {
 <p class="MsoNormal"><span lang="EN">We would like to bring to your attention that
 you are currently not connected to our service. We kindly request you to
 establish the connection at your earliest convenience by clicking on the
-provided <a href="http://app.liftinfluence.com"><span style="color:#1155CC">link</span></a>.
+provided <a href="http://app.grow-your-social.com"><span style="color:#1155CC">link</span></a>.
 By doing so, we can promptly initiate the growth process for your account.</span></p>
 
 <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
@@ -337,7 +337,7 @@ you with the support you need.</span></p>
 
 <p class="MsoNormal"><span lang="EN">Kind regards,</span></p>
 
-<p class="MsoNormal"><span class="SpellE"><span lang="EN">LiftInfluence</span></span><span lang="EN"> Team.</span></p>
+<p class="MsoNormal"><span class="SpellE"><span lang="EN">Grow-your-social</span></span><span lang="EN"> Team.</span></p>
 </div>
 `
 }
@@ -350,21 +350,21 @@ export const ACTIVE_TEMPLATE = (full_name, username) => {
             <p className="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
 
             <p className="MsoNormal"><span lang="EN">We are thrilled to inform you that your
-            account <b>@${username}</b> has been successfully linked with <span className="SpellE">LiftInfluence</span>!
+            account <b>@${username}</b> has been successfully linked with <span className="SpellE">Grow-your-social</span>!
             You can expect to witness growth within just 12 hours on your account. Should
             you have any inquiries or require any assistance, please don't hesitate to
             reach out to us at <a href='mailto:${EMAIL}'>${EMAIL}</a>.<o:p /></span></p>
 
             <p className="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
 
-            <p className="MsoNormal"><span lang="EN">Thank you for choosing <span className="SpellE">LiftInfluence</span>
+            <p className="MsoNormal"><span lang="EN">Thank you for choosing <span className="SpellE">Grow-your-social</span>
             to enhance your social media experience!<o:p /></span></p>
 
             <p className="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
 
             <p className="MsoNormal"><span lang="EN">Best Regards,<o:p /></span></p>
 
-            <p className="MsoNormal"><span lang="EN">The <span className="SpellE">LiftInfluence</span>
+            <p className="MsoNormal"><span lang="EN">The <span className="SpellE">Grow-your-social</span>
             Team</span></p>
         </div>
     `
@@ -403,7 +403,7 @@ export const CHECKING_TEMPLATE = (full_name, username) => {
 
             <p className="MsoNormal" style={{ lineHeight: "150%" }}>After completing the steps above we
             kindly request you to attempt re-logging into your dashboard by following this
-            <a href="app.liftinfluence.com">link</a><o:p /></p>
+            <a href="app.grow-your-social.com">link</a><o:p /></p>
 
             <p className="MsoNormal" style={{ lineHeight: "150%" }}>If you have any concerns or require
             further assistance, please do not hesitate to reach out to us at
@@ -415,7 +415,7 @@ export const CHECKING_TEMPLATE = (full_name, username) => {
 
             <p className="MsoNormal" style={{ lineHeight: "150%" }}>Kind regards,<o:p /></p>
 
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}><span className="SpellE">LiftInfluence</span>
+            <p className="MsoNormal" style={{ lineHeight: "150%" }}><span className="SpellE">Grow-your-social</span>
             Team</p>
 
             </div>

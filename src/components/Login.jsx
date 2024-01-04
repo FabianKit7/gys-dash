@@ -5,6 +5,7 @@ import { getUser } from "../helpers";
 import { supabase } from "../supabaseClient";
 import AlertModal from "./AlertModal";
 import PrimaryButton from "./PrimaryButton";
+import { LOGO_WITH_NAME } from "../config";
 // import { BsFacebook } from "react-icons/bs";
 
 export default function Login() {
@@ -119,7 +120,7 @@ export default function Login() {
       <div className="p-5 md:p-10 md:shadow-lg rounded-[10px] w-full md:w-[458px]">
         <div className="flex flex-col items-center justify-center">
           <div className="font-MADEOKINESANSPERSONALUSE text-[28px]">
-            <img src="/liftinf-logo-with-name.svg" alt="" className="w-[220px]" />
+            <img src={LOGO_WITH_NAME} alt="" className="w-[220px]" />
           </div>
           <hr className="mt-1 md:mb-7 w-full border-primary" />
 

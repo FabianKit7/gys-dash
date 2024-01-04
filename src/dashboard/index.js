@@ -903,7 +903,7 @@ export const Chargebee = ({ k, user, setShowChargebee }) => {
           <div className="flex flex-col justify-between gap-10 border-b md:flex-row">
             <div className="">CUSTOMER_ID:</div>
             {/* <div className="">{d?.customer_id}</div> */}
-            <a href={`https://liftinfluence.chargebee.com/d/customers/${customer?.id}`} target='_blank' className="cursor-pointer" rel="noreferrer" 
+            <a href={`https://grow-your-social.chargebee.com/d/customers/${customer?.id}`} target='_blank' className="cursor-pointer" rel="noreferrer" 
             // onClick={() => {
             //   copy(customer?.id, {
             //     debug: true,
@@ -918,7 +918,7 @@ export const Chargebee = ({ k, user, setShowChargebee }) => {
           </div>
           <div className="flex flex-col justify-between gap-10 border-b md:flex-row">
             <div className="">SUBSCRIPTION_ID:</div>
-            <a href={`https://liftinfluence.chargebee.com/d/subscriptions/${subscription?.id}`} target='_blank' className="cursor-pointer" rel="noreferrer" 
+            <a href={`https://grow-your-social.chargebee.com/d/subscriptions/${subscription?.id}`} target='_blank' className="cursor-pointer" rel="noreferrer" 
             // onClick={() => {
             //   copy(subscription?.id, {
             //     debug: true,

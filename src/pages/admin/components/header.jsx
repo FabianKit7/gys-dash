@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { RefreshModal } from '../../../dashboard'
 import { supabase } from '../../../supabaseClient'
 import { messageSlack } from '../../../helpers'
-import { LOGO } from '../../../config'
+import { LOGO, LOGO_WITH_NAME } from '../../../config'
 import { TbLogout } from 'react-icons/tb'
 
 export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading, disableSearch }) {
@@ -98,7 +98,7 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
             <div className="font-MADEOKINESANSPERSONALUSE text-[20px] md:text-[25px]">
               <img alt="" className="md:hidden w-[36px] h-[36px]" src={LOGO} />
               <img
-                src="/liftinf-logo-with-name.svg"
+                src={LOGO_WITH_NAME}
                 alt=""
                 className="hidden md:inline  w-[346px]"
               />

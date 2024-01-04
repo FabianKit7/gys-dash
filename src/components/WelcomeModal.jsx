@@ -39,40 +39,5 @@ export default function WelcomeModal({ show, onHide, setShowWelcomeModal, showWe
         </div>
       </div>
     </div>
-
-
-
-
-
-
-    {/* <Modal
-      show={show}
-      onHide={onHide}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      style={{
-        border: '10px solid black'
-      }}
-    >
-      <div className="absolute top-2 right-2">
-        <FaTimesCircle className="cursor-pointer" onClick={() => setShowWelcomeModal(false)} />
-      </div>
-
-      <div className="flex flex-col items-center gap-4 px-2 pt-3 pb-5">
-        <div className="flex items-center justify-center">
-          <img src="/liftinf-logo-with-name.svg" alt="logo" className="h-[40px]" />
-        </div>
-
-        // <h1 className="text-3xl font-bold font-MontserratBold">HOW TO START</h1> 
-        <h1 className="text-[1rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">HOW TO START</h1>
-
-        <ol type="1" className="flex flex-col items-center gap-4 text-[.8rem] md:text-base">
-          <li>1. Connect Your Instagram Account to our service</li>
-          <li>2. Put in your targets (please use over 10 for optimal results)</li>
-          <li>3. Enjoy the result, we recommend changing target every month</li>
-        </ol>
-      </div>
-    </Modal> */}
   </>);
 }

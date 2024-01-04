@@ -383,7 +383,7 @@ export function getRefCode() {
   var refParam = urlParams.get('ref');
   if (refParam) {
     return refParam
-    // var newUrl = "https://app.liftinfluence.com/signup/?ref=" + refParam;
+    // var newUrl = "https://app.grow-your-social.com/signup/?ref=" + refParam;
     // var signupLink = document.getElementById('signup');
     // if (signupLink) {
     //   signupLink.href = newUrl;

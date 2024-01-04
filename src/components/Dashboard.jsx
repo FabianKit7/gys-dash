@@ -800,11 +800,11 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="mt-[10px] gap-[10px] flex flex-col items-center">
-                <Link to="https://calendly.com/liftinfluence/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <Link to="https://calendly.com/grow-your-social/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BsHeadset size={18} className="mr-1" />
                   <span>Schedule A Call</span>
                 </Link>
-                <a href="mailto:analyst@liftinfluence.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <a href="mailto:analyst@grow-your-social.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BiMessageSquareDots size={18} className="mr-1" />
                   <span>Send An Email</span>
                 </a>
@@ -872,11 +872,11 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="mt-[10px] gap-[10px] flex items-center">
-                <Link to="https://calendly.com/liftinfluence/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <Link to="https://calendly.com/grow-your-social/30min" className="bg-primary text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BsHeadset size={18} className="mr-1" />
                   <span>Schedule A Call</span>
                 </Link>
-                <a href="mailto:analyst@liftinfluence.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
+                <a href="mailto:analyst@grow-your-social.com" className="bg-black text-white w-full flex items-center justify-center text-sm font-semibold rounded-[10px] h-[52px] min-h-[52px] cursor-pointer">
                   <BiMessageSquareDots size={18} className="mr-1" />
                   <span>Send An Email</span>
                 </a>
@@ -1501,7 +1501,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
 
 const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
   const [total, setTotal] = useState({ whitelist: 0, blacklist: 0 })
-  const [pageProp, setPageProp] = useState({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue following that were followed by LiftInfluence. We will never unfollow anyone you manually followed.' })
+  const [pageProp, setPageProp] = useState({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue following that were followed by Grow-your-social. We will never unfollow anyone you manually followed.' })
   const [showPageModal, setShowPageModal] = useState(false)
   const [targetingAccounts, setTargetingAccounts] = useState([]);
   const [addSuccess, setAddSuccess] = useState(false);
@@ -1559,7 +1559,7 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
               }}>
                 <div className="font-bold font-MontserratBold text-[26px] flex items-center cursor-pointer h-[60px] rounded-[10px] px-6 hover:bg-[#f8f8f8]"
                   onClick={() => {
-                    setPageProp({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue followingthat were followed by LiftInfluence. We will never unfollow anyone you manually followed.' })
+                    setPageProp({ id: 2, title: "Whitelist", addDescription: 'Add users you wish to continue followingthat were followed by Grow-your-social. We will never unfollow anyone you manually followed.' })
                     setShowPageModal(false)
                   }}>
                   Whitelist

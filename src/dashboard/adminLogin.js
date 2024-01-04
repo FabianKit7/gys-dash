@@ -56,7 +56,7 @@ export default function AdminLogin() {
         <div className="flex flex-col justify-center items-center">
             <div className="shadow-2-strong p-5">
                 <div className="flex flex-col justify-center items-center pb-10">
-                    <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="LiftInfluence" />
+                    <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="Grow-your-social" />
                     <h5 className="font-bold text-[40px] text-gray-800">Login to dashboard</h5>
                 </div>
                 <form action="" className="flex flex-col items-center justify-start">

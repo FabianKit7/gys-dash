@@ -10,6 +10,7 @@ import * as PhoneNumber from "libphonenumber-js";
 import countryCodes from "../CountryCodes.json"
 import axios from "axios";
 import TinyFlag from "tiny-flag-react";
+import { LOGO_WITH_NAME } from "../config";
 
 function isValidPhoneNumber(phoneNumber, countryCode) {
   try {
@@ -156,12 +157,12 @@ export default function SignUp() {
       <div className="md:p-10 md:shadow-lg rounded-[10px] w-full md:w-[458px]">
         <div className="flex flex-col items-center justify-center">
           <div className="font-MADEOKINESANSPERSONALUSE text-[28px]">
-            <img src="/liftinf-logo-with-name.svg" alt="" className="w-[220px]" />
+            <img src={LOGO_WITH_NAME} alt="" className="w-[220px]" />
           </div>
           <hr className="mt-1 md:mb-7 w-full border-primary" />
 
           <h5 className="font-semibold text-[2rem] text-center text-black font-MontserratSemiBold mt-[30px]">Partner With Us</h5>
-          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Join more than <span className="font-bold">3,000</span> users that trust LiftInfluence to grow on Instagram. <br className="md:hidden" /> Create an account.</p>
+          <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px]">Join more than <span className="font-bold">3,000</span> users that trust Grow-your-social to grow on Instagram. <br className="md:hidden" /> Create an account.</p>
         </div>
 
         <form action="" className="flex flex-col items-center justify-start" onSubmit={handleSignUp}>

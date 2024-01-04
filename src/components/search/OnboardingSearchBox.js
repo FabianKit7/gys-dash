@@ -372,7 +372,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
               </h1>
               <p className="text-[0.875rem] font-MontserratRegular lg:px-[100px]">
                 Find your Instagram account and start growing followers with{' '}
-                <br className="hidden lg:block" /> LiftInfluence
+                <br className="hidden lg:block" /> Grow-your-social
               </p>
 
               <div className="flex flex-col justify-between mt-3 lg:block">

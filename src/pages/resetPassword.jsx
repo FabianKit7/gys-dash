@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import PrimaryButton from "../components/PrimaryButton";
 import AlertModal from "../components/AlertModal";
+import { LOGO_WITH_NAME } from "../config";
 
 export default function ResetPassword() {
     const [loading, setLoading] = useState(false);
@@ -49,7 +50,7 @@ export default function ResetPassword() {
             <div className="p-5 md:p-10 md:shadow-lg rounded-[10px] w-full md:w-[458px]">
                 <div className="flex flex-col items-center justify-center">
                     <div className="font-MADEOKINESANSPERSONALUSE text-[28px]">
-                        <img src="/liftinf-logo-with-name.svg" alt="" className="w-[220px]" />
+                        <img src={LOGO_WITH_NAME} alt="" className="w-[220px]" />
                     </div>
                     <hr className="mt-1 md:mb-7 w-full border-primary" />
 
@@ -103,8 +104,8 @@ export default function ResetPassword() {
     //         <div className="flex flex-col items-center justify-center h-screen">
     //             <div className="p-5 rounded-lg shadow-lg">
     //                 <div className="flex flex-col items-center justify-center pb-10">
-    //                     {/* <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="LiftInfluence" /> */}
-    //                     <div className="font-MADEOKINESANSPERSONALUSE text-[28px]"><strong className="text-[25px] text-left">LiftInfluence</strong></div>
+    //                     {/* <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="Grow-your-social" /> */}
+    //                     <div className="font-MADEOKINESANSPERSONALUSE text-[28px]"><strong className="text-[25px] text-left">Grow-your-social</strong></div>
     //                     <hr className="mb-7 w-full border-primary" />
 
     //                     <h5 className="font-bold text-[2.625rem] text-black font-MADEOKINESANSPERSONALUSE">Forgot Password?</h5>
