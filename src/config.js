@@ -16,9 +16,9 @@ export const X_RAPID_API_KEY = process.env.REACT_APP_X_RAPID_API_KEY
 
 
 export const BACKEND_URL = process.env.NODE_ENV !== 'production' ? "http://localhost:8000" : process.env.REACT_APP_BASE_URL;
-export const STRIPE_PUBLISHABLE_KEY = process.env.NODE_ENV !== 'production' ? "pk_test_51NxVGcCnqUVSKo0rSv7GutaMAUUrmXeYBFhQMI4nMzyfEiQGka6b8GryR3ESbSegoibBeK9F2TF6eoNCWrAeJzOb00DAPmHDiu" : process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+export const STRIPE_PUBLISHABLE_KEY = process.env.NODE_ENV !== 'production' ? "pk_test_51LY8WXGqRSmA1tlMTNHaLNLdBJHPu4FwoSbT3zfIUFFHq8anMSnhyjLKbZvDb3qtANHaCbJ7UBSpWUhelCjyGCZK00C0WOHKPX" : process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 
-export const PRICE_ID = process.env.NODE_ENV !== 'production' ? "price_1O19ITCnqUVSKo0rnNCxRPoQ" : "price_1O19OjCnqUVSKo0r00jGNiwV"
+export const PRICE_ID = process.env.NODE_ENV !== 'production' ? "price_1OUrSOGqRSmA1tlMhbLQZR1E" : "price_1OUrTuGqRSmA1tlM2kYgY0te"
 
 const live_prices = [
   { planId: 'price_1O878gCnqUVSKo0rL6jzNUJA', value: '79.95', name: 'Standard', type: '1 month' },
