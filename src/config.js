@@ -1,6 +1,6 @@
 
 
-export const LOGO = "/logo.svg" 
+export const LOGO = "/Android.png" 
 export const LOGO_WITH_NAME = "/color-logo-no-background.svg" 
 export const ANALYST_NAME = "Mike P"
 export const EMAIL = "hello@grow-your-social.com"
