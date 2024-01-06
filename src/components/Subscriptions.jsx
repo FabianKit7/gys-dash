@@ -601,7 +601,7 @@ const Content = ({
       requestPayerEmail: true,
       requestPayerName: true,
       total: {
-        label: "Total",
+        label: selectedPlan.name,
         amount: parseFloat(selectedPlan?.value?.toString().replace('.', '')),
       },
     });
