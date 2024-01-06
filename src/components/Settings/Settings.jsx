@@ -241,7 +241,7 @@ export default function Settings() {
                   <div className="border-b mb-2 pb-1 md:mb-0 md:border-b-0 flex items-center gap-2 md:gap-4 lg:gap-[30px]">
                     <div className="relative">
                       <img src={account?.profile_pic_url} alt={`@${account?.username}`} className="min-w-[50px] min-h-[50px] w-[50px] h-[50px] lg:min-w-[107px] lg:min-h-[107px] lg:w-[107px] lg:h-[107px] rounded-full" />
-                      <div className="hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full bg-green-600"></div>
+                      <div className={`hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full ${account.subscribed ? "bg-green-600":"bg-red-600"}`}></div>
                     </div>
                     <div className="lg:text-[24px] w-full">
                       <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-green-600">{user?.status.toLowerCase() === 'active' && user?.status}</span></div>
@@ -329,10 +329,14 @@ export default function Settings() {
                 const cancelMsgElement = document.querySelector('#cancelMsg');
                 cancelMsgElement.textContent = res.message
 
+                console.log("res");
+                console.log(res);
+                console.log(res?.status);
+
                 if (res.status === 200) {
                   const updateUser = await supabase
                     .from("users")
-                    .update({ status: 'cancelled' })
+                    .update({ status: 'cancelled', subscribed: false })
                     .eq('id', user.id);
                   if (updateUser?.error) {
                     console.log(updateUser.error);
@@ -343,6 +347,7 @@ export default function Settings() {
 
                 setTimeout(() => {
                   setCancelModal(false)
+                  window.location.reload()
                 }, 2000);
               }} >
                 {/* <BsFillEnvelopeFill /> */}

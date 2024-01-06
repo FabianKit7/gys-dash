@@ -106,12 +106,12 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
           </Link>
 
           <div className="flex justify-end items-center text-[18px] font-semibold font-MontserratSemiBold tracking-[-0.36px]">
-            <button
+            {/* <button
               className="rounded-[10px] bg-black text-white w-[203px] h-[59px]"
               onClick={sendReport}
             >
               Send Report
-            </button>
+            </button> */}
 
             <button
               className="rounded-[10px] bg-black text-white w-[203px] h-[59px] ml-5"

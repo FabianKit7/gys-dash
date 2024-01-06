@@ -38,7 +38,7 @@ export default function Retention() {
   const [sectionName, setSectionName] = useState('active');
   const [sectionTotal, setSectionTotal] = useState(0);
   const [selectedUser, setSelectedUser] = useState();
-  const [showChargebee, setShowChargebee] = useState(false);
+  const [showSMSModal, setShowSMSModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [refreshUsers, setRefreshUsers] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -146,20 +146,13 @@ export default function Retention() {
         </div>
       )}
 
-      {/* {showChargebee && (
-        <Chargebee
-          k={selectedUser?.id}
-          user={selectedUser}
-          setShowChargebee={setShowChargebee}
-        />
-      )} */}
-      {showChargebee && (
+      {/* {showSMSModal && (
         <SendSMSModal
           k={selectedUser?.id}
           user={selectedUser}
-          setShowChargebee={setShowChargebee}
+          setShowSMSModal={setShowSMSModal}
         />
-      )}
+      )} */}
       <Header
         setUsers={setUsers}
         searchTerm={searchTerm}
@@ -297,22 +290,17 @@ export default function Retention() {
                       : 'N/A'}
                   </div>
                 </td>
-                <td>
+                {/* <td>
                   <div
                     className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black cursor-pointer"
                     onClick={() => {
                       setSelectedUser(user);
-                      setShowChargebee(true);
+                      setShowSMSModal(true);
                     }}
                   >
-                    {/* <img
-                      src="/icons/monetization.svg"
-                      alt=""
-                      className="w-[18px] h-[18px]"
-                    /> */}
                     <FaSms fill="white" className="w-[18px] h-[18px]" />
                   </div>
-                </td>
+                </td> */}
                 <td>
                   <Link
                     to={`/dashboard/${user?.username}?uuid=${user?.auth_user_id}`}
@@ -598,7 +586,7 @@ const CheckActiveUsers = () => {
   );
 };
 
-export const SendSMSModal = ({ k, user, setShowChargebee }) => {
+export const SendSMSModal = ({ k, user, setShowSMSModal }) => {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [message, setMessage] = useState('');
   const [processing, setProcessing] = useState({ state: false, type: '' });
@@ -651,9 +639,9 @@ export const SendSMSModal = ({ k, user, setShowChargebee }) => {
 
   useEffect(() => {
     if (isClickedOutside) {
-      setShowChargebee(false);
+      setShowSMSModal(false);
     }
-  }, [isClickedOutside, setShowChargebee]);
+  }, [isClickedOutside, setShowSMSModal]);
 
   const handleSendSMS = async (template_name, template) => {
     return alert('Send SMS not available!')
@@ -700,7 +688,7 @@ export const SendSMSModal = ({ k, user, setShowChargebee }) => {
           <div className="text-lg font-bold">Send sms</div>
           <FaTimes
             className="cursor-pointer"
-            onClick={() => setShowChargebee(false)}
+            onClick={() => setShowSMSModal(false)}
           />
         </div>
         <div className="flex flex-col gap-4 px-6 mt-4">

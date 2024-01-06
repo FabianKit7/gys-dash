@@ -233,8 +233,8 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           customer_id: user?.customer_id,
           price: selectedPlan.planId || user?.current_plan_id || PRICE_ID || '',
         };
-        console.log("sub for c data");
-        console.log(data);
+        // console.log("sub for c data");
+        // console.log(data);
         let createSubscription = await axios
           .post(
             `${BACKEND_URL}/api/stripe/create_subscription_for_customer`,
@@ -255,7 +255,10 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
             return err?.response?.data.err;
           });
 
-        if (createSubscription.message === 'success') {
+          console.log("createSubscription");
+          console.log(createSubscription);
+
+        if (createSubscription.message === "Subscription successful!") {
           const data = {
             ...user,
             current_plan_id: selectedPlan.planId,
@@ -267,7 +270,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
             posts: vuser?.media_count,
             profile_pic_url,
             start_time: getStartingDay(),
-            subscription_id: createSubscription?.result?.subscription?.id,
+            subscription_id: createSubscription?.subscription?.id,
             status: 'pending',
             userMode: 'auto',
             first_account: false,
