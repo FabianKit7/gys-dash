@@ -1,6 +1,6 @@
 import Axios from "axios";
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { json, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { TbRefresh } from "react-icons/tb";
 import axios from "axios";
@@ -564,6 +564,7 @@ const Content = ({
   selectedPlanType,
   setSelectedPlanType,
 }) => {
+  const amount = parseFloat(selectedPlan?.value?.toString().replace(".", ""));
   const [showCreaditCardInput, setShowCreaditCardInput] = useState(false);
   const featureA = [
     "400+ Real Monthly Followers",
@@ -594,23 +595,59 @@ const Content = ({
 
   useEffect(() => {
     if (!stripe && !elements) return;
+    setPaymentRequest(null);
 
     const pr = stripe.paymentRequest({
       currency: "usd",
       country: "US",
+      // disableWallets: ["link", "applePay", "browserCard", "googlePay"],
       requestPayerEmail: true,
       requestPayerName: true,
       total: {
         label: selectedPlan.name,
-        amount: parseFloat(selectedPlan?.value?.toString().replace('.', '')),
+        amount,
       },
     });
     pr.canMakePayment().then((result) => {
       if (result) {
+        console.log("pr");
+        console.log(pr);
         setPaymentRequest(pr);
       }
+
+      pr.on("paymentmethod", async (e) => {
+        const { clientSecret } = await fetch(
+          `${BACKEND_URL}/api/stripe/create_payment_intent`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({ amount }),
+          }
+        ).then((result) => result.json());
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(
+          clientSecret,
+          {
+            payment_method: e.paymentMethod.id,
+          },
+          {
+            handleActions: false,
+          }
+        );
+
+        if (error) {
+          e.complete("fail");
+          return;
+        }
+        e.complete("success");
+        if(paymentIntent.status === "requires_action"){
+          stripe.confirmCardPayment(clientSecret)
+        }
+      });
     });
-  }, [elements, stripe, selectedPlan]);
+  }, [elements, stripe, selectedPlan, amount]);
 
   return (
     <>
@@ -755,7 +792,13 @@ const Content = ({
                             className="h-[25px]"
                           />
                         </div> */}
-                        {paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
+                        {paymentRequest && (
+                          <PaymentRequestButtonElement
+                            options={{ paymentRequest }}
+                          />
+                        )}
+                        {selectedPlan.name}
+                        {amount}
                       </div>
                     )}
 
@@ -813,45 +856,6 @@ const Content = ({
                     {selectedPlan.name === "Monthly" &&
                       ", 30-days refund guarantee."}
                   </p>
-
-                  {/* <div className="flex flex-col gap-4 text-base text-black">
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p className="">Grow Real Monthly Followers</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p>Target Followers Relevant To You</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p>Detailed Analytics & Results Tracking</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p>Automated 24/7 Growth, Set & Forget</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p>No Fakes Or Bots, 100% Real People</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p>Personal Account Manager</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p>Boost Likes, Comments & DMs</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p>Safest Instagram Growth Service</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BallEl />
-                      <p>Access Dashboard On All Devices</p>
-                    </div>
-                  </div> */}
 
                   <div className="flex flex-col gap-4 text-base text-black">
                     {(selectedPlan.name === "Monthly"
