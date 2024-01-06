@@ -602,7 +602,7 @@ const Content = ({
       requestPayerName: true,
       total: {
         label: "Total",
-        amount: 7499,
+        amount: parseFloat(selectedPlan?.value?.toString().replace('.', '')),
       },
     });
     pr.canMakePayment().then((result) => {
@@ -610,7 +610,7 @@ const Content = ({
         setPaymentRequest(pr);
       }
     });
-  }, [elements, stripe]);
+  }, [elements, stripe, selectedPlan]);
 
   return (
     <>
