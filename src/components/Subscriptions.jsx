@@ -26,6 +26,7 @@ import {
   useElements,
   CardElement,
   AddressElement,
+  PaymentRequestButtonElement,
 } from "@stripe/react-stripe-js";
 
 axios.defaults.headers.post["Content-Type"] =
@@ -442,7 +443,7 @@ export default function Subscriptions() {
                 </div>
               ) : (
                 <div className="">
-                  <button
+                  {/* <button
                     className="cursor-pointer w-full h-[50px] rounded-[10px] bg-[#ffc439] text-white flex items-center justify-center gap-2"
                     onClick={() => {
                       setIsModalOpen(true);
@@ -457,7 +458,10 @@ export default function Subscriptions() {
                       alt=""
                       className="h-[25px]"
                     />
-                  </button>
+                  </button> */}
+
+                  {/* <div id="express-checkout-element"></div> */}
+
                   <div className="mt-2 text-center text-black">
                     {`Start Your Followers Growth. $${selectedPlan?.value
                       ?.toString()
@@ -584,6 +588,30 @@ const Content = ({
     "Safe & Secure",
   ];
 
+  const [paymentRequest, setPaymentRequest] = useState(null);
+  const stripe = useStripe();
+  const elements = useElements();
+
+  useEffect(() => {
+    if (!stripe && !elements) return;
+
+    const pr = stripe.paymentRequest({
+      currency: "usd",
+      country: "US",
+      requestPayerEmail: true,
+      requestPayerName: true,
+      total: {
+        label: "Total",
+        amount: 7499,
+      },
+    });
+    pr.canMakePayment().then((result) => {
+      if (result) {
+        setPaymentRequest(pr);
+      }
+    });
+  }, [elements, stripe]);
+
   return (
     <>
       <div className="h-[calc(100vh-75px)] lg:h-screen mt-[75px] lg:mt-0 lg:py-[20px] lg:px-[100px] bg-[#f8f8f8]">
@@ -599,31 +627,6 @@ const Content = ({
           <div className="flex-col justify-between hidden h-full px-5 pb-4 lg:flex lg:justify-start lg:items-center text-start lg:px-0">
             <div className="flex flex-col w-full gap-5 lg:flex-row">
               <div className="basis-[45%] grow-[3] rounded-[20px] flex gap-5 flex-col">
-                {/* <div className="rounded-[20px]">
-                <div className="text-start w-full h-[110px] shadow-[0_5px_10px_#0a17530d] rounded-[20px] py-[25px] px-4 lg:px-[50px] relative flex items-center justify-between bg-white">
-                  <div className="w-full max-w-[420px] relative overflow-hidden flex items-center text-start py-5 pr-[30px]">
-                    <div className="flex items-center w-full gap-4 ">
-                      <div className="h-[60px] relative">
-                        <img src={userResults?.profile_pic_url} alt="" className='w-[60px] h-[60px] min-w-[60px] min-h-[60px] rounded-full' />
-                        <img src="/icons/instagram.svg" alt="" className='absolute -bottom-1 -right-1 border-2 w-[22px] h-[22px] rounded-full' />
-                      </div>
-                      <div className="">
-                        <div className="font-bold text-black">{userResults?.username}</div>
-                        <div className="">{userResults?.full_name}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-[40px] h-[40px] rounded-[10px] grid place-items-center shadow-[0_3px_8px_#0000001a] cursor-pointer bg-[#f8f8f8]" onClick={() => { navigate(`/search`) }}>
-                    <TbRefresh className="font-semibold text-gray-600" />
-                  </div>
-                </div>
-
-                <div className="pt-[32px] pb-3 px-5 lg:px-[50px] -mt-5 rounded-bl-[20px] rounded-br-[20px] shadow-[0_3px_8px_#0000001a] bg-[#f8f8f8]">
-                  <div className="flex text-[12px]">Select plan</div>
-                  <div className="flex font-bold text-black">Monthly Plan</div>
-                </div>
-              </div> */}
-
                 <div className="rounded-[20px]">
                   <div className="text-start w-full h-[110px] shadow-[0_5px_10px_#0a17530d] rounded-[20px] py-[25px] px-4 lg:px-[50px] relative flex items-center justify-between bg-white">
                     <div className="w-full max-w-[420px] relative overflow-hidden flex items-center text-start py-5 pr-[30px]">
@@ -736,7 +739,7 @@ const Content = ({
                           </span>
                           <div className="">Card / Debit Card</div>
                         </div>
-                        <div
+                        {/* <div
                           className="cursor-pointer w-full h-[60px] rounded-[8px] bg-[#ffc439] text-white flex items-center justify-center gap-2"
                           onClick={() => {
                             setIsModalOpen(true);
@@ -751,7 +754,8 @@ const Content = ({
                             alt=""
                             className="h-[25px]"
                           />
-                        </div>
+                        </div> */}
+                        {paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
                       </div>
                     )}
 
