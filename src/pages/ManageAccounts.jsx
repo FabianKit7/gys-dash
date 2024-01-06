@@ -133,7 +133,7 @@ export default function ManageAccounts() {
                 <div className="relative grid items-center grid-cols-1 m-5 mt-0 lg:grid-cols-2 xl:grid-cols-3 auto-rows-fr lg:gap-x-5 lg:gap-y-10">
                     {accounts.map(account => {
                         return (
-                            <div to={"/dashboard/" + account?.username} key={"manage_" + account.username} className="items-center w-full lg:w-[360px] relative rounded-[10px] p-[24px] pb-0 lg:p-[26px] lg:min-h-full flex flex-col justify-between overflow-hidden shadow-[0_0_3px_#00000040] bg-white text-black cursor-pointer z-[5]" onClick={() => {
+                            <Link to={"/dashboard/" + account?.username} key={"manage_" + account.username} className="items-center w-full lg:w-[360px] relative rounded-[10px] p-[24px] pb-0 lg:p-[26px] lg:min-h-full flex flex-col justify-between overflow-hidden shadow-[0_0_3px_#00000040] bg-white text-black cursor-pointer z-[5]" onClick={() => {
                                 // navigate("/dashboard/" + account?.username)
                             }}>
                                 <div className="flex w-full lg:flex-col">
@@ -182,7 +182,7 @@ export default function ManageAccounts() {
                                         <div className="pb-1 text-[24px] lg:text-[32px] font-bold leading-[0.8] font-MontserratBold" id={`interaction_${account.username}`}>{getTotalInteractions(account.username)}0</div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         )
                     })}
 

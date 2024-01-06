@@ -374,7 +374,7 @@ export default function Settings() {
                     </div>
                     <div className="lg:text-[24px] w-full">
                       <div className="flex justify-between w-full gap-1 md:justify-start">
-                        @{account?.username}{" "}
+                        <Link to={`/${account.username}/settings`}>@{account?.username}</Link>{" "}
                         <span className="font-bold text-green-600">
                           {user?.status.toLowerCase() === "active" &&
                             user?.status}
@@ -394,6 +394,7 @@ export default function Settings() {
                     <div
                       className="px-3 lg:px-[13px] py-3 lg:py-0 lg:h-[52px] grid place-items-center whitespace-nowrap rounded-[10px] bg-[#c4c4c4] text-white font-bold cursor-pointer"
                       onClick={() => {
+                        if(!account.subscribed) return;
                         setUserToCancel(account);
                         setCancelModal(true);
                       }}
@@ -495,6 +496,10 @@ export default function Settings() {
                 onClick={async () => {
                   const user = userToCancel;
 
+                  const buttons = document.querySelectorAll("button")
+                  buttons.forEach((button) => {
+                    button.disabled = true;
+                  })
                   const loadingdots = document.querySelector("#loadingdots");
                   loadingdots.style.display = "block";
                   const res = await cancelSubscription(user);
@@ -710,7 +715,7 @@ const ActivateSubModal = ({ showActivateSub, setShowActivateSub, user, userWithS
             <p>{errorMsg.message}</p>
           </DialogBody>
         )}
-        <DialogFooter>
+        <DialogFooter className="flex items-center gap-3">
           {userWithSub && !userWithSub?.first_account && <Button
             variant="text"
             color="red"
