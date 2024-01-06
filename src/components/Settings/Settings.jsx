@@ -10,69 +10,103 @@ import InfiniteRangeSlider from "../InfiniteRangeSlider";
 import { BACKEND_URL } from "../../config";
 import { cancelSubscription, reActivateSubscription } from "../../helpers";
 import AlertModal from "../AlertModal";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.post["Content-Type"] =
+  "application/x-www-form-urlencoded";
 
 const urlEncode = function (data) {
   var str = [];
   for (var p in data) {
-    if (data.hasOwnProperty(p) && (!(data[p] === undefined || data[p] == null))) {
-      str.push(encodeURIComponent(p) + "=" + (data[p] ? encodeURIComponent(data[p]) : ""));
+    if (data.hasOwnProperty(p) && !(data[p] === undefined || data[p] == null)) {
+      str.push(
+        encodeURIComponent(p) +
+          "=" +
+          (data[p] ? encodeURIComponent(data[p]) : "")
+      );
     }
   }
   return str.join("&");
-}
+};
 
 export default function Settings() {
   let { username } = useParams();
-  const currentUsername = username
-  const navigate = useNavigate()
-  const [errorMsg, setErrorMsg] = useState({ title: 'Alert', message: 'something went wrong' })
+  const currentUsername = username;
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState({
+    title: "Alert",
+    message: "something went wrong",
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [user, setUser] = useState()
-  const [showModal, setShowModal] = useState(false)
-  const [modalToShow, setModalToShow] = useState('')
-  const [cancelModal, setCancelModal] = useState(false)
-  const [reActivateModal, setReActivateModal] = useState(false)
-  const [refresh, setRefresh] = useState(false)
-  const [chargebeeCustomerData, setChargebeeCustomerData] = useState()
-  const [showRangeSlider, setShowRangeSlider] = useState(false)
-  const [accounts, setAccounts] = useState([])
+  const [user, setUser] = useState();
+  const [userWithSub, setUserWithSub] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [modalToShow, setModalToShow] = useState("");
+  const [cancelModal, setCancelModal] = useState(false);
+  const [userToCancel, setUserToCancel] = useState(null);
+  const [reActivateModal, setReActivateModal] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [chargebeeCustomerData, setChargebeeCustomerData] = useState();
+  const [showRangeSlider, setShowRangeSlider] = useState(false);
+  const [accounts, setAccounts] = useState([]);
+  const [showActivateSub, setShowActivateSub] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return navigate("/login")
-      const { data, error } = await supabase.from('users').select().eq('username', currentUsername).eq('email', user.email)
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return navigate("/login");
+      const { data, error } = await supabase
+        .from("users")
+        .select()
+        .eq("username", currentUsername)
+        .eq("email", user.email);
       if (error) {
-        error && console.log(error)
-        alert("An error occurred, reloading the page or contact support.")
+        error && console.log(error);
+        alert("An error occurred, reloading the page or contact support.");
         return;
       }
       const currentUser = data?.[0];
-      const getAllAccounts = await supabase.from('users').select().eq('email', user.email)
-      setAccounts(getAllAccounts?.data)
+      const getAllAccounts = await supabase
+        .from("users")
+        .select()
+        .eq("email", user.email);
+      setUserWithSub(getAllAccounts?.data.find((user) => user.subscribed));
+      setAccounts(getAllAccounts?.data);
       if (!currentUser?.subscribed) {
-        window.location.pathname = `subscriptions/${data[0].username}`;
+        // window.location.pathname = `subscriptions/${data[0].username}`;
+        setUser(data?.find((user) => user?.username === currentUsername));
+        setShowActivateSub(true);
       } else {
-        setUser(data[0])
+        setUser(data?.find((user) => user?.username === currentUsername));
 
         if (!currentUser?.customer_id) return;
 
         const retrieve_customer_data = {
           customerId: currentUser?.customer_id,
-        }
-        setShowRangeSlider(true)
-        let chargebeeCustomerData = await axios.post(`${BACKEND_URL}/api/stripe/retrieve_customer`,
-          urlEncode(retrieve_customer_data))
-          .then((response) => response.data).catch((err) => {
+        };
+        setShowRangeSlider(true);
+        let chargebeeCustomerData = await axios
+          .post(
+            `${BACKEND_URL}/api/stripe/retrieve_customer`,
+            urlEncode(retrieve_customer_data)
+          )
+          .then((response) => response.data)
+          .catch((err) => {
             console.log(err);
-          })
-        setShowRangeSlider(false)
+          });
+        setShowRangeSlider(false);
 
         // console.log(chargebeeCustomerData);
         if (chargebeeCustomerData?.card) {
-          setChargebeeCustomerData(chargebeeCustomerData)
+          setChargebeeCustomerData(chargebeeCustomerData);
         }
       }
     };
@@ -85,6 +119,14 @@ export default function Settings() {
 
   return (
     <>
+      {showActivateSub && (
+        <ActivateSubModal
+          showActivateSub={showActivateSub}
+          setShowActivateSub={setShowActivateSub}
+          user={user}
+          userWithSub={userWithSub}
+        />
+      )}
       <AlertModal
         isOpen={isModalOpen}
         onClose={() => {
@@ -101,12 +143,17 @@ export default function Settings() {
           <div
             className="flex justify-between items-center rounded-[10px] h-[84px] px-5 md:px-[30px] mb-10"
             style={{
-              boxShadow: '0 0 3px #00000040',
+              boxShadow: "0 0 3px #00000040",
             }}
           >
-            <h1 className="font-black font-MontserratBold text-[18px] md:text-[26px] text-black">Profile settings</h1>
+            <h1 className="font-black font-MontserratBold text-[18px] md:text-[26px] text-black">
+              Profile settings
+            </h1>
 
-            <div className="flex items-center gap-2 text-base cursor-pointer" onClick={() => navigate(-1)}>
+            <div
+              className="flex items-center gap-2 text-base cursor-pointer"
+              onClick={() => navigate(-1)}
+            >
               <h3>Close</h3>
               <FaTimes size={18} />
             </div>
@@ -114,150 +161,252 @@ export default function Settings() {
 
           <div className="md:px-10">
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="mb-2 border-b md:mb-0 md:border-b-0">Full Name</div>
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">
+                Full Name
+              </div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">{user?.full_name}</div>
-                <div className="text-black cursor-pointer"
+                <div
+                  className="text-black cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
-                    setRefresh(!refresh)
-                    setModalToShow('fullname');
+                    setRefresh(!refresh);
+                    setModalToShow("fullname");
                   }}
-                >Change</div>
+                >
+                  Change
+                </div>
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
               <div className="mb-2 border-b md:mb-0 md:border-b-0">Email</div>
               <div className="flex flex-col md:flex-row md:items-center md:gap-3">
                 <div className="text-[#757575]">{user?.email}</div>
-                <div className="text-black cursor-pointer"
+                <div
+                  className="text-black cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
-                    setRefresh(!refresh)
-                    setModalToShow('email');
+                    setRefresh(!refresh);
+                    setModalToShow("email");
                   }}
-                >Change</div>
+                >
+                  Change
+                </div>
               </div>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="mb-2 border-b md:mb-0 md:border-b-0">Password</div>
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">
+                Password
+              </div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">************</div>
-                <div className="text-black cursor-pointer"
+                <div
+                  className="text-black cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
-                    setRefresh(!refresh)
-                    setModalToShow('password');
+                    setRefresh(!refresh);
+                    setModalToShow("password");
                   }}
-                >Change</div>
+                >
+                  Change
+                </div>
               </div>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="mb-2 border-b md:mb-0 md:border-b-0">Phone number</div>
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">
+                Phone number
+              </div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
                 <div className="text-[#757575]">{user?.phone}</div>
-                <div className="text-black cursor-pointer"
+                <div
+                  className="text-black cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
-                    setRefresh(!refresh)
-                    setModalToShow('phone');
+                    setRefresh(!refresh);
+                    setModalToShow("phone");
                   }}
-                >Change</div>
+                >
+                  Change
+                </div>
               </div>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-              <div className="mb-2 border-b md:mb-0 md:border-b-0">Subscription</div>
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">
+                Subscription
+              </div>
               <div className="flex items-center justify-between gap-3 md:justify-end">
-                <div className="text-[#757575]">{user?.status.toLowerCase() === 'cancelled' ? 'Cancelled' : 'Active'}</div>
-                {user?.status.toLowerCase() === 'cancelled' ? <div className="text-black cursor-pointer" onClick={() => setReActivateModal(true)}>Re-activate</div> :
-                  <div className="text-black cursor-pointer" onClick={() => setCancelModal(true)}>Cancel</div>}
+                <div className="text-[#757575]">
+                  {user?.status.toLowerCase() === "cancelled"
+                    ? "Cancelled"
+                    : "Active"}
+                </div>
+                {user?.status.toLowerCase() === "cancelled" ? (
+                  <div
+                    className="text-black cursor-pointer"
+                    onClick={() => setReActivateModal(true)}
+                  >
+                    Re-activate
+                  </div>
+                ) : (
+                  <div
+                    className="text-black cursor-pointer"
+                    onClick={() => setCancelModal(true)}
+                  >
+                    Cancel
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {chargebeeCustomerData ?
+        {chargebeeCustomerData ? (
           <div className="my-8">
             <div
               className="flex justify-between items-center rounded-[10px] h-[84px] px-5 md:px-[30px] mb-10"
               style={{
-                boxShadow: '0 0 3px #00000040',
+                boxShadow: "0 0 3px #00000040",
               }}
             >
-              <h1 className="font-black font-MontserratBold text-[18px] md:text-[26px] text-black">Payment and Billing Settings</h1>
+              <h1 className="font-black font-MontserratBold text-[18px] md:text-[26px] text-black">
+                Payment and Billing Settings
+              </h1>
             </div>
 
             {/* payment and billing settings */}
             <div className="md:px-10">
               <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
-                <div className="mb-2 border-b md:mb-0 md:border-b-0">Credit Card</div>
+                <div className="mb-2 border-b md:mb-0 md:border-b-0">
+                  Credit Card
+                </div>
 
                 <div className="flex items-center justify-between gap-3 md:justify-end">
                   <div className="text-[#757575] flex items-center gap-3">
-                    {chargebeeCustomerData?.card?.card_type === 'visa' && <img src="/icons/visa.svg" alt="visa" className="w-[36px] h-fit" />}
-                    {chargebeeCustomerData?.card?.card_type === 'mastercard' && <img src="/icons/mastercard.svg" alt="visa" className="w-[36px] h-fit" />}
-                    {chargebeeCustomerData?.card?.card_type === 'maestro' && <img src="/icons/maestro.svg" alt="visa" className="w-[36px] h-fit" />}
-                    {!(['visa', 'mastercard', 'maestro'].includes(chargebeeCustomerData?.card?.card_type)) && <>({chargebeeCustomerData?.card?.card_type})</>}
-                    <span className="">card ending with {chargebeeCustomerData?.card?.last4}</span>
+                    {chargebeeCustomerData?.card?.card_type === "visa" && (
+                      <img
+                        src="/icons/visa.svg"
+                        alt="visa"
+                        className="w-[36px] h-fit"
+                      />
+                    )}
+                    {chargebeeCustomerData?.card?.card_type ===
+                      "mastercard" && (
+                      <img
+                        src="/icons/mastercard.svg"
+                        alt="visa"
+                        className="w-[36px] h-fit"
+                      />
+                    )}
+                    {chargebeeCustomerData?.card?.card_type === "maestro" && (
+                      <img
+                        src="/icons/maestro.svg"
+                        alt="visa"
+                        className="w-[36px] h-fit"
+                      />
+                    )}
+                    {!["visa", "mastercard", "maestro"].includes(
+                      chargebeeCustomerData?.card?.card_type
+                    ) && <>({chargebeeCustomerData?.card?.card_type})</>}
+                    <span className="">
+                      card ending with {chargebeeCustomerData?.card?.last4}
+                    </span>
                   </div>
-                  <div className="text-black cursor-pointer"
+                  <div
+                    className="text-black cursor-pointer"
                     onClick={() => {
                       setShowModal(true);
-                      setRefresh(!refresh)
-                      setModalToShow('updatePayment');
+                      setRefresh(!refresh);
+                      setModalToShow("updatePayment");
                     }}
-                  >Update</div>
+                  >
+                    Update
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          : <>
-            {showRangeSlider && <InfiniteRangeSlider />}
-          </>}
+        ) : (
+          <>{showRangeSlider && <InfiniteRangeSlider />}</>
+        )}
 
         <div className="my-8">
           <div
             className="flex flex-col md:flex-row justify-between items-center rounded-[10px] md:h-[84px] py-3 md:py-0 px-5 md:px-[30px] mb-10"
             style={{
-              boxShadow: '0 0 3px #00000040',
+              boxShadow: "0 0 3px #00000040",
             }}
           >
-            <h1 className="font-black font-MontserratBold text-[18px] md:text-[26px] text-black">Accounts</h1>
-            <Link to={`/search/?username=add_account`}
+            <h1 className="font-black font-MontserratBold text-[18px] md:text-[26px] text-black">
+              Accounts
+            </h1>
+            <Link
+              to={`/search/?username=add_account`}
               className="px-[32px] md:h-[52px] py-2 md:py-0 text-sm md:text-base mt-2 md:mt-0 w-full md:w-fit grid place-items-center whitespace-nowrap rounded-[10px] bg-black text-white font-bold"
-            >Add Account</Link>
+            >
+              Add Account
+            </Link>
           </div>
 
           {/* payment and billing settings */}
           <div className="md:px-[40px] flex flex-col gap-[40px]">
-
-            {accounts.map(account => {
+            {accounts.map((account) => {
               // console.log(account);
               return (
-                <div key={`account_${account?.username}`} className="flex flex-col justify-between md:flex-row">
+                <div
+                  key={`account_${account?.username}`}
+                  className="flex flex-col justify-between md:flex-row"
+                >
                   <div className="border-b mb-2 pb-1 md:mb-0 md:border-b-0 flex items-center gap-2 md:gap-4 lg:gap-[30px]">
                     <div className="relative">
-                      <img src={account?.profile_pic_url} alt={`@${account?.username}`} className="min-w-[50px] min-h-[50px] w-[50px] h-[50px] lg:min-w-[107px] lg:min-h-[107px] lg:w-[107px] lg:h-[107px] rounded-full" />
-                      <div className={`hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full ${account.subscribed ? "bg-green-600":"bg-red-600"}`}></div>
+                      <img
+                        src={account?.profile_pic_url}
+                        alt={`@${account?.username}`}
+                        className="min-w-[50px] min-h-[50px] w-[50px] h-[50px] lg:min-w-[107px] lg:min-h-[107px] lg:w-[107px] lg:h-[107px] rounded-full"
+                      />
+                      <div
+                        className={`hidden lg:block absolute -bottom-[2px] -right-[2px] border-[5px] w-[32px] h-[32px] rounded-full ${
+                          account.subscribed ? "bg-green-600" : "bg-red-600"
+                        }`}
+                      ></div>
                     </div>
                     <div className="lg:text-[24px] w-full">
-                      <div className="flex justify-between w-full gap-1 md:justify-start">@{account?.username} <span className="font-bold text-green-600">{user?.status.toLowerCase() === 'active' && user?.status}</span></div>
+                      <div className="flex justify-between w-full gap-1 md:justify-start">
+                        @{account?.username}{" "}
+                        <span className="font-bold text-green-600">
+                          {user?.status.toLowerCase() === "active" &&
+                            user?.status}
+                        </span>
+                      </div>
                       <div className="">
-                        <img src="/instagram.svg" alt="" className="my-[3px] md:my-[5px] lg:my-[7px] mr-[8px] w-[16px] h-[16px] lg:w-[28px] lg:h-[28px] rounded-full" />
+                        <img
+                          src="/instagram.svg"
+                          alt=""
+                          className="my-[3px] md:my-[5px] lg:my-[7px] mr-[8px] w-[16px] h-[16px] lg:w-[28px] lg:h-[28px] rounded-full"
+                        />
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-end gap-3">
-                    <div className="px-3 lg:px-[13px] py-3 lg:py-0 lg:h-[52px] grid place-items-center whitespace-nowrap rounded-[10px] bg-[#c4c4c4] text-white font-bold cursor-pointer" onClick={() => setCancelModal(true)}><BsTrash3 size={24} className="w-[16px] h-[16px] lg:w-[24px] lg:h-[24px]" /></div>
+                    <div
+                      className="px-3 lg:px-[13px] py-3 lg:py-0 lg:h-[52px] grid place-items-center whitespace-nowrap rounded-[10px] bg-[#c4c4c4] text-white font-bold cursor-pointer"
+                      onClick={() => {
+                        setUserToCancel(account);
+                        setCancelModal(true);
+                      }}
+                    >
+                      <BsTrash3
+                        size={24}
+                        className="w-[16px] h-[16px] lg:w-[24px] lg:h-[24px]"
+                      />
+                    </div>
                   </div>
                 </div>
-              )
+              );
             })}
-
           </div>
         </div>
 
@@ -301,112 +450,180 @@ export default function Settings() {
           </div>
         </div> */}
 
-        <div className={`${cancelModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} fixed top-0 left-0 w-full h-screen grid place-items-center`} style={{
-          transition: "opacity .15s ease-in"
-        }}
+        <div
+          className={`${
+            cancelModal
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          } fixed top-0 left-0 w-full h-screen grid place-items-center`}
+          style={{
+            transition: "opacity .15s ease-in",
+          }}
         >
-          <div className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center" onClick={() => setCancelModal(false)}></div>
+          <div
+            className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center"
+            onClick={() => setCancelModal(false)}
+          ></div>
           <div className="bg-white to-black py-4 md:py-7 md:pt-12 px-5 md:px-10 relative max-w-[300px] md:max-w-[500px] lg:max-w-[600px] font-MontserratRegular rounded-[10px]">
-            <FaTimesCircle className="absolute flex flex-col items-center cursor-pointer top-3 right-3"
+            <FaTimesCircle
+              className="absolute flex flex-col items-center cursor-pointer top-3 right-3"
               onClick={() => {
-                setCancelModal(false)
-              }} />
-            <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">Are you sure you want to cancel your subscription?</h1>
-            <p className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600" id="cancelMsg"></p>
+                setCancelModal(false);
+              }}
+            />
+            <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">
+              Are you sure you want to cancel your subscription for @
+              {userToCancel?.username}?
+            </h1>
+            <p
+              className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600"
+              id="cancelMsg"
+            ></p>
 
             <div className="flex justify-center gap-4">
-              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3" onClick={() => {
-                setCancelModal(false)
-              }} >
+              <button
+                className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3"
+                onClick={() => {
+                  setCancelModal(false);
+                }}
+              >
                 {/* <BsFillEnvelopeFill /> */}
                 Close
               </button>
-              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all" onClick={async () => {
-                const loadingdots = document.querySelector('#loadingdots');
-                loadingdots.style.display = 'block'
-                const res = await cancelSubscription(user)
-                loadingdots.style.display = 'none'
-                const cancelMsgElement = document.querySelector('#cancelMsg');
-                cancelMsgElement.textContent = res.message
+              <button
+                className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all"
+                onClick={async () => {
+                  const user = userToCancel;
 
-                console.log("res");
-                console.log(res);
-                console.log(res?.status);
+                  const loadingdots = document.querySelector("#loadingdots");
+                  loadingdots.style.display = "block";
+                  const res = await cancelSubscription(user);
+                  loadingdots.style.display = "none";
+                  const cancelMsgElement = document.querySelector("#cancelMsg");
+                  cancelMsgElement.textContent = res.message;
 
-                if (res.status === 200) {
-                  const updateUser = await supabase
-                    .from("users")
-                    .update({ status: 'cancelled', subscribed: false })
-                    .eq('id', user.id);
-                  if (updateUser?.error) {
-                    console.log(updateUser.error);
-                    setIsModalOpen(true);
-                    setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
+                  console.log("res");
+                  console.log(res);
+                  console.log(res?.status);
+
+                  if (res.status === 200) {
+                    const updateUser = await supabase
+                      .from("users")
+                      .update({ status: "cancelled", subscribed: false })
+                      .eq("id", user.id);
+                    if (updateUser?.error) {
+                      console.log(updateUser.error);
+                      setIsModalOpen(true);
+                      setErrorMsg({
+                        title: "Alert",
+                        message: `Error updating user's details`,
+                      });
+                    }
                   }
-                }
 
-                setTimeout(() => {
-                  setCancelModal(false)
-                  window.location.reload()
-                }, 2000);
-              }} >
+                  setTimeout(() => {
+                    setCancelModal(false);
+                    window.location.reload();
+                  }, 2000);
+                }}
+              >
                 {/* <BsFillEnvelopeFill /> */}
-                Yes <span id="loadingdots" className="font-black tracking-widest animate-pulse" style={{ display: 'none' }}>...</span>
+                Yes{" "}
+                <span
+                  id="loadingdots"
+                  className="font-black tracking-widest animate-pulse"
+                  style={{ display: "none" }}
+                >
+                  ...
+                </span>
               </button>
             </div>
           </div>
         </div>
 
-        <div className={`${reActivateModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} fixed top-0 left-0 w-full h-screen grid place-items-center`} style={{
-          transition: "opacity .15s ease-in"
-        }}
+        <div
+          className={`${
+            reActivateModal
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          } fixed top-0 left-0 w-full h-screen grid place-items-center`}
+          style={{
+            transition: "opacity .15s ease-in",
+          }}
         >
-          <div className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center" onClick={() => setReActivateModal(false)}></div>
+          <div
+            className="fixed top-0 left-0 grid w-full h-screen bg-black/40 place-items-center"
+            onClick={() => setReActivateModal(false)}
+          ></div>
           <div className="bg-white to-black py-4 md:py-7 md:pt-12 px-5 md:px-10 relative max-w-[300px] md:max-w-[500px] lg:max-w-[600px] font-MontserratRegular rounded-[10px]">
-            <FaTimesCircle className="absolute flex flex-col items-center cursor-pointer top-3 right-3"
+            <FaTimesCircle
+              className="absolute flex flex-col items-center cursor-pointer top-3 right-3"
               onClick={() => {
-                setReActivateModal(false)
-              }} />
-            <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">Are you sure you want to re-activate your subscription?</h1>
-            <p className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600" id="reActivateMsg"></p>
+                setReActivateModal(false);
+              }}
+            />
+            <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">
+              Are you sure you want to re-activate your subscription?
+            </h1>
+            <p
+              className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600"
+              id="reActivateMsg"
+            ></p>
 
             <div className="flex justify-center gap-4">
-              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3" onClick={() => {
-                setReActivateModal(false)
-              }} >
+              <button
+                className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3"
+                onClick={() => {
+                  setReActivateModal(false);
+                }}
+              >
                 {/* <BsFillEnvelopeFill /> */}
                 Close
               </button>
-              <button className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all" onClick={async () => {
-                if (!user?.customer_id) {
-                  setReActivateModal(false);
-                }
-
-                const loadingdots = document.querySelector('#loadingdots');
-                loadingdots.style.display = 'block'
-                const res = await reActivateSubscription(user)
-                loadingdots.style.display = 'none'
-                const reActivateMsgElement = document.querySelector('#reActivateMsg');
-                reActivateMsgElement.textContent = res.message
-
-                if (res.status === 200) {
-                  const updateUser = await supabase
-                    .from("users")
-                    .update({ status: 'checking' })
-                    .eq('id', user.id);
-                  if (updateUser?.error) {
-                    console.log(updateUser.error);
-                    setIsModalOpen(true);
-                    setErrorMsg({ title: 'Alert', message: `Error updating user's details` })
+              <button
+                className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all"
+                onClick={async () => {
+                  if (!user?.customer_id) {
+                    setReActivateModal(false);
                   }
-                }
 
-                setTimeout(() => {
-                  setReActivateModal(false)
-                }, 2000);
-              }} >
+                  const loadingdots = document.querySelector("#loadingdots");
+                  loadingdots.style.display = "block";
+                  const res = await reActivateSubscription(user);
+                  loadingdots.style.display = "none";
+                  const reActivateMsgElement =
+                    document.querySelector("#reActivateMsg");
+                  reActivateMsgElement.textContent = res.message;
+
+                  if (res.status === 200) {
+                    const updateUser = await supabase
+                      .from("users")
+                      .update({ status: "checking" })
+                      .eq("id", user.id);
+                    if (updateUser?.error) {
+                      console.log(updateUser.error);
+                      setIsModalOpen(true);
+                      setErrorMsg({
+                        title: "Alert",
+                        message: `Error updating user's details`,
+                      });
+                    }
+                  }
+
+                  setTimeout(() => {
+                    setReActivateModal(false);
+                  }, 2000);
+                }}
+              >
                 {/* <BsFillEnvelopeFill /> */}
-                Yes <span id="loadingdots" className="font-black tracking-widest animate-pulse" style={{ display: 'none' }}>...</span>
+                Yes{" "}
+                <span
+                  id="loadingdots"
+                  className="font-black tracking-widest animate-pulse"
+                  style={{ display: "none" }}
+                >
+                  ...
+                </span>
               </button>
             </div>
           </div>
@@ -415,3 +632,115 @@ export default function Settings() {
     </>
   );
 }
+
+const ActivateSubModal = ({ showActivateSub, setShowActivateSub, user, userWithSub }) => {
+  const [processing, setProcessing] = useState(false);
+  const [errorMsg, setErrorMsg] = useState({
+    title: "",
+    message: "",
+  });
+
+  const handleOpen = async () => {
+    if (processing) return;
+
+    if (!user.first_account) {
+      window.location.href = `/`;
+    } else {
+      // setShowActivateSub(!showActivateSub)
+      await supabase.auth.signOut();
+      window.location.href = `/`;
+    }
+  };
+
+  const handleReactivate = async () => {
+    setProcessing(true);
+
+    if (processing) return;
+
+    const res = await reActivateSubscription(user);
+    const reActivateMsgElement = document.querySelector("#reActivateMsg");
+    reActivateMsgElement.textContent = res.message;
+
+    console.log("res.status");
+    console.log(res.status);
+
+    if (res.status === 200) {
+      const updateUser = await supabase
+        .from("users")
+        .update({
+          status: "checking",
+          subscribed: true,
+          subscription_id: res.subscription_id,
+        })
+        .eq("id", user.id);
+      if (updateUser?.error) {
+        console.log(updateUser.error);
+        setErrorMsg({
+          title: "Alert",
+          message: `Error updating user's details`,
+        });
+      }
+    }
+    setProcessing(false);
+
+    setTimeout(() => {
+      setShowActivateSub(!showActivateSub);
+      window.location.reload();
+    }, 2000);
+  };
+
+  return (
+    <>
+      {/* <div className="fixed top-0 left-0 w-full h-screen bg"></div> */}
+      <Dialog open={showActivateSub} handler={handleOpen}>
+        <DialogHeader>Re-activate your subscription.</DialogHeader>
+        <DialogBody>
+          <strong>@{user?.username}</strong> your account do not have an active
+          subscription. Please reactive your subscription if you wish to
+          continue.
+        </DialogBody>
+        {processing && (
+          <DialogBody className="animate-pulse text-primary">
+            processing...
+          </DialogBody>
+        )}
+        {errorMsg.message && (
+          <DialogBody className="text-red-600">
+            <h3 className="font-bold">{errorMsg.title}</h3>
+            <p>{errorMsg.message}</p>
+          </DialogBody>
+        )}
+        <DialogFooter>
+          {userWithSub && !userWithSub?.first_account && <Button
+            variant="text"
+            color="red"
+            onClick={() => {
+              window.location.href = `/${userWithSub?.username}/settings`
+            }}
+            className="mr-1"
+            disabled={processing}
+          >
+            <span>switch to @{userWithSub?.username}</span>
+          </Button>}
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpen}
+            className="mr-1"
+            disabled={processing}
+          >
+            <span>{user?.first_account ? "Logout" : "Switch account"}</span>
+          </Button>
+          <Button
+            variant="gradient"
+            color="green"
+            disabled={processing}
+            onClick={handleReactivate}
+          >
+            <span>Re-active</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+    </>
+  );
+};

@@ -13,7 +13,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
   BACKEND_URL,
   LOGO,
-  NOT_CONNECTED_SMS_TEMPLATE,
+  // NOT_CONNECTED_SMS_TEMPLATE,
   NOT_CONNECTED_TEMPLATE,
   // PRICE_ID,
   SCRAPER_API_URL,
@@ -32,6 +32,7 @@ axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";
 
 export default function Subscriptions() {
+  var { username } = useParams();
   const [user, setUser] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [parentRef, isClickedOutside] = useClickOutside();
@@ -90,14 +91,19 @@ export default function Subscriptions() {
       const { data } = await supabase
         .from("users")
         .select()
-        .eq("auth_user_id", authUser?.id);
-      setUser(data?.[0]);
+        .eq("auth_user_id", authUser?.id)
+        .eq("first_account", true)
+        .single();
+
+      if (data && username !== data?.username) {
+        window.location.href = `subscriptions/${data?.username}`;
+      }
+
+      data && setUser(data);
     };
 
     getData();
-  }, []);
-
-  var { username } = useParams();
+  }, [username]);
   const [userResults, setUserResults] = useState(null);
   const navigate = useNavigate();
 
@@ -1201,7 +1207,7 @@ export const ChargeBeeCard = ({
     if (sendEmail.status !== 200) {
       console.log(sendEmail);
     }
-    
+
     // try {
     //   const url = `${BACKEND_URL}/api/send_sms`;
     //   const sms_data = {

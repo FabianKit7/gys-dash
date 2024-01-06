@@ -421,9 +421,13 @@ export async function reActivateSubscription(user) {
     console.error(err)
     return err
   })
+  
+  // console.log("reActivate");
+  // console.log(reActivate);
+
   if (reActivate.status === 200) {
-    return { status: 200, message: 'Your subscription has been re-activated!' }
+    return { status: 200, message: 'Your subscription has been re-activated!', subscription_id: reActivate?.data?.subscription?.id }
   } else {
-    return { status: 500, message: 'An error occured please try again or contact our support' }
+    return { status: 500, message: 'An error occured please try again or contact our support', subscription_id: null }
   }
 }
