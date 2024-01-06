@@ -61,16 +61,16 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
   const [selectedPlanType] = useState('1 month');
   const [selectedPlan, setSelectedPlan] = useState({
     planId: '',
-    name: 'Turbo',
+    name: 'Monthly',
     type: '1 month',
-    value: 129.95,
+    value: 74.99,
   });
   const inputRef = useRef();
   const navigate = useNavigate();
 
 // set default selectedPlan
   useEffect(() => {
-    const plan = SUBSCRIPTION_PLANS.find((plan) => plan?.name === 'Turbo');
+    const plan = SUBSCRIPTION_PLANS.find((plan) => plan?.name === 'Monthly');
     setSelectedPlan(plan);
   }, []);
 
@@ -113,7 +113,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
   }, [input]);
 
   const handleSubmit = async () => {
-    if (!user?.user_id) {
+    if (!user?.auth_user_id) {
       alert('please login first');
     }
     var filteredSelected = selected;
@@ -198,7 +198,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
             username: vuser?.username,
             profile_pic_url,
           })
-          .eq('user_id', user?.user_id)
+          .eq('auth_user_id', user?.auth_user_id)
           .eq('username', user?.username);
         // window.location = `/subscriptions/${userResults.data[0].username}`;
         if (!updateUser.error) {
@@ -346,7 +346,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                           setSelectedPlan(plan);
                         }}
                       >
-                        {plan?.name === 'Turbo' && (
+                        {plan?.name === 'Monthly' && (
                           <div className="absolute top-0 -mt-2 left-1/2 -translate-x-1/2 rounded-full px-4 bg-green-600/90 text-white text-xs">
                             Popular
                           </div>

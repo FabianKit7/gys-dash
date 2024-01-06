@@ -40,8 +40,7 @@ export default function Targeting({ user, userId, page }) {
       const { data, error } = await supabase
         .from("targeting")
         .select()
-        // .eq("user_id", userId)
-        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.user_id : user?.username)
+        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.id : user?.username)
         .eq(user?.first_account ? "main_user_username" : "", user?.first_account ? 'nil' : '')
         .order('id', { ascending: false });
 

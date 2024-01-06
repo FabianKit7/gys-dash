@@ -12,7 +12,7 @@ export const X_RAPID_API_KEY = process.env.REACT_APP_X_RAPID_API_KEY
 
 // export const BACKEND_URL = process.env.REACT_APP_BASE_URL;
 // export const STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
-// export const PRICE_ID = "price_1O19OjCnqUVSKo0r00jGNiwV"
+// export const PRICE_ID = "price_1OUrTuGqRSmA1tlM2kYgY0te" #test
 
 
 export const BACKEND_URL = process.env.NODE_ENV !== 'production' ? "http://localhost:8000" : process.env.REACT_APP_BASE_URL;
@@ -21,24 +21,16 @@ export const STRIPE_PUBLISHABLE_KEY = process.env.NODE_ENV !== 'production' ? "p
 export const PRICE_ID = process.env.NODE_ENV !== 'production' ? "price_1OUrSOGqRSmA1tlMhbLQZR1E" : "price_1OUrTuGqRSmA1tlM2kYgY0te"
 
 const live_prices = [
-  { planId: 'price_1O878gCnqUVSKo0rL6jzNUJA', value: '79.95', name: 'Standard', type: '1 month' },
-  { planId: 'price_1O879kCnqUVSKo0rBOhlx62v', value: '129.95', name: 'Turbo', type: '1 month' }
+  { planId: 'price_1OUrTuGqRSmA1tlM2kYgY0te', value: '74.99', name: 'Monthly', type: '1 month' },
+  { planId: 'price_1OVYrOGqRSmA1tlM4ROGR9QQ', value: '185.99', name: 'Quaterly', type: '1 month' }
 ]
-// const test_prices = [
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '147', name: 'Start', type: '1 month' },
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '133', name: 'Start', type: '3 months' },
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '117', name: 'Start', type: '6 months' },
 
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '247', name: 'Professional', type: '1 month' },
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '221', name: 'Professional', type: '3 months' },
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '199', name: 'Professional', type: '6 months' },
+const test_prices = [
+  { planId: 'price_1OUrSOGqRSmA1tlMhbLQZR1E', value: '74.99', name: 'Monthly', type: '1 month' },
+  { planId: 'price_1OVYuCGqRSmA1tlMYhpZYax0', value: '185.99', name: 'Quaterly', type: '1 month' }
+]
 
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '347', name: 'Elite', type: '1 month' },
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '311', name: 'Elite', type: '3 months' },
-//     { planId: 'price_1NcosTJqmKOYlLGobsjK81cK', value: '277', name: 'Elite', type: '6 months' }
-// ]
-
-export const SUBSCRIPTION_PLANS = live_prices;
+export const SUBSCRIPTION_PLANS = process.env.NODE_ENV === 'production' ?  live_prices : test_prices;
 
 // SMS templates
 export const INCORRECT_PASSWORD_SMS_TEMPLATE = () => {

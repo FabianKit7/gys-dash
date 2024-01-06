@@ -27,12 +27,13 @@ export default function Search() {
   useEffect(() => {
     const getData = async () => {
       const {
-        data: { user },
+        data: { user: authUser },
       } = await supabase.auth.getUser();
+      
       const { data } = await supabase
         .from("users")
         .select()
-        .eq("user_id", user.id);
+        .eq("auth_user_id", authUser.id);
       setUser(data?.[0]);
     };
 

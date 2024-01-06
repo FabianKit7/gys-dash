@@ -32,13 +32,13 @@ export default function Nav({ setShowWelcomeModal, userD, admin }) {
       var uEmail;
       if (!userD) {
         const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        uEmail = user.email
+          data: { user: authUser },
+        } = await supabase?.auth?.getUser();
+        uEmail = authUser?.email
 
         const { data, error } = await supabase
           .from("users").select()
-          .eq("user_id", user.id)
+          .eq("auth_user_id", authUser?.id)
           .eq('username', currentUsername)
           // .single();
         if (error) {

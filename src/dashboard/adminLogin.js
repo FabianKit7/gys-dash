@@ -24,11 +24,11 @@ export default function AdminLogin() {
             password,
         })
 
-        if (data.user) {
+        if (data?.user) {
             const dbUser = await supabase
                 .from('users')
                 .select()
-                .eq("user_id", data.user.id)
+                .eq("auth_user_id", data.user.id)
                 .eq('first_account', true)
 
             dbUser.error && console.console.log(error);

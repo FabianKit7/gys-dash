@@ -191,7 +191,7 @@ export const updateUserProfilePicUrl = async (user, from) => {
             .from("users")
             .update({
               profile_pic_url: profile_pic_url,
-            }).eq("user_id", user?.user_id).eq("username", user?.username);
+            }).eq("auth_user_id", user?.auth_user_id).eq("username", user?.username);
 
           error && console.log(error)
           return { success: true, ppu: profile_pic_url }
@@ -271,26 +271,26 @@ export const deleteAccount = async (from, id) => {
   // }
 }
 
-export const deleteUserDetails = async (user_id, first_account) => {
-  await deleteUser(user_id, first_account, 'users');
-  await deleteUser(user_id, first_account, 'targeting');
-  await deleteUser(user_id, first_account, 'whitelist');
-  await deleteUser(user_id, first_account, 'blacklist');
+export const deleteUserDetails = async (auth_user_id, first_account) => {
+  await deleteUser(auth_user_id, first_account, 'users');
+  await deleteUser(auth_user_id, first_account, 'targeting');
+  await deleteUser(auth_user_id, first_account, 'whitelist');
+  await deleteUser(auth_user_id, first_account, 'blacklist');
   return 'success'
 }
 
-export const deleteUser = async (user_id, first_account, table) => {
-  const { error } = await supabase.from(table).delete().eq(first_account ? "user_id" : table === 'users' ? "username" : "main_user_username", user_id)
+export const deleteUser = async (auth_user_id, first_account, table) => {
+  const { error } = await supabase.from(table).delete().eq(first_account ? "auth_user_id" : table === 'users' ? "username" : "main_user_username", auth_user_id)
   console.log(error)
 }
 
-export const getUser = async (uid) => {
+export const getUser = async (a_uid) => {
   var error;
-  if (uid) {
+  if (a_uid) {
     const userObj = await supabase
       .from('users')
       .select('*')
-      .eq("user_id", uid)
+      .eq("auth_user_id", a_uid)
       .eq('first_account', true)
     error = userObj.error
     const r = { status: 200, obj: userObj?.data?.[0] }
@@ -300,26 +300,26 @@ export const getUser = async (uid) => {
   return { status: 500, obj: error };
 }
 
-export const messageSlack = async (message) => {
-  const r = await axios.post(BACKEND_URL + '/api/notify', {
-    webhookUrl: process.env.REACT_APP_SLACK_WEBHOOK_URL,
-    message
-  }).then(r => {
-    if (r?.data?.e?.status === null || r?.data?.e?.status === 404) {
-      console.log('error while sending message to Slack');
-      console.log(r);
-      return r
-    }
-    console.log('message sent to Slack');
-    console.log(r);
-    return r
-  })
-    .catch((e) => {
-      console.log('error while sending message to Slack');
-      console.log(e);
-    })
-  return r
-}
+// export const messageSlack = async (message) => {
+//   const r = await axios.post(BACKEND_URL + '/api/notify', {
+//     webhookUrl: process.env.REACT_APP_SLACK_WEBHOOK_URL,
+//     message
+//   }).then(r => {
+//     if (r?.data?.e?.status === null || r?.data?.e?.status === 404) {
+//       console.log('error while sending message to Slack');
+//       console.log(r);
+//       return r
+//     }
+//     console.log('message sent to Slack');
+//     console.log(r);
+//     return r
+//   })
+//     .catch((e) => {
+//       console.log('error while sending message to Slack');
+//       console.log(e);
+//     })
+//   return r
+// }
 
 // Function to fetch and upload image in subscriptions.js 183
 export async function uploadImageFromURL(username, imageURL) {

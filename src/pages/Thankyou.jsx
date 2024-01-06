@@ -14,7 +14,7 @@ export default function Thankyou() {
             const { data, error } = await supabase
             .from('users')
                 .select()
-                .eq("user_id", user.id)
+                .eq("auth_user_id", user.id)
                 .eq('first_account', true)
             if (error) return navigate("/login")
             if (!data[0]?.subscribed) {

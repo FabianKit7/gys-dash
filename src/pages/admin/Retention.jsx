@@ -315,7 +315,7 @@ export default function Retention() {
                 </td>
                 <td>
                   <Link
-                    to={`/dashboard/${user?.username}?uuid=${user?.user_id}`}
+                    to={`/dashboard/${user?.username}?uuid=${user?.auth_user_id}`}
                     target="_blank"
                     className="w-[35px] h-[35px] grid place-items-center rounded-[10px] bg-black"
                   >
@@ -656,23 +656,24 @@ export const SendSMSModal = ({ k, user, setShowChargebee }) => {
   }, [isClickedOutside, setShowChargebee]);
 
   const handleSendSMS = async (template_name, template) => {
-    if (processing.state) return;
-    setProcessing({ state: true, type: template_name });
-    const url = `${BACKEND_URL}/api/send_sms`;
+    return alert('Send SMS not available!')
+    // if (processing.state) return;
+    // setProcessing({ state: true, type: template_name });
+    // const url = `${BACKEND_URL}/api/send_sms`;
 
-    // console.log(user?.phone?.toString()?.replace(/\s/g, ''));
+    // // console.log(user?.phone?.toString()?.replace(/\s/g, ''));
 
-    const data = {
-      recipient: user?.phone?.toString()?.replace(/\s/g, ''),
-      content: template,
-    };
-    const resp = await axios.post(url, data);
+    // const data = {
+    //   recipient: user?.phone?.toString()?.replace(/\s/g, ''),
+    //   content: template,
+    // };
+    // const resp = await axios.post(url, data);
 
-    setProcessing({ state: false, type: '' });
-    setMessage(resp?.data?.message || 'something went wrong');
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
+    // setProcessing({ state: false, type: '' });
+    // setMessage(resp?.data?.message || 'something went wrong');
+    // setTimeout(() => {
+    //   setMessage('');
+    // }, 3000);
 
     // console.log('resp');
     // console.log(resp);

@@ -115,12 +115,12 @@ export default function SignUp() {
   //   setLoading(false);
   // }
 
-  const regContd = async (user, phone) => {
-    if (user) {
+  const regContd = async (authUser, phone) => {
+    if (authUser) {
       const { error } = await supabase
         .from("users")
         .insert({
-          user_id: user?.id,
+          auth_user_id: authUser?.id,
           full_name: fullName,
           phone,
           email: email?.toLowerCase(),

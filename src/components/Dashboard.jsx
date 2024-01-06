@@ -85,7 +85,7 @@ export default function Dashboard() {
       const { data, error } = await supabase
         .from('users')
         .select()
-        .eq("user_id", (superUser.admin && uuid) ? uuid : authUser?.id).eq("username", currentUsername)
+        .eq("auth_user_id", (superUser.admin && uuid) ? uuid : authUser?.id).eq("username", currentUsername)
       // .single()
       // cuser = data
       cuser = data?.[0]
@@ -272,7 +272,7 @@ export default function Dashboard() {
       {mobileAdd.show &&
         <AddOthers
           pageProp={mobileAdd.pageProp}
-          userId={userData.user_id}
+          userId={userData?.id}
           user={userData}
           setMobileAdd={setMobileAdd}
           admin={admin}
@@ -887,7 +887,7 @@ export default function Dashboard() {
 
         <TargetingCompt user={userData} setMobileAdd={setMobileAdd} />
 
-        <WhiteListCompt user={userData} userId={userData?.user_id} setMobileAdd={setMobileAdd} />
+        <WhiteListCompt user={userData} userId={userData?.id} setMobileAdd={setMobileAdd} />
       </>}
 
       <div className="hidden lg:grid place-items-center fixed bottom-[20px] right-[19px] z-50 min-w-[50px] min-h-[50px] w-[50px] h-[50px] overflow-hidden rounded-full bg-[#4DC247]">
@@ -1294,7 +1294,7 @@ const OtherUsers = ({ account, addSuccess, setAddSuccess, from }) => {
 }
 
 const TargetingCompt = ({ user, setMobileAdd }) => {
-  const userId = user?.user_id
+  const userId = user?.id
   const pageProp = { id: 1, title: "Targeting", addDescription: 'Set up your targeting by adding relevant Usernames and Hashtags.' }
   const [targetingAccounts, setTargetingAccounts] = useState([]);
   const [addSuccess, setAddSuccess] = useState(false);
@@ -1312,11 +1312,11 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
 
   useEffect(() => {
     const getTargetingAccounts = async () => {
-      if (!user || !user?.user_id) return;
+      if (!user || !user?.auth_user_id) return;
       const { data, error } = await supabase
         .from("targeting")
         .select()
-        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.user_id : user?.username)
+        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.id : user?.username)
         .eq(user?.first_account ? "main_user_username" : "", user?.first_account ? 'nil' : '')
         .order('id', { ascending: false });
 
@@ -1512,15 +1512,13 @@ const WhiteListCompt = ({ user, userId, setMobileAdd }) => {
       const whiteList = await supabase
         .from('whitelist')
         .select()
-        // .eq("user_id", userId)
-        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.user_id : user?.username)
+        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.id : user?.username)
         .eq(user?.first_account ? "main_user_username" : "", user?.first_account ? 'nil' : '')
         .order('id', { ascending: false });
       const blackList = await supabase
         .from('blacklist')
         .select()
-        // .eq("user_id", userId)
-        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.user_id : user?.username)
+        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.id : user?.username)
         .eq(user?.first_account ? "main_user_username" : "", user?.first_account ? 'nil' : '')
         .order('id', { ascending: false });
       setTotal({ whitelist: whiteList?.data?.length, blacklist: blackList?.data?.length })

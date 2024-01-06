@@ -1,15 +1,15 @@
-import Axios from 'axios';
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
-import { TbRefresh } from 'react-icons/tb';
-import axios from 'axios';
-import { MdLogout } from 'react-icons/md';
-import { useClickOutside } from 'react-click-outside-hook';
-import { FaAngleLeft } from 'react-icons/fa';
-import AlertModal from './AlertModal';
-import { getRefCode } from '../helpers';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import Axios from "axios";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import { TbRefresh } from "react-icons/tb";
+import axios from "axios";
+import { MdLogout } from "react-icons/md";
+import { useClickOutside } from "react-click-outside-hook";
+import { FaAngleLeft } from "react-icons/fa";
+import AlertModal from "./AlertModal";
+import { getRefCode } from "../helpers";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
   BACKEND_URL,
   LOGO,
@@ -20,41 +20,41 @@ import {
   SUBSCRIPTION_PLANS,
   X_RAPID_API_HOST,
   X_RAPID_API_KEY,
-} from '../config';
+} from "../config";
 import {
   useStripe,
   useElements,
   CardElement,
   AddressElement,
-} from '@stripe/react-stripe-js';
+} from "@stripe/react-stripe-js";
 
-axios.defaults.headers.post['Content-Type'] =
-  'application/x-www-form-urlencoded';
+axios.defaults.headers.post["Content-Type"] =
+  "application/x-www-form-urlencoded";
 
 export default function Subscriptions() {
   const [user, setUser] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [parentRef, isClickedOutside] = useClickOutside();
   const [errorMsg, setErrorMsg] = useState({
-    title: 'Alert',
-    message: 'something went wrong',
+    title: "Alert",
+    message: "something went wrong",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState({ id: 1, name: 'card' });
+  const [paymentMethod, setPaymentMethod] = useState({ id: 1, name: "card" });
   const [Loading, setLoading] = useState(false);
   const [isDesktop, setIsDesktop] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState({
-    planId: '',
-    name: 'Turbo',
-    type: '1 month',
-    value: 129.95,
+    planId: "",
+    name: "Monthly",
+    type: "1 month",
+    value: 74.99,
   });
   // const [showSelectedPlanType, setShowSelectedPlanType] = useState(false);
-  const [selectedPlanType, setSelectedPlanType] = useState('1 month');
+  const [selectedPlanType, setSelectedPlanType] = useState("1 month");
 
   // set default selectedPlan
   useEffect(() => {
-    const plan = SUBSCRIPTION_PLANS.find((plan) => plan?.name === 'Turbo');
+    const plan = SUBSCRIPTION_PLANS.find((plan) => plan?.name === "Monthly");
     setSelectedPlan(plan);
   }, []);
 
@@ -66,11 +66,11 @@ export default function Subscriptions() {
       setIsDesktop(window.innerWidth > 768); // Adjust the threshold as needed
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -83,12 +83,14 @@ export default function Subscriptions() {
   useEffect(() => {
     const getData = async () => {
       const {
-        data: { user },
+        data: { user: authUser },
       } = await supabase.auth.getUser();
+      if (!authUser) return;
+
       const { data } = await supabase
-        .from('users')
+        .from("users")
         .select()
-        .eq('user_id', user.id);
+        .eq("auth_user_id", authUser?.id);
       setUser(data?.[0]);
     };
 
@@ -101,19 +103,19 @@ export default function Subscriptions() {
 
   // clearCookies
   useEffect(() => {
-    var cookies = document.cookie.split('; ');
+    var cookies = document.cookie.split("; ");
     for (var c = 0; c < cookies.length; c++) {
-      var d = window.location.hostname.split('.');
+      var d = window.location.hostname.split(".");
       while (d.length > 0) {
         var cookieBase =
-          encodeURIComponent(cookies[c].split(';')[0].split('=')[0]) +
-          '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' +
-          d.join('.') +
-          ' ;path=';
-        var p = window.location.pathname.split('/');
-        document.cookie = cookieBase + '/';
+          encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) +
+          "=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=" +
+          d.join(".") +
+          " ;path=";
+        var p = window.location.pathname.split("/");
+        document.cookie = cookieBase + "/";
         while (p.length > 0) {
-          document.cookie = cookieBase + p.join('/');
+          document.cookie = cookieBase + p.join("/");
           p.pop();
         }
         d.shift();
@@ -126,14 +128,14 @@ export default function Subscriptions() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) navigate('/');
+    if (!user) navigate("/");
     const options = {
-      method: 'GET',
+      method: "GET",
       url: SCRAPER_API_URL,
-      params: { ig: username, response_type: 'short', corsEnabled: 'true' },
+      params: { ig: username, response_type: "short", corsEnabled: "true" },
       headers: {
-        'X-RapidAPI-Key': X_RAPID_API_KEY,
-        'X-RapidAPI-Host': X_RAPID_API_HOST,
+        "X-RapidAPI-Key": X_RAPID_API_KEY,
+        "X-RapidAPI-Host": X_RAPID_API_HOST,
       },
     };
 
@@ -174,7 +176,7 @@ export default function Subscriptions() {
               <span className=""> {user?.full_name} </span>
               <div
                 className={`${
-                  showMenu && ' border-red-300'
+                  showMenu && " border-red-300"
                 } border-2 rounded-full`}
               >
                 <div
@@ -201,7 +203,7 @@ export default function Subscriptions() {
               </div>
               <div
                 className={`${
-                  showMenu && ' border-red-300'
+                  showMenu && " border-red-300"
                 } border-2 rounded-full`}
               >
                 <div
@@ -263,26 +265,29 @@ export default function Subscriptions() {
                       <div
                         key={`sub_plan-${plan?.name}`}
                         className={`flex-1 cursor-pointer hover:shadow-sm rounded-[10px] group relative ${
-                          plan?.name === 'Turbo' && 'mt-2'
+                          plan?.name === "Monthly" && "mt-2"
                         }`}
                         onClick={() => {
                           setSelectedPlan(plan);
                         }}
                       >
-                        {plan?.name === 'Turbo' && (
+                        {plan?.name === "Monthly" && (
                           <div className="absolute top-0 -mt-2 left-1/2 -translate-x-1/2 rounded-full px-4 bg-green-600/90 text-white text-xs">
                             Popular
                           </div>
                         )}
                         <div
                           className={`min-w-[200px] py-3 text-center text-sm text-white rounded-full bg-black group-hover:bg-primary ${
-                            plan?.name === selectedPlan?.name && 'bg-primary/90'
+                            plan?.name === selectedPlan?.name && "bg-primary/90"
                           }`}
                         >
                           {plan?.name}
                         </div>
                         <div className="text-center font-bold mt-2">
-                          $ <span className="">{plan?.value}</span>
+                          ${" "}
+                          <span className="">
+                            {plan?.value?.replace(".", ",")}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -292,7 +297,7 @@ export default function Subscriptions() {
 
               <div className="px-5 pt-4 bg-white">
                 <h1 className="text-black text-[20px] font-bold font-MontserratSemiBold">
-                  {' '}
+                  {" "}
                   Start Your Followers Growth
                 </h1>
                 <p className="mt-1 mb-3 text-black text-[14px] font-normal">
@@ -305,17 +310,17 @@ export default function Subscriptions() {
                 <div className="mb-[11px] flex gap-[10px] h-[80px] items-center">
                   <div
                     className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${
-                      paymentMethod.name === 'card' && 'border-black border-2'
+                      paymentMethod.name === "card" && "border-black border-2"
                     }`}
                     onClick={() => {
-                      setPaymentMethod({ id: 1, name: 'card' });
+                      setPaymentMethod({ id: 1, name: "card" });
                     }}
                   >
                     <span
                       className={`${
-                        paymentMethod.name === 'card'
-                          ? 'top-[13px] left-[10px] w-[22px] h-[18px] translate-x-0 translate-y-0'
-                          : 'h-[25.5px] w-[32px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'
+                        paymentMethod.name === "card"
+                          ? "top-[13px] left-[10px] w-[22px] h-[18px] translate-x-0 translate-y-0"
+                          : "h-[25.5px] w-[32px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
                       }
                         absolute transition-all duration-200 ease-in fill-black font-[none]`}
                     >
@@ -333,9 +338,9 @@ export default function Subscriptions() {
 
                     <div
                       className={`${
-                        paymentMethod.name === 'card'
-                          ? 'opacity-100 translate-y-0 text-black'
-                          : 'opacity-0 translate-y-full'
+                        paymentMethod.name === "card"
+                          ? "opacity-100 translate-y-0 text-black"
+                          : "opacity-0 translate-y-full"
                       }
                         absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
                     >
@@ -345,36 +350,36 @@ export default function Subscriptions() {
 
                   <div
                     className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${
-                      paymentMethod.name === 'paypal' && 'border-black border-2'
+                      paymentMethod.name === "paypal" && "border-black border-2"
                     }`}
                     onClick={() => {
-                      setPaymentMethod({ id: 1, name: 'paypal' });
+                      setPaymentMethod({ id: 1, name: "paypal" });
                     }}
                   >
                     <span
                       className={`${
-                        paymentMethod.name === 'paypal'
-                          ? 'top-[13px] left-[10px] translate-x-0 translate-y-0'
-                          : 'top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'
+                        paymentMethod.name === "paypal"
+                          ? "top-[13px] left-[10px] translate-x-0 translate-y-0"
+                          : "top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
                       }
                         absolute transition-all duration-200 ease-in fill-black font-[none]`}
                     >
                       <img
-                        src={'/icons/paypal-icon.svg'}
+                        src={"/icons/paypal-icon.svg"}
                         alt=""
                         className={`${
-                          paymentMethod.name === 'paypal'
-                            ? 'h-[23.7px]'
-                            : 'h-[37px]'
+                          paymentMethod.name === "paypal"
+                            ? "h-[23.7px]"
+                            : "h-[37px]"
                         }`}
                       />
                     </span>
 
                     <div
                       className={`${
-                        paymentMethod.name === 'paypal'
-                          ? 'opacity-100 translate-y-0 text-black'
-                          : 'opacity-0 translate-y-full'
+                        paymentMethod.name === "paypal"
+                          ? "opacity-100 translate-y-0 text-black"
+                          : "opacity-0 translate-y-full"
                       }
                         absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
                     >
@@ -385,9 +390,9 @@ export default function Subscriptions() {
 
                 <div
                   className={`${
-                    paymentMethod.name === 'card'
-                      ? 'opacity-100 pointer-events-auto'
-                      : 'opacity-0 pointer-events-none hidden'
+                    paymentMethod.name === "card"
+                      ? "opacity-100 pointer-events-auto"
+                      : "opacity-0 pointer-events-none hidden"
                   } transition-all duration-150 ease-in`}
                 >
                   {!isDesktop && (
@@ -408,25 +413,25 @@ export default function Subscriptions() {
             </div>
 
             <div className="fixed bottom-0 left-0 w-full min-h-[85px] p-5 text-[14px] bg-white">
-              {paymentMethod.name === 'card' ? (
+              {paymentMethod.name === "card" ? (
                 <div className="">
                   <button
                     className={`${
                       Loading
-                        ? 'bg-primary/90 cursor-wait'
-                        : 'bg-black cursor-pointer'
+                        ? "bg-primary/90 cursor-wait"
+                        : "bg-black cursor-pointer"
                     } w-full h-[50px] rounded-full text-white flex items-center justify-center gap-2`}
                     type="submit"
                     form="cardForm"
                     // onClick={() => { }}
                   >
                     <div className="">
-                      {Loading ? 'Loading...' : 'Start My Growth'}
+                      {Loading ? "Loading..." : "Start My Growth"}
                     </div>
                   </button>
                   <div className="mt-2 text-center text-black">
-                    ${selectedPlan.value} per month, billed monthly. <br />{' '}
-                    Cancel any time, no risk.
+                    ${selectedPlan?.value?.toString()?.replace(".", ",")} per
+                    month, billed monthly. <br /> Cancel any time, no risk.
                   </div>
                 </div>
               ) : (
@@ -436,19 +441,21 @@ export default function Subscriptions() {
                     onClick={() => {
                       setIsModalOpen(true);
                       setErrorMsg({
-                        title: 'Alert',
-                        message: 'PayPal not available yet!',
+                        title: "Alert",
+                        message: "PayPal not available yet!",
                       });
                     }}
                   >
                     <img
-                      src={'/icons/paypal-btn.svg'}
+                      src={"/icons/paypal-btn.svg"}
                       alt=""
                       className="h-[25px]"
                     />
                   </button>
                   <div className="mt-2 text-center text-black">
-                    {`Start Your Followers Growth. $${selectedPlan.value} per month, billed
+                    {`Start Your Followers Growth. $${selectedPlan?.value
+                      ?.toString()
+                      ?.replace(".", ",")} per month, billed
                     monthly. Cancel any time, no risk.`}
                   </div>
                 </div>
@@ -460,7 +467,7 @@ export default function Subscriptions() {
           <div className="">
             <div
               className={`${
-                !showMenu && 'opacity-0 pointer-events-none hidden'
+                !showMenu && "opacity-0 pointer-events-none hidden"
               } absolute top-0 left-0 w-full h-screen z-10`}
             >
               <div
@@ -472,7 +479,7 @@ export default function Subscriptions() {
 
               <div
                 className={`${
-                  !showMenu && 'opacity-0 pointer-events-none hidden'
+                  !showMenu && "opacity-0 pointer-events-none hidden"
                 } absolute top-0 lg:top-14 z-[99] left-5 lg:left-[unset] right-5 bg-white w-[calc(100%-40px)] lg:w-[350px] lg:max-w-[400px] rounded-[10px] shadow-[0_5px_10px_#0a17530d] transition-all duration-150 ease-in`}
                 ref={parentRef}
                 tabIndex={0}
@@ -499,7 +506,7 @@ export default function Subscriptions() {
                     window.onbeforeunload = function () {
                       localStorage.clear();
                     };
-                    window.location.pathname = '/login';
+                    window.location.pathname = "/login";
                   }}
                 >
                   <MdLogout size={22} /> <span className="">Logout</span>
@@ -549,26 +556,26 @@ const Content = ({
 }) => {
   const [showCreaditCardInput, setShowCreaditCardInput] = useState(false);
   const featureA = [
-    '400+ Real Monthly Followers',
-    'Get Higher Engagement on Posts',
-    'Grow 250% Faster',
-    'Fully Customized Targeting',
-    'Real & Organic Growth',
-    'Instagram Support & Consulting',
-    'Growth Analytics',
-    'Instant Setup',
-    'Safe & Secure',
+    "400+ Real Monthly Followers",
+    "Get Higher Engagement on Posts",
+    "Grow 250% Faster",
+    "Fully Customized Targeting",
+    "Real & Organic Growth",
+    "Instagram Support & Consulting",
+    "Growth Analytics",
+    "Instant Setup",
+    "Safe & Secure",
   ];
   const featureB = [
-    '1000+ Real Monthly Followers',
-    'Reach Explore Page',
-    'Grow 500% Faster',
-    'Fully Customized Targeting',
-    'Real & Organic Growth',
-    'Dedicated Account Manager',
-    'Growth Analytics',
-    'Instant Setup',
-    'Safe & Secure',
+    "1000+ Real Monthly Followers",
+    "Reach Explore Page",
+    "Grow 500% Faster",
+    "Fully Customized Targeting",
+    "Real & Organic Growth",
+    "Dedicated Account Manager",
+    "Growth Analytics",
+    "Instant Setup",
+    "Safe & Secure",
   ];
 
   return (
@@ -657,7 +664,7 @@ const Content = ({
                             setSelectedPlan(plan);
                           }}
                         >
-                          {plan?.name === 'Turbo' && (
+                          {plan?.name === "Monthly" && (
                             <div className="absolute top-0 -mt-2 left-1/2 -translate-x-1/2 rounded-full px-4 bg-green-600/90 text-white text-xs">
                               Popular
                             </div>
@@ -665,13 +672,16 @@ const Content = ({
                           <div
                             className={`py-3 text-center text-sm text-white rounded-full bg-black group-hover:bg-primary ${
                               plan?.name === selectedPlan?.name &&
-                              'bg-primary/90'
+                              "bg-primary/90"
                             }`}
                           >
                             {plan?.name}
                           </div>
                           <div className="text-center font-bold mt-2">
-                            $ <span className="">{plan?.value}</span>
+                            ${" "}
+                            <span className="">
+                              {plan?.value?.replace(".", ",")}
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -725,13 +735,13 @@ const Content = ({
                           onClick={() => {
                             setIsModalOpen(true);
                             setErrorMsg({
-                              title: 'Alert',
-                              message: 'PayPal not available yet!',
+                              title: "Alert",
+                              message: "PayPal not available yet!",
                             });
                           }}
                         >
                           <img
-                            src={'/icons/paypal-btn.svg'}
+                            src={"/icons/paypal-btn.svg"}
                             alt=""
                             className="h-[25px]"
                           />
@@ -742,8 +752,8 @@ const Content = ({
                     <div
                       className={`${
                         !showCreaditCardInput
-                          ? 'opacity-0 pointer-events-none hidden'
-                          : 'opacity-100'
+                          ? "opacity-0 pointer-events-none hidden"
+                          : "opacity-100"
                       } transition-all duration-150 ease-out`}
                     >
                       {isDesktop && (
@@ -767,9 +777,9 @@ const Content = ({
                 <div className="w-full h-full overflow-auto">
                   <span className="text-[14px] py-[5px] px-3 mb-3 rounded-[8px] text-primary bg-primary/30">
                     $
-                    {selectedPlan.name === 'Turbo'
-                      ? 'Get 1000+ followers'
-                      : 'Get 400+ followers'}
+                    {selectedPlan.name === "Monthly"
+                      ? "Get 1000+ followers"
+                      : "Get 400+ followers"}
                   </span>
                   <div className="text-[20px] lg:text-[26px] font-bold text-black font-MontserratBold">
                     Start Your Followers Growth
@@ -780,15 +790,18 @@ const Content = ({
                     account manager and start growing in under 2 minutes.
                   </p> */}
                   <p className="text-[14px] mt-2 mb-5">
-                    {selectedPlan.name === 'Turbo'
-                      ? 'Level up your Instagram with rapid growth and a Dedicated Account Manager.'
-                      : 'Great for personal accounts, businesses and upcoming influencers looking for organic growth.'}
+                    {selectedPlan.name === "Monthly"
+                      ? "Level up your Instagram with rapid growth and a Dedicated Account Manager."
+                      : "Great for personal accounts, businesses and upcoming influencers looking for organic growth."}
                   </p>
                   <div className="text-[72px] leading-[70px] text-black font-bold font-MontserratBold">
-                    ${selectedPlan.value}
+                    ${selectedPlan?.value?.toString()?.replace(".", ",")}
                   </div>
                   <p className="text-[14px] mb-5">
-                    Billed monthly, 30-days refund guarantee.
+                    Billed{" "}
+                    {selectedPlan.name === "Monthly" ? "monthly" : "quaterly"}
+                    {selectedPlan.name === "Monthly" &&
+                      ", 30-days refund guarantee."}
                   </p>
 
                   {/* <div className="flex flex-col gap-4 text-base text-black">
@@ -831,19 +844,20 @@ const Content = ({
                   </div> */}
 
                   <div className="flex flex-col gap-4 text-base text-black">
-                    {(selectedPlan.name === 'Turbo' ? featureB : featureA).map(
-                      (feature, idx) => {
-                        return (
-                          <div
-                            key={`feature_${idx}`}
-                            className="flex items-center gap-2"
-                          >
-                            <BallEl />
-                            <p className="">{feature}</p>
-                          </div>
-                        );
-                      }
-                    )}
+                    {(selectedPlan.name === "Monthly"
+                      ? featureB
+                      : featureA
+                    ).map((feature, idx) => {
+                      return (
+                        <div
+                          key={`feature_${idx}`}
+                          className="flex items-center gap-2"
+                        >
+                          <BallEl />
+                          <p className="">{feature}</p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -857,11 +871,11 @@ const Content = ({
 
 export const getStartingDay = () => {
   var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
 
-  today = mm + '/' + dd + '/' + yyyy;
+  today = mm + "/" + dd + "/" + yyyy;
 
   return today;
 };
@@ -881,7 +895,7 @@ export const ChargeBeeCard = ({
   selectedPlan,
 }) => {
   const navigate = useNavigate();
-  const [nameOnCard, setNameOnCard] = useState('');
+  const [nameOnCard, setNameOnCard] = useState("");
   const stripe = useStripe();
   const elements = useElements();
 
@@ -893,14 +907,14 @@ export const ChargeBeeCard = ({
       if (cardElement) {
         try {
           const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: 'card',
+            type: "card",
             card: cardElement,
           });
           if (error) {
             // setError(error.message);
             setIsModalOpen(true);
             setErrorMsg({
-              title: 'Failed to create subscription',
+              title: "Failed to create subscription",
               message: `An error occured: ${error.message}`,
             });
             setLoading(false);
@@ -917,24 +931,24 @@ export const ChargeBeeCard = ({
               )
               .then((response) => response.data)
               .catch((error) => {
-                console.log('attach_payment_method_to_customer error');
+                console.log("attach_payment_method_to_customer error");
                 console.log(error);
                 return error;
               });
             if (updateCustomerPaymentMethodRes?.id) {
-              alert('Updated successfully!');
+              alert("Updated successfully!");
               setRefresh(!refresh);
               setLoading(false);
               setIsModalOpen(false);
             } else {
               console.log(
-                'Error add card:',
+                "Error add card:",
                 updateCustomerPaymentMethodRes?.raw.message
               );
               // alert('An error occurred, please try again or contact support')
               setIsModalOpen(true);
               setErrorMsg({
-                title: 'Failed to adding card',
+                title: "Failed to adding card",
                 message: `An error occurred: ${updateCustomerPaymentMethodRes?.raw.message}`,
               });
             }
@@ -943,7 +957,7 @@ export const ChargeBeeCard = ({
           // setError(error.message);
           setIsModalOpen(true);
           setErrorMsg({
-            title: 'Failed to create subscription',
+            title: "Failed to create subscription",
             message: `An error occured: ${error.message}`,
           });
         }
@@ -951,8 +965,8 @@ export const ChargeBeeCard = ({
     } else {
       setIsModalOpen(true);
       setErrorMsg({
-        title: 'Authentication Error',
-        message: 'You have to login to continue',
+        title: "Authentication Error",
+        message: "You have to login to continue",
       });
     }
     setLoading(false);
@@ -985,12 +999,12 @@ export const ChargeBeeCard = ({
     // }
 
     setLoading(true);
-    if (userResults?.name === 'INVALID_USERNAME') {
-      console.log('INVALID_USERNAME');
+    if (userResults?.name === "INVALID_USERNAME") {
+      console.log("INVALID_USERNAME");
       setIsModalOpen(true);
       setErrorMsg({
-        title: 'Alert',
-        message: 'An error has occured, please try again',
+        title: "Alert",
+        message: "An error has occured, please try again",
       });
       setLoading(false);
       return;
@@ -1002,14 +1016,14 @@ export const ChargeBeeCard = ({
 
       try {
         const { error, paymentMethod } = await stripe.createPaymentMethod({
-          type: 'card',
+          type: "card",
           card: cardElement,
         });
         if (error) {
           // setError(error.message);
           setIsModalOpen(true);
           setErrorMsg({
-            title: 'Failed to create subscription',
+            title: "Failed to create subscription",
             message: `An error occured: ${error.message}`,
           });
           setLoading(false);
@@ -1020,7 +1034,7 @@ export const ChargeBeeCard = ({
         if (paymentMethod?.id) {
           let createSubscription = await axios
             .post(`${BACKEND_URL}/api/stripe/create_subscription`, {
-              name: nameOnCard,
+              name: nameOnCard || user?.full_name,
               username,
               email: user?.email,
               paymentMethod: paymentMethod.id,
@@ -1038,7 +1052,7 @@ export const ChargeBeeCard = ({
           if (!createSubscription?.data) {
             setIsModalOpen(true);
             setErrorMsg({
-              title: 'Failed to create subscription',
+              title: "Failed to create subscription",
               message: `An error occured: ${createSubscription?.response?.data?.message}`,
             });
             setLoading(false);
@@ -1049,7 +1063,7 @@ export const ChargeBeeCard = ({
             const confirm = await stripe.confirmCardPayment(
               createSubscription?.data?.clientSecret
             );
-            console.log('confirmCardPayment');
+            console.log("confirmCardPayment");
             console.error(confirm);
             if (confirm.error) {
               if (
@@ -1058,7 +1072,7 @@ export const ChargeBeeCard = ({
               ) {
                 setIsModalOpen(true);
                 setErrorMsg({
-                  title: 'Failed to create subscription',
+                  title: "Failed to create subscription",
                   message: `An error occured: please check if you have enough fund on your card`,
                 });
                 setLoading(false);
@@ -1066,7 +1080,7 @@ export const ChargeBeeCard = ({
               } else {
                 setIsModalOpen(true);
                 setErrorMsg({
-                  title: 'Failed to create subscription',
+                  title: "Failed to create subscription",
                   message: `An error occured: ${confirm.error.message}`,
                 });
                 setLoading(false);
@@ -1075,8 +1089,8 @@ export const ChargeBeeCard = ({
             }
 
             if (
-              confirm?.paymentIntent?.status === 'succeeded' &&
-              createSubscription?.data?.message === 'Subscription successful!'
+              confirm?.paymentIntent?.status === "succeeded" &&
+              createSubscription?.data?.message === "Subscription successful!"
             ) {
               await continueToSupabase(
                 userIsNew,
@@ -1085,12 +1099,12 @@ export const ChargeBeeCard = ({
               );
               setLoading(false);
             } else {
-              console.log('createSubscription error');
+              console.log("createSubscription error");
               console.log(createSubscription);
               setIsModalOpen(true);
               setErrorMsg({
-                title: 'Failed to create subscription',
-                message: 'An error occured while creating your subscription',
+                title: "Failed to create subscription",
+                message: "An error occured while creating your subscription",
               });
             }
           } else {
@@ -1106,15 +1120,15 @@ export const ChargeBeeCard = ({
         // setError(error.message);
         setIsModalOpen(true);
         setErrorMsg({
-          title: 'Failed to create subscription',
+          title: "Failed to create subscription",
           message: `An error occured: ${error.message}`,
         });
       }
     } else {
       setIsModalOpen(true);
       setErrorMsg({
-        title: 'Authentication Error',
-        message: 'You have to login to continue',
+        title: "Authentication Error",
+        message: "You have to login to continue",
       });
     }
     setLoading(false);
@@ -1143,7 +1157,7 @@ export const ChargeBeeCard = ({
       if (!user) {
         setIsModalOpen(true);
         setErrorMsg({
-          title: 'Alert',
+          title: "Alert",
           message: `Error updating user's details`,
         });
         setLoading(false);
@@ -1153,14 +1167,14 @@ export const ChargeBeeCard = ({
       // console.log({ data });
 
       const updateUser = await supabase
-        .from('users')
+        .from("users")
         .update(data)
-        .eq('id', user.id);
+        .eq("id", user.id);
       if (updateUser?.error) {
         console.log(updateUser.error);
         setIsModalOpen(true);
         setErrorMsg({
-          title: 'Alert',
+          title: "Alert",
           message: `Error updating user's details`,
         });
 
@@ -1168,32 +1182,36 @@ export const ChargeBeeCard = ({
       }
     } else {
       const addAccount = await supabase
-        .from('users')
-        .insert({ ...data, user_id: user.id });
+        .from("users")
+        .insert({ ...data, auth_user_id: user.auth_user_id });
       if (addAccount?.error) {
         console.log(addAccount.error);
         setIsModalOpen(true);
-        setErrorMsg({ title: 'Alert', message: `Error adding new account` });
+        setErrorMsg({ title: "Alert", message: `Error adding new account` });
       }
     }
 
     let sendEmail = await axios
       .post(`${BACKEND_URL}/api/send_email`, {
         email: user?.email,
-        subject: 'Your account is not connected',
+        subject: "Your account is not connected",
         htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name),
       })
       .catch((err) => err);
     if (sendEmail.status !== 200) {
       console.log(sendEmail);
     }
+    
+    // try {
+    //   const url = `${BACKEND_URL}/api/send_sms`;
+    //   const sms_data = {
+    //     recipient: user?.phone,
+    //     content: NOT_CONNECTED_SMS_TEMPLATE(),
+    //   };
+    //   await axios.post(url, sms_data);
+    // } catch (error) {
 
-    const url = `${BACKEND_URL}/api/send_sms`;
-    const sms_data = {
-      recipient: user?.phone,
-      content: NOT_CONNECTED_SMS_TEMPLATE(),
-    };
-    await axios.post(url, sms_data);
+    // }
 
     const ref = getRefCode();
     if (ref) {
@@ -1207,22 +1225,22 @@ export const ChargeBeeCard = ({
   const elementOptions = {
     style: {
       base: {
-        iconColor: '#c4f0ff',
-        color: '#000',
-        fontWeight: '500',
-        fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-        fontSize: '16px',
-        fontSmoothing: 'antialiased',
-        ':-webkit-autofill': {
-          color: '#fce883',
+        iconColor: "#c4f0ff",
+        color: "#000",
+        fontWeight: "500",
+        fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
+        fontSize: "16px",
+        fontSmoothing: "antialiased",
+        ":-webkit-autofill": {
+          color: "#fce883",
         },
-        '::placeholder': {
-          color: '#87BBFD',
+        "::placeholder": {
+          color: "#87BBFD",
         },
       },
       invalid: {
-        iconColor: '#f00',
-        color: '#f00',
+        iconColor: "#f00",
+        color: "#f00",
       },
     },
   };
@@ -1240,7 +1258,7 @@ export const ChargeBeeCard = ({
           if (Loading) {
             // alert('Please wait');
             setIsModalOpen(true);
-            setErrorMsg({ title: 'Processing...', message: 'Please wait' });
+            setErrorMsg({ title: "Processing...", message: "Please wait" });
             return;
           }
           // await handleCardPay(setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard);
@@ -1252,17 +1270,17 @@ export const ChargeBeeCard = ({
         <div className="shadow-[0_2px_4px_#00000026] rounded-[8px] px-3 py-6 mb-5">
           <AddressElement
             options={{
-              mode: 'billing',
+              mode: "billing",
               style: {
                 TabLabel: {
-                  color: '#fff',
+                  color: "#fff",
                 },
               },
               TabLabel: {
-                color: '#fff',
+                color: "#fff",
               },
               defaultValues: {
-                name: user?.full_name || '',
+                name: user?.full_name || "",
               },
               // autocomplete: {
               //   mode: "google_maps_api",
@@ -1290,19 +1308,19 @@ export const ChargeBeeCard = ({
         </div>
       </form>
 
-      <div className={`${addCard ? 'block' : 'hidden lg:block'}`}>
+      <div className={`${addCard ? "block" : "hidden lg:block"}`}>
         <button
           className={`${
             Loading
-              ? 'bg-primary/90 cursor-wait'
-              : 'bg-black hover:bg-black cursor-pointer'
+              ? "bg-primary/90 cursor-wait"
+              : "bg-black hover:bg-black cursor-pointer"
           } text-white font-MontserratSemiBold text-[.8rem] xl:text-[1.125rem] ${
-            addCard ? 'mt-[65px]' : 'mt-5'
+            addCard ? "mt-[65px]" : "mt-5"
           } w-full py-4 rounded-full font-[600] mb-4`}
           onClick={() => {
             if (Loading) {
               setIsModalOpen(true);
-              setErrorMsg({ title: 'Processing...', message: 'Please wait' });
+              setErrorMsg({ title: "Processing...", message: "Please wait" });
               return;
             }
             // await handleCardPay(setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard);
@@ -1310,10 +1328,10 @@ export const ChargeBeeCard = ({
           }}
         >
           <span>
-            {' '}
+            {" "}
             {Loading
-              ? 'Processing...'
-              : `${addCard ? 'Add Payment Method' : 'Start My Growth'}`}{' '}
+              ? "Processing..."
+              : `${addCard ? "Add Payment Method" : "Start My Growth"}`}{" "}
           </span>
         </button>
         {/* {showCardComponent && <></>} */}

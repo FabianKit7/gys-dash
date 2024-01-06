@@ -112,97 +112,6 @@ export default function Admin() {
     setLoading(false);
   }
 
-  // const updateSub = async () => {
-  //   setLoading(true);
-
-  //   const manualFrom = 'targeting';
-  //   const { data, error } = await supabase
-  //     .from(manualFrom)
-  //     .select('*')
-  //     .limit(100)
-  //     .eq("imageUrlChanged", false)
-  //   console.log(data);
-
-  //   error && console.log(error);
-  //   if (error) return;
-
-  //   var count = 0
-  //   console.log('initial: ', count);
-
-  //   await data.reduce(async (ref, user) => {
-  //     await ref;
-  //     await new Promise(resolve => setTimeout(resolve, 500));
-  //     user?.account && await updateUserProfilePicUrl(user, manualFrom)
-  //     count += 1
-  //   }, Promise.resolve());
-  //   // if (count === data.length) return setLoading(false);
-  //   console.log(count);
-  //   setLoading(false);
-  // }
-
-  // const update = async () => {
-  //   setLoading(true);
-
-  //   const manualFrom = 'users';
-  //   const { data, error } = await supabase
-  //     .from('users')
-  //     .select('profile_pic_url, status, username, user_id')
-  //     .neq('status', 'pending')
-
-  //   error && console.log(error);
-  //   if (error) return;
-
-  //   var count = 0
-  //   console.log('initial: ', count);
-
-  //   await data.reduce(async (ref, user) => {
-  //     await ref;
-  //     await new Promise(resolve => setTimeout(resolve, 500));
-  //     user?.username && await updateUserProfilePicUrl(user)
-  //     count += 1
-  //   }, Promise.resolve());
-  //   // if (count === data.length) return setLoading(false);
-  //   console.log(count);
-  //   setLoading(false);
-  // }
-
-  // const updateChargebeeCustomerId = async () => {
-  //   setLoading(true)
-  //   const { data, error } = await supabase.from("users").select().eq("subscribed", true).is("customer_id", null).limit(1000)
-  //   if (error) {
-  //     console.log(error);
-  //     alert(error?.message)
-  //   }
-
-  //   console.log(data);
-    
-  //   data.forEach(async (user) => {
-  //     // get customer_id
-  //     let getCustomer = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/customer_list`, { email: user?.email })
-  //     if (getCustomer?.data?.id) {
-  //       const update = {
-  //         customer_id: getCustomer?.data?.id
-  //       }
-  //       const updateUser = await supabase
-  //         .from("users")
-  //         .update(update).eq("user_id", user?.user_id).eq("username", user?.username)
-  //       if (updateUser.error) {
-  //         console.log('update error for: ' + user.username);
-  //         setLoading(false)
-  //         return
-  //       } else {
-  //         console.log('update success for: ' + user.username);
-  //         setLoading(false)
-  //         return
-  //       }
-  //     } else {
-  //       console.log('user not found in chargebee: ' + user.username + ' ' + user.email);
-  //       setLoading(false)
-  //       return
-  //     }
-  //   });
-  // }
-
   if (fetchingUser){
     return (<>
     Loading...
@@ -227,25 +136,6 @@ export default function Admin() {
           {Loading ? "Loading " : "Upload"}
         </button>
       </div>
-
-      {/* <div className="w-[250px]">
-        <button className={`${files.length > 0 ? 'bg-secondaryblue' : 'bg-gray-600'} w-full mt-10 rounded-[10px] p-4 text-base text-white font-bold`}
-          onClick={updateChargebeeCustomerId}
-        >
-          {Loading ? "PROCESSING..." : "Update All user Chargebee Customer Id"}
-        </button>
-      </div> */}
     </div>
-
-
-    {/* <button className={`${!Loading ? 'bg-secondaryblue' : 'bg-gray-600'} w-full mt-10 rounded-[10px] py-4 text-base text-white font-bold`}
-      onClick={updateSub}
-    >
-      {Loading ? "updating " : "update"}
-    </button> */}
-
-
-
-
   </>);
 }

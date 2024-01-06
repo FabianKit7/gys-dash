@@ -55,7 +55,7 @@ const SettingsModal = (props) => {
     const { error } = await supabase
       .from('users')
       .update(d)
-      .eq("user_id", user?.user_id).eq("username", user?.username);
+      .eq("auth_user_id", user?.auth_user_id).eq("username", user?.username);
     error && console.log(error);
     setLoading(false)
     if (u === 'admin') {

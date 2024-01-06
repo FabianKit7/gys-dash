@@ -41,14 +41,14 @@ export default function DashboardApp() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) return navigate("/dashboard/login")
+        const { data: { user: authUser } } = await supabase.auth.getUser()
+        if (!authUser) return navigate("/dashboard/login")
         // console.log(user);
 
         const { data, error } = await supabase
           .from('users')
           .select()
-          .eq("user_id", user.id).eq('first_account', true).order('created_at', { ascending: false })
+          .eq("auth_user_id", authUser.id).eq('first_account', true).order('created_at', { ascending: false })
 
         error && console.console.log(error);
         // console.log(data[0]);
@@ -554,15 +554,9 @@ export default function DashboardApp() {
                           const { data, error } = await supabase
                             .from("targeting")
                             .select()
-                            // .eq("user_id", user?.user_id)
-                            .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.user_id : user?.username)
+                            .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.id : user?.username)
                             .eq(user?.first_account ? "main_user_username" : "", user?.first_account ? 'nil' : '')
                             .order('id', { ascending: false });
-                          // error && console.log(
-                          //   "🚀 ~ file: Targeting.jsx:63 ~ getTargetingAccounts ~ error",
-                          //   error
-                          // );
-                          // console.log(data);
                           if (!error) {
                             const targeting = document.querySelector(`#targeting_${index}_${user?.id}_t`)
                             if (targeting) {
@@ -637,26 +631,21 @@ export default function DashboardApp() {
                               }} />
                             </td>
                             <td className="flex items-center gap-4 py-4 text-right ">
-                              <Link to={`/dashboard/edit/${user?.user_id}`} target="_blank" rel="noopener noreferrer"
+                              <Link to={`/dashboard/edit/${user?.auth_user_id}`} target="_blank" rel="noopener noreferrer"
                                 className="font-medium"
                               >
                                 <AiOutlineSetting size={24} className="text-blue-600" />
                               </Link>
                               <FaTrash size={20} className="text-red-700 cursor-pointer" onClick={async () => {
                                 if (window.confirm("Are you sure you want to delete this account?")) {
-                                  console.log(user?.user_id);
+                                  console.log(user?.auth_user_id);
                                   // alert('processing...')
                                   if (user.first_account && window.confirm("Deleting this account will delete all accounts related to it!")){
-                                    await supabaseAdmin.auth.admin.deleteUser(user?.user_id)                                    
-                                    await deleteUserDetails(user?.user_id)
+                                    await supabaseAdmin.auth.admin.deleteUser(user?.auth_user_id)
+                                    await deleteUserDetails(user?.auth_user_id)
                                   }else{
-                                    await deleteUserDetails(user?.username, user?.first_account)                                    
+                                    await deleteUserDetails(user?.username, user?.first_account)
                                   }
-                                  // if(!error){
-                                  // }else{
-                                  //   console.log('An error occurred while deleting the account', error);
-                                  //   alert('An error occurred while deleting the account')
-                                  // }
 
                                   window.location.reload()
                                 }
@@ -762,7 +751,7 @@ export const RefreshModal = ({ openRefreshModal, setOpenRefreshModal }) => {
         setLoading(true);
         const { data, error } = await supabase
           .from('users')
-          .select('profile_pic_url, status, username, user_id')
+          .select('profile_pic_url, status, username, auth_user_id')
           .eq('username', username)
         if (error) {
           setMessage(error.message)
@@ -820,7 +809,7 @@ export const Chargebee = ({ k, user, setShowChargebee }) => {
   // console.log(user);
   useEffect(() => {
     const fetch = async () => {
-      const { data, error } = await supabaseAdmin.auth.admin.getUserById(user.user_id)
+      const { data, error } = await supabaseAdmin.auth.admin.getUserById(user.auth_user_id)
       // console.log(data?.user);
       data?.user && setCurrentUser(data?.user)
       error && console.log(error)

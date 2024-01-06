@@ -23,33 +23,6 @@ export default function Blacklist({ user, userId, page }) {
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [addSuccess, setAddSuccess] = useState(false);
 
-  const insertBlacklist = async () => {
-    setLoading(true);
-    if (selectAccountName.length > 0) {
-      const theAccount = await getAccount(selectAccountName);
-      const data = {
-        account: selectAccountName,
-        followers: theAccount.data[0].follower_count,
-        avatar: theAccount.data[0].profile_pic_url,
-        user_id: userId,
-        main_user_username: user.username
-      }
-
-      if (user?.first_account) {
-        delete data.main_user_username
-      }
-      const { error } = await supabase.from("blacklist").insert(data);
-      console.log(
-        "🚀 ~ file: Blacklist.jsx:25 ~ const{error}=awaitsupabase.from ~ error",
-        error
-      );
-
-      setAccountName("");
-      setSelectedAccountName("");
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (accountName.length > 0) {
       setLoadingSpinner(true);
@@ -68,8 +41,7 @@ export default function Blacklist({ user, userId, page }) {
       const { data, error } = await supabase
         .from("blacklist")
         .select()
-        // .eq("user_id", userId)
-        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.user_id : user?.username)
+        .eq(user?.first_account ? "user_id" : "main_user_username", user?.first_account ? user?.id : user?.username)
         .eq(user?.first_account ? "main_user_username" : "", user?.first_account ? 'nil' : '')
         .order('id', { ascending: false });
       error && console.log(

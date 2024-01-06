@@ -35,7 +35,7 @@ export default function EmailUnsubscribe() {
             const { data } = await supabase
                 .from("users")
                 .select()
-                .eq("user_id", user.id);
+                .eq("auth_user_id", user.id);
             setUser(data?.[0]);
         };
 

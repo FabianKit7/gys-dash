@@ -38,7 +38,7 @@ export default function TargetingFilterModal(props, { min, max }) {
       const { data, error } = await supabase
         .from('users')
         .select()
-        .eq("user_id", user?.user_id).eq("username", user?.username).order('created_at', { ascending: false })
+        .eq("auth_user_id", user?.auth_user_id).eq("username", user?.username).order('created_at', { ascending: false })
 
       setFollowerMinValue(data?.[0]?.targetingFilter?.followersMin);
       setFollowerMaxValue(data?.[0]?.targetingFilter?.followersMax);
@@ -54,7 +54,6 @@ export default function TargetingFilterModal(props, { min, max }) {
       error && console.log(error);
     }
     if (user_id) {
-      // console.log(user_id);
       fetch();
     }
   }, [user_id, user, filtermodal])
@@ -76,7 +75,7 @@ export default function TargetingFilterModal(props, { min, max }) {
     const { error } = await supabase
       .from('users')
       .update({ targetingFilter })
-      .eq("user_id", user?.user_id).eq("username", user?.username)
+      .eq("auth_user_id", user?.auth_user_id).eq("username", user?.username)
     error && console.log(error);
     setFilterModal(false);
   }
