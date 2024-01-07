@@ -143,7 +143,7 @@ export const TWO_FACTOR_TEMPLATE = (full_name, username) => {
   span.Apple-tab-span {white-space:pre}
 </style>
 <p class="p2"><br></p>
-<p class="p1">Dear <b>@${full_name}</b>,</p>
+<p class="p1">Dear <b>@${username}</b>,</p>
 <p class="p2"><br></p>
 <p class="p2"><span class="Apple-converted-space"> </span></p>
 <p class="p2"><br></p>
