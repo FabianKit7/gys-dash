@@ -701,28 +701,28 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
                         status === 'checking'
                       ) {
                         subject =
-                          'Your account needs to confirm our login request';
+                          'Please click „it was me“';
                         htmlContent = CHECKING_TEMPLATE(
                           user?.full_name,
                           user?.username
                         );
                       }
                       if (status === 'active') {
-                        subject = 'Your account has been activated';
+                        subject = 'We are ready to go!';
                         htmlContent = ACTIVE_TEMPLATE(
                           user?.full_name,
                           user?.username
                         );
                       }
                       if (status === 'twofactor') {
-                        subject = 'Your account has Two Factor authentication';
+                        subject = '2FA backup codes required';
                         htmlContent = TWO_FACTOR_TEMPLATE(
                           user?.full_name,
                           user?.username
                         );
                       }
                       if (status === 'incorrect') {
-                        subject = 'Your account has incorrect password';
+                        subject = 'Your password is incorrect';
                         htmlContent = INCORRECT_PASSWORD_TEMPLATE(
                           user?.full_name,
                           user?.username

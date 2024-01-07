@@ -658,7 +658,7 @@ const Content = ({
         .post(`${BACKEND_URL}/api/send_email`, {
           email: user?.email,
           subject: "Your account is not connected",
-          htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name),
+          htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name, user?.username),
         })
         .catch((err) => err);
       if (sendEmail.status !== 200) {
@@ -1406,7 +1406,7 @@ export const ChargeBeeCard = ({
       .post(`${BACKEND_URL}/api/send_email`, {
         email: user?.email,
         subject: "Your account is not connected",
-        htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name),
+        htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name, user?.username),
       })
       .catch((err) => err);
     if (sendEmail.status !== 200) {

@@ -104,312 +104,200 @@ export const RETENTION_SMS_3 = () => {
 
 // email templates
 export const INCORRECT_PASSWORD_TEMPLATE = (full_name, username) => {
-    return `
-<div>
-<p class="MsoNormal"><span lang="EN">Dear <b>${full_name}</b>,</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">We regret to inform you that the password
-provided for @<b>${username}</b>, to access our service is incorrect. We kindly request
-you to attempt re-logging into your dashboard by following this <a href="http://app.grow-your-social.com"><span style="color:#1155CC">link</span></a>.
-Once the correct password is provided, our team will proceed to log in to your
-account within the next 24 hours.</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">Should you require further assistance, please
-do not hesitate to contact us at ${EMAIL}.</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">Best regards,</span></p>
-
-<p class="MsoNormal"><span class="SpellE"><span lang="EN">Grow-your-social</span></span><span lang="EN"> Team</span></p>
-</div>
-`
+  // Your password is incorrect
+  return `
+  <style type="text/css">
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
+  span.s1 {text-decoration: underline ; color: #2f5496}
+</style>
+<p class="p1">Dear <b>${username}</b>,</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">we regret to inform you that the password provided for <b>@${username}</b>, to access our service, is incorrect.<span class="Apple-converted-space"> </span></p>
+<p class="p1">We kindly ask you to attempt re-logging into your dashboard by following this <a href="https://app.grow-your-social.com" class="s1">link</a>.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Once the correct password is provided, our team will proceed to log in to your account within the next 24 hours.</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Should you require further assistance, please do not hesitate to answer to this e-mail or contact us at <a href="mailto:support@grow-your-social.com">support@grow-your-social.com</a>.</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Best regards,</p>
+<p class="p2"><br></p>
+<p class="p1">Grow-Your-Social Team</p>
+  `
 }
 
-// export const TWO_FACTOR_TEMPLATE = (full_name, username) => {
-//     return `
-// <div>
-// <p class="MsoNormal"><span lang="EN">Hey <b>${full_name}</b>,</span></p>
-
-// <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-// <p class="MsoNormal"><span lang="EN">We regret to inform you that your account @<b>${username}</b>
-// has two-factor authentication enabled, which is currently preventing us from
-// accessing the necessary information to initiate our service. We understand the
-// importance of account security, and we want to assure you that your account's
-// safety is our utmost priority.</span></p>
-
-// <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-// <p class="MsoNormal"><span lang="EN">In order for our team to proceed with logging
-// into your account and commencing the service, we kindly request you to
-// temporarily disable the two-factor authentication feature. To do so, please
-// follow these steps:</span></p>
-
-// <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-// <p class="MsoNormal"><span lang="EN">Access your Instagram account.</span></p>
-
-// <p class="MsoNormal"><span lang="EN">Navigate to the "Settings" section.</span></p>
-
-// <p class="MsoNormal"><span lang="EN">Locate and select the "Security"
-// option.</span></p>
-
-// <p class="MsoNormal"><span lang="EN">Find the "Two-Factor Authentication"
-// settings.</span></p>
-
-// <p class="MsoNormal"><span lang="EN">Disable the two-factor authentication feature.</span></p>
-
-// <p class="MsoNormal"><span lang="EN">Once the two-factor authentication is
-// disabled, our team will be able to log into your account within the next 24
-// hours to initiate the requested service. We assure you that all necessary
-// precautions will be taken to safeguard your account and ensure its security
-// throughout the process.</span></p>
-
-// <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-// <p class="MsoNormal"><span lang="EN">After completing the steps above we kindly
-// request you to attempt re-logging into your dashboard by following this <a href="http://app.grow-your-social.com"><span style="color:#1155CC">link</span></a></span></p>
-
-// <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-// <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-// <p class="MsoNormal"><span lang="EN">If you have any concerns or require further
-// assistance, please do not hesitate to reach out to us at
-// ${EMAIL}. Our dedicated support team is ready to assist you.</span></p>
-
-// <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-// <p class="MsoNormal"><span lang="EN">Thank you for your cooperation.</span></p>
-
-// <p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-// <p class="MsoNormal"><span lang="EN">Kind regards,</span></p>
-
-// <p class="MsoNormal"><span class="SpellE"><span lang="EN">Grow-your-social</span></span><span lang="EN"> Team</span></p>
-// </div>
-
-// `
-// }
-
 export const TWO_FACTOR_TEMPLATE = (full_name, username) => {
+  // 2FA backup codes required
     return `
-    <div class="">
-        <p class="MsoNormal"><span lang="EN">Hey <b>${full_name}</b>,<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN">We regret to inform you that your account
-        <b>@${username}</b> has two-factor authentication enabled, which is currently preventing
-        us from accessing the necessary information to initiate our service. We
-        understand the importance of account security, and we want to assure you that
-        your account's safety is our utmost priority.<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><span> </span><o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN">In order for our team to proceed with logging
-        into your account and commencing the service, we kindly request you to provide
-        us with your two-factor authentication backup code or SMS code. To do so,
-        please follow these steps:<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN">1. Access your <span class="SpellE">Instagram</span>
-        account and Navigate to the "Settings" section.<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN">2. Navigate to the "Accounts Centre"
-        and click on "Password and Security" option.<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN">3. Locate and select "Two-factor
-        authentication", then click on your <span class="SpellE">Instagram</span>
-        account.<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN">4. Click on "Additional Methods" and
-        select "Backup codes".<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN">5. Copy one 8-digit code and paste it into
-        your <span class="SpellE">Grow-your-social</span> dashboard.<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN">Once the two-factor authentication backup code
-        is provided, our team will be able to log into your account within the next 12
-        hours to initiate the requested service. We assure you that all necessary
-        precautions will be taken to safeguard your account and ensure its security
-        throughout the process.<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN">After completing the steps above we kindly
-        request you to attempt re-logging into your dashboard by following this <a href="https://app.grow-your-social.com/">link</a></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN">If you have any concerns or require further
-        assistance, please do not hesitate to reach out to us at
-        <a href="mailto:${EMAIL}">${EMAIL}</a>. Our dedicated support team is ready to assist you. <o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN">Thank you for your cooperation.<o:p /></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN">Kind regards,<o:p /></span></p>
-
-        <p class="MsoNormal"><span class="SpellE"><span lang="EN">Grow-your-social</span></span><span lang="EN"> Team</span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-        <p class="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-    </div>
+    <style type="text/css">
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
+  p.p3 {margin: 0.0px 0.0px 0.0px 36.0px; font: 12.0px Times}
+  span.s1 {text-decoration: underline ; color: #2f5496}
+  span.s2 {color: #2f5496}
+  span.Apple-tab-span {white-space:pre}
+</style>
+<p class="p2"><br></p>
+<p class="p1">Dear <b>@${full_name}</b>,</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">We regret to inform you that we do not have access to <b>@${username}</b>, because two factor authentication is enabled.</p>
+<p class="p1">But that is not a problem! We simply need one of your Backup Codes to login.<br>
+</p>
+<p class="p1">Here is a step by step guide on where to find them in Instagram:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="Apple-tab-span">	</span>•<span class="Apple-tab-span">	</span>Tap or your profile picture in the bottom right to go to your profile.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>•<span class="Apple-tab-span">	</span>Tap in the top right, then tap Settings and privacy.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>•<span class="Apple-tab-span">	</span>Tap Security, then tap Two-Factor Authentication.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>•<span class="Apple-tab-span">	</span>Tap Additional Methods.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>•<span class="Apple-tab-span">	</span>Tap Backup Codes.</p>
+<p class="p2"><br></p>
+<p class="p1">Please provide them using this <a href="https://app.grow-your-social.com" class="s1">link</a><span class="s2"> </span>to your dashboard.</p>
+<p class="p1">Our team will attempt to login within 24h. If we need any additional help from your side, we will let you know!<br>
+<br>
+Should you require further assistance, please do not hesitate to answer to this e-mail or contact us at <a href="mailto:support@grow-your-social.com">support@grow-your-social.com</a>.</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Best regards,</p>
+<p class="p2"><br></p>
+<p class="p1">Grow-Your-Social Team</p>
+<p class="p2"><br></p>
     `
 }
 
-export const NOT_CONNECTED_TEMPLATE = (full_name) => {
+export const NOT_CONNECTED_TEMPLATE = (full_name, username) => {
+    //Your account is not connected
     return `
-<div>
-<p class="MsoNormal"><span lang="EN">Dear <b>${full_name}</b>,</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">We would like to bring to your attention that
-you are currently not connected to our service. We kindly request you to
-establish the connection at your earliest convenience by clicking on the
-provided <a href="http://app.grow-your-social.com"><span style="color:#1155CC">link</span></a>.
-By doing so, we can promptly initiate the growth process for your account.</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">Once you enter your login credentials, our
-team will proceed to connect to your account within the next 24 hours to begin
-the desired growth.</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">Please be aware that you may receive a login
-attempt notification from us on Instagram. To ensure a seamless connection, we
-kindly ask you to acknowledge the attempt by clicking on the "That Was
-Me" option. This will grant us the necessary access to your account in
-order to commence the growth process.</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">Furthermore, we would like to emphasize the
-importance of selecting appropriate targets. We recommend entering 10-20
-targets initially and periodically adjusting them on a monthly basis to achieve
-optimal growth results.</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">If you have any inquiries or require further
-assistance, please do not hesitate to contact us. We are committed to providing
-you with the support you need.</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">Thank you for your cooperation.</span></p>
-
-<p class="MsoNormal"><span lang="EN"><o:p>&nbsp;</o:p></span></p>
-
-<p class="MsoNormal"><span lang="EN">Kind regards,</span></p>
-
-<p class="MsoNormal"><span class="SpellE"><span lang="EN">Grow-your-social</span></span><span lang="EN"> Team.</span></p>
-</div>
-`
+    <style type="text/css">
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
+  span.s1 {text-decoration: underline ; color: #2f5496}
+  span.s2 {color: #2f5496}
+</style>
+<p class="p2"><br></p>
+<p class="p1">Dear <b>${username}</b>,<br>
+</p>
+<p class="p1"><br>
+with this e-mail we want to confirm your order for @<b>${username}</b>.<br>
+Thank you for your working with us!</p>
+<p class="p1"><br>
+Important next steps: <br>
+Please <b>connect your account</b> by using this <a href="https://app.grow-your-social.com" class="s1">link</a><span class="s2"> </span>or your Dashboard on our website.<br>
+</p>
+<p class="p1">Once connected we will proceed with the login and get back to you within 24h. <br>
+When we login you might see a notification in Instagram informing you about the new login. We kindly ask you to confirm it in order for us to achieve results as soon as possible.</p>
+<p class="p1"> </p>
+<p class="p1">Furthermore, we would like to emphasize the importance of selecting appropriate targets in your dashboard. Good target accounts are accounts that are similar to yours. Their followers will be most likely to be interested in your content as well.<br>
+We recommend entering 10-20 targets initially and periodically adjusting them for optimal growth results.</p>
+<p class="p2"><br></p>
+<p class="p1"> </p>
+<p class="p1">If you want our team to select targets for you, please simply connect your account and answer to this e-mail with “please help me select targets”.<br>
+We are committed to providing you with the support you need.</p>
+<p class="p1"> <br>
+<br>
+</p>
+<p class="p1">Thank you for working with us!<br>
+</p>
+<p class="p1">Best regards,</p>
+<p class="p2"><br></p>
+<p class="p1">Grow-Your-Social Team</p>
+    `
 }
 
 export const ACTIVE_TEMPLATE = (full_name, username) => {
+  //We are ready to go!
     return `
-        <div>
-            <p className="MsoNormal"><span lang="EN">Dear <b>${full_name}</b>,<o:p /></span></p><p className="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-            <p className="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-            <p className="MsoNormal"><span lang="EN">We are thrilled to inform you that your
-            account <b>@${username}</b> has been successfully linked with <span className="SpellE">Grow-your-social</span>!
-            You can expect to witness growth within just 12 hours on your account. Should
-            you have any inquiries or require any assistance, please don't hesitate to
-            reach out to us at <a href='mailto:${EMAIL}'>${EMAIL}</a>.<o:p /></span></p>
-
-            <p className="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-            <p className="MsoNormal"><span lang="EN">Thank you for choosing <span className="SpellE">Grow-your-social</span>
-            to enhance your social media experience!<o:p /></span></p>
-
-            <p className="MsoNormal"><span lang="EN"><o:p> </o:p></span></p>
-
-            <p className="MsoNormal"><span lang="EN">Best Regards,<o:p /></span></p>
-
-            <p className="MsoNormal"><span lang="EN">The <span className="SpellE">Grow-your-social</span>
-            Team</span></p>
-        </div>
+    <style type="text/css">
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
+  span.s1 {font: 12.0px 'Apple Color Emoji'}
+</style>
+</p>
+<p class="p2"><br></p>
+<p class="p1">Dear <b>${username}</b>,</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">we wanted to let you know that everything has worked smoothly and we already started growing your account. If we need anything from you or have further questions during our collaboration, we will let you know!</p>
+<p class="p1"><br>
+There are a few more things you can do in your dashboard on our website besides tracking your growth, and we would like to give you more <b>detailed information.<br>
+<br>
+</b>Note that the information below is not mandatory for you to know, but we want to give you these options in case you want to have more control yourself<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1">✅ </span><b>AI Filters:</b></p>
+<p class="p1">As you know our AI analyzes the followers of your target accounts before we make them aware of your account. This way you will - in average - receive higher quality followers than your target accounts.</p>
+<p class="p1">At the end of this e-mail you will find a list of the default AI filters that we currently use.<br>
+In your dashboard you have the option to adjust your filters. <br>
+But keep in mind – being too strict can lead to less follower growth.<br>
+Our recommendation is to keep filters unchanged, but we want to give you the option to change them if needed.</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1">✅ </span><b>Whitelist:</b></p>
+<p class="p1">The whitelist in your dashboard can be used to let our team know you would like to follow someone they have followed permanently.</p>
+<p class="p1">By default all users that our team likes and follows are added to a list and everyone on that list will be unfollowed. Please note we only unfollow accounts that we have “followed first”.<br>
+Accounts that we have never followed, you do not need to add to the whitelist.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1">✅ </span><b>Blacklist:</b></p>
+<p class="p1">The blacklist in your dashboard can be used to let our team know if there is someone you do not want us to like or follow. This can be used if you have any close competitors that we should not like.<br>
+<br>
+<br>
+<br>
+Default AI filters used for good growth and quality:<br>
+</p>
+<p class="p1">- Accounts need to have more than 6 posts.</p>
+<p class="p1">- Accounts need to have less than 3000 followings (= other people they follow).</p>
+<p class="p1">- Accounts need to have more than 50 followers.</p>
+<p class="p1">- Accounts may never be followed twice.</p>
+<p class="p1">- Accounts that follow or like you may be liked more often.</p>
+<p class="p1">- Accounts that do not follow you may only be liked on one day.</p>
+<p class="p1">- Accounts may not have any forbidden words in their name or bio. Contact us to add new words.</p>
+<p class="p1">- Accounts are prioritized if they use a common first name in their name.</p>
+<p class="p1"><br>
+</p>
+<p class="p1">Thank you for working with us! We are excited for this partnership!<br>
+</p>
+<p class="p1">Should you require any further assistance, please do not hesitate to answer to this e-mail or contact us at <a href="mailto:support@grow-your-social.com">support@grow-your-social.com</a>.<br>
+<br>
+</p>
+<p class="p1">Best regards,</p>
+<p class="p2"><br></p>
+<p class="p1">Grow-Your-Social Team</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
     `
 }
 
 export const CHECKING_TEMPLATE = (full_name, username) => {
+  //Please click „it was me“
     return `
-        <div className="WordSection1">
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>Hey ${full_name},<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>We regret to inform you that your
-            account @${username} has to confirm our login request, which is currently
-            preventing us from starting our service. We understand the importance of
-            account security, and we want to assure you that your account's safety is our
-            utmost priority.<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>In order for our team to proceed
-            with logging into your account and commencing the service, we kindly request
-            you confirm our login request. To do so, please follow these steps:<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>1. Access your <span className="SpellE">Instagram</span>
-            account and Navigate to the "Notifications" section by clicking a
-            Heart button.<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>2. Find the "An <span className="SpellE">unrecognised</span> device just logged in near location" and
-            click on it.<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>3. Locate and select the button
-            "This was me".<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>Once the "This was me"
-            button is clicked, our team will be able to log into your account within the
-            next 12 hours to initiate the requested service. We assure you that all
-            necessary precautions will be taken to safeguard your account and ensure its
-            security throughout the process.</p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>After completing the steps above we
-            kindly request you to attempt re-logging into your dashboard by following this
-            <a href="app.grow-your-social.com">link</a><o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>If you have any concerns or require
-            further assistance, please do not hesitate to reach out to us at
-            <a href="mailto:${EMAIL}">${EMAIL}</a>. Our dedicated support team is ready to assist you.<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>Thank you for your cooperation.<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}><o:p> </o:p></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}>Kind regards,<o:p /></p>
-
-            <p className="MsoNormal" style={{ lineHeight: "150%" }}><span className="SpellE">Grow-your-social</span>
-            Team</p>
-
-            </div>
+    <style type="text/css">
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
+</style>
+</p>
+<p class="p1">Dear <b>${username}</b>,</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p1">we wanted to let you know that we already logged in and everything worked perfectly.</p>
+<p class="p1">If you open Instagram now you will see a notification informing you about a new login from a new device.<br>
+</p>
+<p class="p1">Please approve our login by clicking “<b>it was me</b>” on the notification.</p>
+<p class="p1">Once approved we will start working within only a few hours.<br>
+</p>
+<p class="p1">Once this is done our team will send you more information on how to use your new dashboard on our website. We are excited to start!<br>
+<br>
+</p>
+<p class="p1">Should you require further assistance, please do not hesitate to answer to this e-mail or contact us at <a href="mailto:support@grow-your-social.com">support@grow-your-social.com</a>.</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">Best regards,</p>
+<p class="p2"><br></p>
+<p class="p1">Grow-Your-Social Team</p>
     `
 }
