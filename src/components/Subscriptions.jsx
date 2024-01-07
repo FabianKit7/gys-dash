@@ -597,6 +597,94 @@ const Content = ({
     if (!stripe && !elements) return;
     setPaymentRequest(null);
 
+    async function continueToSupabase(userIsNew, subscriptionObj, plan) {
+      let data = {
+        nameOnCard: user?.nameOnCard || user?.full_name,
+        subscription_id: subscriptionObj?.id,
+        customer_id: subscriptionObj?.customer,
+        current_plan_id: plan,
+
+        username: userResults?.username,
+        email: user.email,
+        full_name: user.full_name,
+        followers: userResults?.follower_count,
+        following: userResults?.following_count,
+        is_verified: userResults?.is_verified,
+        biography: userResults?.biography,
+        start_time: getStartingDay(),
+        posts: userResults?.media_count,
+        subscribed: true,
+      };
+
+      if (userIsNew) {
+        if (!user) {
+          setIsModalOpen(true);
+          setErrorMsg({
+            title: "Alert",
+            message: `Error updating user's details`,
+          });
+          setLoading(false);
+          return;
+        }
+
+        // console.log({ data });
+
+        const updateUser = await supabase
+          .from("users")
+          .update(data)
+          .eq("id", user.id);
+        if (updateUser?.error) {
+          console.log(updateUser.error);
+          setIsModalOpen(true);
+          setErrorMsg({
+            title: "Alert",
+            message: `Error updating user's details`,
+          });
+
+          return;
+        }
+      } else {
+        const addAccount = await supabase
+          .from("users")
+          .insert({ ...data, auth_user_id: user.auth_user_id });
+        if (addAccount?.error) {
+          console.log(addAccount.error);
+          setIsModalOpen(true);
+          setErrorMsg({ title: "Alert", message: `Error adding new account` });
+        }
+      }
+
+      let sendEmail = await axios
+        .post(`${BACKEND_URL}/api/send_email`, {
+          email: user?.email,
+          subject: "Your account is not connected",
+          htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name),
+        })
+        .catch((err) => err);
+      if (sendEmail.status !== 200) {
+        console.log(sendEmail);
+      }
+
+      // try {
+      //   const url = `${BACKEND_URL}/api/send_sms`;
+      //   const sms_data = {
+      //     recipient: user?.phone,
+      //     content: NOT_CONNECTED_SMS_TEMPLATE(),
+      //   };
+      //   await axios.post(url, sms_data);
+      // } catch (error) {
+
+      // }
+
+      const ref = getRefCode();
+      if (ref) {
+        navigate(`/thankyou?ref=${ref}`);
+      } else {
+        navigate(`/thankyou`);
+      }
+      setLoading(false);
+    }
+
     const pr = stripe.paymentRequest({
       currency: "usd",
       country: "US",
@@ -616,19 +704,47 @@ const Content = ({
       }
 
       pr.on("paymentmethod", async (e) => {
-        const { clientSecret } = await fetch(
-          `${BACKEND_URL}/api/stripe/create_payment_intent`,
-          {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({ amount }),
-          }
-        ).then((result) => result.json());
+        // const { clientSecret } = await fetch(
+        //   `${BACKEND_URL}/api/stripe/create_payment_intent`,
+        //   {
+        //     method: "POST",
+        //     headers: {
+        //       "content-type": "application/json",
+        //     },
+        //     body: JSON.stringify({ amount }),
+        //   }
+        // ).then((result) => result.json());
+
+        var userIsNew = true;
+
+        let createSubscription = await axios
+          .post(`${BACKEND_URL}/api/stripe/create_subscription`, {
+            name: user?.nameOnCard || user?.full_name,
+            username,
+            email: user?.email,
+            paymentMethod: e?.paymentMethod?.id,
+            price: selectedPlan?.planId,
+          })
+          .catch((err) => {
+            console.error(err);
+            return err;
+          });
+
+        console.log("createSubscription");
+        console.log(createSubscription);
+
+        if (!createSubscription?.data) {
+          setIsModalOpen(true);
+          setErrorMsg({
+            title: "Failed to create subscription",
+            message: `An error occured: ${createSubscription?.response?.data?.message}`,
+          });
+          setLoading(false);
+          return;
+        }
 
         const { error, paymentIntent } = await stripe.confirmCardPayment(
-          clientSecret,
+          createSubscription?.data?.clientSecret,
           {
             payment_method: e.paymentMethod.id,
           },
@@ -636,18 +752,94 @@ const Content = ({
             handleActions: false,
           }
         );
+        
+        if (createSubscription?.data?.clientSecret) {
+        } else {
+          await continueToSupabase(
+            userIsNew,
+            createSubscription.data.subscription,
+            selectedPlan.planId
+          );
+          setLoading(false);
+        }
 
         if (error) {
           e.complete("fail");
           return;
         }
         e.complete("success");
-        if(paymentIntent.status === "requires_action"){
-          stripe.confirmCardPayment(clientSecret)
+        if (paymentIntent.status === "requires_action") {
+          stripe.confirmCardPayment(createSubscription?.data?.clientSecret);
+        }
+
+        if (
+          paymentIntent.status === "succeeded" &&
+          createSubscription?.data?.message === "Subscription successful!"
+        ) {
+          await continueToSupabase(
+            userIsNew,
+            createSubscription.data.subscription,
+            selectedPlan.planId
+          );
+          setLoading(false);
+
+          if (userResults?.name === "INVALID_USERNAME") {
+            console.log("INVALID_USERNAME");
+            setIsModalOpen(true);
+            setErrorMsg({
+              title: "Alert",
+              message: "An error has occured, please try again",
+            });
+            setLoading(false);
+            return;
+          }
+
+          if (user) {
+
+            try {
+              if (e?.paymentMethod?.id) {
+                
+              }
+            } catch (error) {
+              // setError(error.message);
+              setIsModalOpen(true);
+              setErrorMsg({
+                title: "Failed to create subscription",
+                message: `An error occured: ${error.message}`,
+              });
+            }
+          } else {
+            setIsModalOpen(true);
+            setErrorMsg({
+              title: "Authentication Error",
+              message: "You have to login to continue",
+            });
+          }
+        } else {
+          console.log("createSubscription error");
+          console.log(createSubscription);
+
+          setIsModalOpen(true);
+          setErrorMsg({
+            title: "Failed to create subscription",
+            message: "An error occured while creating your subscription",
+          });
         }
       });
     });
-  }, [elements, stripe, selectedPlan, amount]);
+  }, [
+    elements,
+    stripe,
+    selectedPlan,
+    amount,
+    user,
+    userResults,
+    setLoading,
+    setIsModalOpen,
+    setErrorMsg,
+    navigate,
+    username,
+  ]);
 
   return (
     <>
