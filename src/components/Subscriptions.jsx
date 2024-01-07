@@ -724,14 +724,20 @@ const Content = ({
             email: user?.email,
             paymentMethod: e?.paymentMethod?.id,
             price: selectedPlan?.planId,
+            customer_id: user?.customer_id
           })
           .catch((err) => {
             console.error(err);
             return err;
           });
 
-        console.log("createSubscription");
-        console.log(createSubscription);
+        // const clientSecret =
+        //   createSubscription?.data?.subscription?.latest_invoice?.payment_intent
+        //     ?.client_secret;
+
+        // console.log("createSubscription");
+        // console.log(createSubscription);
+        // console.log(clientSecret);
 
         if (!createSubscription?.data) {
           setIsModalOpen(true);
@@ -743,88 +749,84 @@ const Content = ({
           return;
         }
 
-        const { error, paymentIntent } = await stripe.confirmCardPayment(
-          createSubscription?.data?.clientSecret,
-          {
-            payment_method: e.paymentMethod.id,
-          },
-          {
-            handleActions: false,
-          }
-        );
-        
         if (createSubscription?.data?.clientSecret) {
-        } else {
-          await continueToSupabase(
-            userIsNew,
-            createSubscription.data.subscription,
-            selectedPlan.planId
+          const { error, paymentIntent } = await stripe.confirmCardPayment(
+            createSubscription?.data?.clientSecret,
+            {
+              payment_method: e.paymentMethod.id,
+            },
+            {
+              handleActions: false,
+            }
           );
-          setLoading(false);
-        }
-
-        if (error) {
-          e.complete("fail");
-          return;
-        }
-        e.complete("success");
-        if (paymentIntent.status === "requires_action") {
-          stripe.confirmCardPayment(createSubscription?.data?.clientSecret);
-        }
-
-        if (
-          paymentIntent.status === "succeeded" &&
-          createSubscription?.data?.message === "Subscription successful!"
-        ) {
-          await continueToSupabase(
-            userIsNew,
-            createSubscription.data.subscription,
-            selectedPlan.planId
-          );
-          setLoading(false);
-
-          if (userResults?.name === "INVALID_USERNAME") {
-            console.log("INVALID_USERNAME");
-            setIsModalOpen(true);
-            setErrorMsg({
-              title: "Alert",
-              message: "An error has occured, please try again",
-            });
-            setLoading(false);
+          if (error) {
+            e.complete("fail");
             return;
           }
+          if (paymentIntent.status === "requires_action") {
+            stripe.confirmCardPayment(createSubscription?.data?.clientSecret);
+          }
 
-          if (user) {
+          if (
+            paymentIntent.status === "succeeded" &&
+            createSubscription?.data?.message === "Subscription successful!"
+          ) {
+            await continueToSupabase(
+              userIsNew,
+              createSubscription.data.subscription,
+              selectedPlan.planId
+            );
+            setLoading(false);
 
-            try {
-              if (e?.paymentMethod?.id) {
-                
-              }
-            } catch (error) {
-              // setError(error.message);
+            if (userResults?.name === "INVALID_USERNAME") {
+              console.log("INVALID_USERNAME");
               setIsModalOpen(true);
               setErrorMsg({
-                title: "Failed to create subscription",
-                message: `An error occured: ${error.message}`,
+                title: "Alert",
+                message: "An error has occured, please try again",
+              });
+              setLoading(false);
+              return;
+            }
+
+            if (user) {
+              try {
+                if (e?.paymentMethod?.id) {
+                }
+              } catch (error) {
+                // setError(error.message);
+                setIsModalOpen(true);
+                setErrorMsg({
+                  title: "Failed to create subscription",
+                  message: `An error occured: ${error.message}`,
+                });
+              }
+            } else {
+              setIsModalOpen(true);
+              setErrorMsg({
+                title: "Authentication Error",
+                message: "You have to login to continue",
               });
             }
           } else {
+            console.log("createSubscription error");
+            console.log(createSubscription);
+
             setIsModalOpen(true);
             setErrorMsg({
-              title: "Authentication Error",
-              message: "You have to login to continue",
+              title: "Failed to create subscription",
+              message: "An error occured while creating your subscription",
             });
           }
         } else {
-          console.log("createSubscription error");
-          console.log(createSubscription);
-
-          setIsModalOpen(true);
-          setErrorMsg({
-            title: "Failed to create subscription",
-            message: "An error occured while creating your subscription",
-          });
+          await continueToSupabase(
+            userIsNew,
+            createSubscription.data.subscription,
+            selectedPlan.planId
+          );
+          setLoading(false);
         }
+        e.complete("success");
       });
     });
   }, [
@@ -1250,8 +1252,13 @@ export const ChargeBeeCard = ({
               return err;
             });
 
-          // console.log("createSubscription");
-          // console.log(createSubscription);
+          const clientSecret =
+            createSubscription?.data?.subscription?.latest_invoice
+              ?.payment_intent?.client_secret;
+
+          console.log("createSubscription card");
+          console.log(createSubscription);
+          console.log(clientSecret);
 
           if (!createSubscription?.data) {
             setIsModalOpen(true);
