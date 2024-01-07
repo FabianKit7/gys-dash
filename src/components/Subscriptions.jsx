@@ -989,8 +989,6 @@ const Content = ({
                             options={{ paymentRequest }}
                           />
                         )}
-                        {selectedPlan.name}
-                        {amount}
                       </div>
                     )}
 
