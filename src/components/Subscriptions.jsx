@@ -1847,7 +1847,7 @@ const ExternalPayComponent = ({
   ]);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center w-full">
       {paymentRequest && (
         <PaymentRequestButtonElement options={{ paymentRequest }} />
       )}
