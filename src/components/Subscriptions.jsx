@@ -357,25 +357,26 @@ export default function Subscriptions() {
 
                   <div
                     className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${
-                      paymentMethod.name === "paypal" && "border-black border-2"
+                      paymentMethod.name === "apple_pay" &&
+                      "border-black border-2"
                     }`}
                     onClick={() => {
-                      setPaymentMethod({ id: 1, name: "paypal" });
+                      setPaymentMethod({ id: 1, name: "apple_pay" });
                     }}
                   >
                     <span
                       className={`${
-                        paymentMethod.name === "paypal"
+                        paymentMethod.name === "apple_pay"
                           ? "top-[13px] left-[10px] translate-x-0 translate-y-0"
                           : "top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
                       }
                         absolute transition-all duration-200 ease-in fill-black font-[none]`}
                     >
                       <img
-                        src={"/icons/paypal-icon.svg"}
+                        src={"/icons/apple_pay-icon.png"}
                         alt=""
                         className={`${
-                          paymentMethod.name === "paypal"
+                          paymentMethod.name === "apple_pay"
                             ? "h-[23.7px]"
                             : "h-[37px]"
                         }`}
@@ -384,13 +385,13 @@ export default function Subscriptions() {
 
                     <div
                       className={`${
-                        paymentMethod.name === "paypal"
+                        paymentMethod.name === "apple_pay"
                           ? "opacity-100 translate-y-0 text-black"
                           : "opacity-0 translate-y-full"
                       }
                         absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
                     >
-                      PayPal
+                      ApplePay
                     </div>
                   </div>
                 </div>
@@ -442,14 +443,22 @@ export default function Subscriptions() {
                   </div>
                 </div>
               ) : (
-                <div className="">
+                <div className="mt-1">
+                  <ExternalPayComponent
+                    selectedPlan={selectedPlan}
+                    user={user}
+                    userResults={userResults}
+                    setIsModalOpen={setIsModalOpen}
+                    setErrorMsg={setErrorMsg}
+                    setLoading={setLoading}
+                  />
                   {/* <button
                     className="cursor-pointer w-full h-[50px] rounded-[10px] bg-[#ffc439] text-white flex items-center justify-center gap-2"
                     onClick={() => {
                       setIsModalOpen(true);
                       setErrorMsg({
                         title: "Alert",
-                        message: "PayPal not available yet!",
+                        message: "apple_pay not available yet!",
                       });
                     }}
                   >
@@ -698,8 +707,8 @@ const Content = ({
     });
     pr.canMakePayment().then((result) => {
       if (result) {
-        console.log("pr");
-        console.log(pr);
+        // console.log("pr");
+        // console.log(pr);
         setPaymentRequest(pr);
       }
 
@@ -724,7 +733,7 @@ const Content = ({
             email: user?.email,
             paymentMethod: e?.paymentMethod?.id,
             price: selectedPlan?.planId,
-            customer_id: user?.customer_id
+            customer_id: user?.customer_id,
           })
           .catch((err) => {
             console.error(err);
@@ -976,12 +985,12 @@ const Content = ({
                             setIsModalOpen(true);
                             setErrorMsg({
                               title: "Alert",
-                              message: "PayPal not available yet!",
+                              message: "apple_pay not available yet!",
                             });
                           }}
                         >
                           <img
-                            src={"/icons/paypal-btn.svg"}
+                            src={"/icons/apple_pay-btn.svg"}
                             alt=""
                             className="h-[25px]"
                           />
@@ -1458,11 +1467,6 @@ export const ChargeBeeCard = ({
 
   return (
     <>
-      {/* <div className={`ex1-field shadow-[0_2px_4px_#00000026] rounded-[8px] px-5 py-6 text-sm ${mobile ? 'placeholder-[#333]' : 'placeholder-[#757575]'} bg-[#f8f8f8] font-[500] transition-all duration-280 ease mb-5`} id='num'>
-      <input type="text" className="w-full bg-transparent border-none outline-none" placeholder="Name on Card" value={nameOnCard}
-        onChange={(e) => { setNameOnCard(e.target.value) }} />
-    </div> */}
-
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -1587,5 +1591,264 @@ const BallEl = () => {
         ></rect>
       </svg>
     </span>
+  );
+};
+
+const ExternalPayComponent = ({
+  selectedPlan,
+  user,
+  userResults,
+  setIsModalOpen,
+  setErrorMsg,
+  setLoading
+}) => {
+  const amount = parseFloat(selectedPlan?.value?.toString().replace(".", ""));
+  const navigate = useNavigate();
+  const stripe = useStripe();
+  const [paymentRequest, setPaymentRequest] = useState(null);
+  // const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!stripe) return;
+
+    async function continueToSupabase(userIsNew, subscriptionObj, plan) {
+      let data = {
+        nameOnCard: user?.nameOnCard || user?.full_name,
+        subscription_id: subscriptionObj?.id,
+        customer_id: subscriptionObj?.customer,
+        current_plan_id: plan,
+
+        username: userResults?.username,
+        email: user.email,
+        full_name: user.full_name,
+        followers: userResults?.follower_count,
+        following: userResults?.following_count,
+        is_verified: userResults?.is_verified,
+        biography: userResults?.biography,
+        start_time: getStartingDay(),
+        posts: userResults?.media_count,
+        subscribed: true,
+      };
+
+      if (userIsNew) {
+        if (!user) {
+          setIsModalOpen(true);
+          setErrorMsg({
+            title: "Alert",
+            message: `Error updating user's details`,
+          });
+          setLoading(false);
+          return;
+        }
+
+        // console.log({ data });
+
+        const updateUser = await supabase
+          .from("users")
+          .update(data)
+          .eq("id", user.id);
+        if (updateUser?.error) {
+          console.log(updateUser.error);
+          setIsModalOpen(true);
+          setErrorMsg({
+            title: "Alert",
+            message: `Error updating user's details`,
+          });
+
+          return;
+        }
+      } else {
+        const addAccount = await supabase
+          .from("users")
+          .insert({ ...data, auth_user_id: user.auth_user_id });
+        if (addAccount?.error) {
+          console.log(addAccount.error);
+          setIsModalOpen(true);
+          setErrorMsg({ title: "Alert", message: `Error adding new account` });
+        }
+      }
+
+      let sendEmail = await axios
+        .post(`${BACKEND_URL}/api/send_email`, {
+          email: user?.email,
+          subject: "Your account is not connected",
+          htmlContent: NOT_CONNECTED_TEMPLATE(user?.full_name, user?.username),
+        })
+        .catch((err) => err);
+      if (sendEmail.status !== 200) {
+        console.log(sendEmail);
+      }
+
+      // try {
+      //   const url = `${BACKEND_URL}/api/send_sms`;
+      //   const sms_data = {
+      //     recipient: user?.phone,
+      //     content: NOT_CONNECTED_SMS_TEMPLATE(),
+      //   };
+      //   await axios.post(url, sms_data);
+      // } catch (error) {
+
+      // }
+
+      const ref = getRefCode();
+      if (ref) {
+        navigate(`/thankyou?ref=${ref}`);
+      } else {
+        navigate(`/thankyou`);
+      }
+      setLoading(false);
+    }
+
+    const pr = stripe.paymentRequest({
+      currency: "usd",
+      country: "US",
+      // disableWallets: ["link", "applePay", "browserCard", "googlePay"],
+      requestPayerEmail: true,
+      requestPayerName: true,
+      total: {
+        label: selectedPlan.name,
+        amount,
+      },
+    });
+    pr.canMakePayment().then((result) => {
+      if (result) {
+        // console.log("pr");
+        // console.log(pr);
+        setPaymentRequest(pr);
+      }
+
+      pr.on("paymentmethod", async (e) => {
+        var userIsNew = true;
+
+        let createSubscription = await axios
+          .post(`${BACKEND_URL}/api/stripe/create_subscription`, {
+            name: user?.nameOnCard || user?.full_name,
+            username: user?.username,
+            email: user?.email,
+            paymentMethod: e?.paymentMethod?.id,
+            price: selectedPlan?.planId,
+            customer_id: user?.customer_id,
+          })
+          .catch((err) => {
+            console.error(err);
+            return err;
+          });
+
+        // const clientSecret =
+        //   createSubscription?.data?.subscription?.latest_invoice?.payment_intent
+        //     ?.client_secret;
+
+        // console.log("createSubscription");
+        // console.log(createSubscription);
+        // console.log(clientSecret);
+
+        if (!createSubscription?.data) {
+          setIsModalOpen(true);
+          setErrorMsg({
+            title: "Failed to create subscription",
+            message: `An error occured: ${createSubscription?.response?.data?.message}`,
+          });
+          setLoading(false);
+          return;
+        }
+
+        if (createSubscription?.data?.clientSecret) {
+          const { error, paymentIntent } = await stripe.confirmCardPayment(
+            createSubscription?.data?.clientSecret,
+            {
+              payment_method: e.paymentMethod.id,
+            },
+            {
+              handleActions: false,
+            }
+          );
+          if (error) {
+            e.complete("fail");
+            return;
+          }
+          if (paymentIntent.status === "requires_action") {
+            stripe.confirmCardPayment(createSubscription?.data?.clientSecret);
+          }
+
+          if (
+            paymentIntent.status === "succeeded" &&
+            createSubscription?.data?.message === "Subscription successful!"
+          ) {
+            await continueToSupabase(
+              userIsNew,
+              createSubscription.data.subscription,
+              selectedPlan.planId
+            );
+            setLoading(false);
+
+            if (userResults?.name === "INVALID_USERNAME") {
+              console.log("INVALID_USERNAME");
+              setIsModalOpen(true);
+              setErrorMsg({
+                title: "Alert",
+                message: "An error has occured, please try again",
+              });
+              setLoading(false);
+              return;
+            }
+
+            if (user) {
+              try {
+                if (e?.paymentMethod?.id) {
+                }
+              } catch (error) {
+                // setError(error.message);
+                setIsModalOpen(true);
+                setErrorMsg({
+                  title: "Failed to create subscription",
+                  message: `An error occured: ${error.message}`,
+                });
+              }
+            } else {
+              setIsModalOpen(true);
+              setErrorMsg({
+                title: "Authentication Error",
+                message: "You have to login to continue",
+              });
+            }
+          } else {
+            console.log("createSubscription error");
+            console.log(createSubscription);
+
+            setIsModalOpen(true);
+            setErrorMsg({
+              title: "Failed to create subscription",
+              message: "An error occured while creating your subscription",
+            });
+          }
+        } else {
+          await continueToSupabase(
+            userIsNew,
+            createSubscription.data.subscription,
+            selectedPlan.planId
+          );
+          setLoading(false);
+        }
+        e.complete("success");
+      });
+    });
+  }, [
+    amount,
+    navigate,
+    selectedPlan,
+    setErrorMsg,
+    setIsModalOpen,
+    stripe,
+    user,
+    userResults,
+    setLoading
+  ]);
+
+  return (
+    <>
+      {paymentRequest && (
+        <PaymentRequestButtonElement options={{ paymentRequest }} />
+      )}
+    </>
   );
 };
