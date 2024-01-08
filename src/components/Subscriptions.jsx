@@ -401,7 +401,7 @@ export default function Subscriptions() {
                     paymentMethod.name === "card"
                       ? "opacity-100 pointer-events-auto"
                       : "opacity-0 pointer-events-none hidden"
-                  } transition-all duration-150 ease-in`}
+                  } transition-all duration-150 ease-in mt-4`}
                 >
                   {!isDesktop && (
                     <ChargeBeeCard
@@ -443,7 +443,7 @@ export default function Subscriptions() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-1">
+                <div className="mt-4">
                   {!isDesktop && <ExternalPayComponent
                     selectedPlan={selectedPlan}
                     user={user}
@@ -1699,6 +1699,8 @@ const ExternalPayComponent = ({
       setLoading(false);
     }
 
+    setPaymentRequest(null);
+
     const pr = stripe.paymentRequest({
       currency: "usd",
       country: "US",
@@ -1845,10 +1847,10 @@ const ExternalPayComponent = ({
   ]);
 
   return (
-    <>
+    <div className="flex justify-center">
       {paymentRequest && (
         <PaymentRequestButtonElement options={{ paymentRequest }} />
       )}
-    </>
+    </div>
   );
 };
