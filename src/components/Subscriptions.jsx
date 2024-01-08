@@ -444,14 +444,14 @@ export default function Subscriptions() {
                 </div>
               ) : (
                 <div className="mt-1">
-                  <ExternalPayComponent
+                  {!isDesktop && <ExternalPayComponent
                     selectedPlan={selectedPlan}
                     user={user}
                     userResults={userResults}
                     setIsModalOpen={setIsModalOpen}
                     setErrorMsg={setErrorMsg}
                     setLoading={setLoading}
-                  />
+                  />}
                   {/* <button
                     className="cursor-pointer w-full h-[50px] rounded-[10px] bg-[#ffc439] text-white flex items-center justify-center gap-2"
                     onClick={() => {
@@ -995,7 +995,7 @@ const Content = ({
                             className="h-[25px]"
                           />
                         </div> */}
-                        {paymentRequest && (
+                        {paymentRequest && isDesktop && (
                           <PaymentRequestButtonElement
                             options={{ paymentRequest }}
                           />
