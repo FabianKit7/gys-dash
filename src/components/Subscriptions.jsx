@@ -302,7 +302,7 @@ export default function Subscriptions() {
                 </div>
               </div>
 
-              <div className="px-5 pt-4 bg-white">
+              <div className="px-5 pt-4 pb-5 bg-white">
                 <h1 className="text-black text-[20px] font-bold font-MontserratSemiBold">
                   {" "}
                   Start Your Followers Growth
