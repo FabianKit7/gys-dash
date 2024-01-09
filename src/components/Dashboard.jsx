@@ -1836,7 +1836,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                 Targeting Filters
                 <img alt="" className="ml-2" src="/ic_filters.svg" />
               </Button>
-              <a href="mailto:hello@grow-your-social.com">
+              <a href="mailto:support@grow-your-social.com">
                 <Button className="bg-primary text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer gap-3">
                   <span>Send An Email</span>
                   <IoChatboxEllipsesOutline />

@@ -3,7 +3,7 @@
 export const LOGO = "/Android.png" 
 export const LOGO_WITH_NAME = "/color-logo-no-background.svg" 
 export const ANALYST_NAME = "Mike P"
-export const EMAIL = "hello@grow-your-social.com"
+export const EMAIL = "support@grow-your-social.com"
 
 export const SCRAPER_API_URL = "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile"
 export const X_RAPID_API_HOST = 'instagram-bulk-profile-scrapper.p.rapidapi.com'
