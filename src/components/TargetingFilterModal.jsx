@@ -223,6 +223,8 @@ export default function TargetingFilterModal(props, { min, max }) {
                   <option value="All">All</option>
                   <option value="English">English</option>
                   <option value="French">French</option>
+                  <option value="German">German</option>
+                  <option value="Spanish">Spanish</option>
                 </Form.Select>
               </div>
 

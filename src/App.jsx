@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import Search from "./components/Search";
+import Search from "./pages/Search";
 import Dashboard from "./components/Dashboard";
 import Subscriptions from "./components/Subscriptions";
 import Login from "./components/Login";

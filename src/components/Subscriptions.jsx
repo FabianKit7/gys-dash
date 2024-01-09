@@ -305,13 +305,10 @@ export default function Subscriptions() {
               <div className="px-5 pt-4 pb-5 bg-white">
                 <h1 className="text-black text-[20px] font-bold font-MontserratSemiBold">
                   {" "}
-                  Start Your Followers Growth
+                  Choose Your Plan after Trial
                 </h1>
                 <p className="mt-1 mb-3 text-black text-[14px] font-normal">
-                  Grow Real & Targeted Followers Every Month. Analytics &
-                  Results Tracking. Boost Likes, Comments & DMs. Automated 24/7
-                  Growth, Set & Forget. Personal Account Manager. No Fakes Or
-                  Bots, 100% Real People.
+                Start Risk Free - Your card will only be charged after your Free Trial. Cancel anytime. Start Grow Real & Targeted Followers Every Month. Enjoy high quality analytics and tracking.
                 </p>
 
                 <div className="mb-[11px] flex gap-[10px] h-[80px] items-center">
@@ -438,20 +435,21 @@ export default function Subscriptions() {
                     </div>
                   </button>
                   <div className="mt-2 text-center text-black">
-                    ${selectedPlan?.value?.toString()?.replace(".", ",")} per
-                    month, billed monthly. <br /> Cancel any time, no risk.
+                    ${selectedPlan?.value?.toString()?.replace(".", ",")} {selectedPlan.name==="Monthly" ? "per month, billed monthly.":"billed every 3 months."} <br /> Cancel any time, no risk.
                   </div>
                 </div>
               ) : (
                 <div className="mt-4">
-                  {!isDesktop && <ExternalPayComponent
-                    selectedPlan={selectedPlan}
-                    user={user}
-                    userResults={userResults}
-                    setIsModalOpen={setIsModalOpen}
-                    setErrorMsg={setErrorMsg}
-                    setLoading={setLoading}
-                  />}
+                  {!isDesktop && (
+                    <ExternalPayComponent
+                      selectedPlan={selectedPlan}
+                      user={user}
+                      userResults={userResults}
+                      setIsModalOpen={setIsModalOpen}
+                      setErrorMsg={setErrorMsg}
+                      setLoading={setLoading}
+                    />
+                  )}
                   {/* <button
                     className="cursor-pointer w-full h-[50px] rounded-[10px] bg-[#ffc439] text-white flex items-center justify-center gap-2"
                     onClick={() => {
@@ -472,10 +470,9 @@ export default function Subscriptions() {
                   {/* <div id="express-checkout-element"></div> */}
 
                   <div className="mt-2 text-center text-black">
-                    {`Start Your Followers Growth. $${selectedPlan?.value
+                    {`Choose Your Plan After Your 7 Day Free Trial. $${selectedPlan?.value
                       ?.toString()
-                      ?.replace(".", ",")} per month, billed
-                    monthly. Cancel any time, no risk.`}
+                      ?.replace(".", ",")} ${selectedPlan.name==='Monthly' ? "per month, billed monthly.":"billed every 3 months."} Cancel any time, no risk.`}
                   </div>
                 </div>
               )}
@@ -584,10 +581,10 @@ const Content = ({
     "Instagram Support & Consulting",
     "Growth Analytics",
     "Instant Setup",
-    "Safe & Secure",
+    "7 Day free trial",
   ];
   const featureB = [
-    "1000+ Real Monthly Followers",
+    "Up to 1000+ Real Monthly Followers",
     "Reach Explore Page",
     "Grow 500% Faster",
     "Fully Customized Targeting",
@@ -595,7 +592,7 @@ const Content = ({
     "Dedicated Account Manager",
     "Growth Analytics",
     "Instant Setup",
-    "Safe & Secure",
+    "7 Day free trial",
   ];
 
   const [paymentRequest, setPaymentRequest] = useState(null);
@@ -1030,13 +1027,12 @@ const Content = ({
               <div className="basis-[60%] grow-[4] rounded-[20px] shadow-[0_5px_10px_#0a17530d] p-4 lg:p-[50px_50px_50px] bg-white relative">
                 <div className="w-full h-full overflow-auto">
                   <span className="text-[14px] py-[5px] px-3 mb-3 rounded-[8px] text-primary bg-primary/30">
-                    $
                     {selectedPlan.name === "Monthly"
                       ? "Get 1000+ followers"
                       : "Get 400+ followers"}
                   </span>
                   <div className="text-[20px] lg:text-[26px] font-bold text-black font-MontserratBold">
-                    Start Your Followers Growth
+                    Choose Your Plan After Your 7 Day Free Trial
                   </div>
                   {/* <p className="text-[14px] mt-2 mb-5">
                     It's time to get the real exposure you've been waiting for.
@@ -1045,7 +1041,7 @@ const Content = ({
                   </p> */}
                   <p className="text-[14px] mt-2 mb-5">
                     {selectedPlan.name === "Monthly"
-                      ? "Level up your Instagram with rapid growth and a Dedicated Account Manager."
+                      ? "Your payment method will only be charged after your trial ends. Start working with us today and let us prove to you that it works!"
                       : "Great for personal accounts, businesses and upcoming influencers looking for organic growth."}
                   </p>
                   <div className="text-[72px] leading-[70px] text-black font-bold font-MontserratBold">
@@ -1053,9 +1049,8 @@ const Content = ({
                   </div>
                   <p className="text-[14px] mb-5">
                     Billed{" "}
-                    {selectedPlan.name === "Monthly" ? "monthly" : "quaterly"}
-                    {selectedPlan.name === "Monthly" &&
-                      ", 30-days refund guarantee."}
+                    {selectedPlan.name === "Monthly" ? "monthly" : "quaterly"},
+                    after 7 day free trial.
                   </p>
 
                   <div className="flex flex-col gap-4 text-base text-black">
@@ -1600,7 +1595,7 @@ const ExternalPayComponent = ({
   userResults,
   setIsModalOpen,
   setErrorMsg,
-  setLoading
+  setLoading,
 }) => {
   const amount = parseFloat(selectedPlan?.value?.toString().replace(".", ""));
   const navigate = useNavigate();
@@ -1843,7 +1838,7 @@ const ExternalPayComponent = ({
     stripe,
     user,
     userResults,
-    setLoading
+    setLoading,
   ]);
 
   return (

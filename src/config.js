@@ -186,7 +186,7 @@ export const NOT_CONNECTED_TEMPLATE = (full_name, username) => {
 </p>
 <p class="p1"><br>
 with this e-mail we want to confirm your order for @<b>${username}</b>.<br>
-Thank you for your working with us!</p>
+Thank you for working with us!</p>
 <p class="p1"><br>
 Important next steps: <br>
 Please <b>connect your account</b> by using this <a href="https://app.grow-your-social.com" class="s1">link</a><span class="s2"> </span>or your Dashboard on our website.<br>

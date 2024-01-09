@@ -20,7 +20,7 @@ export default function Login() {
     const getData = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       const u = user ? await getUser(user?.id) : null
-      if (u?.status === 200) return navigate(`/dashboard/${u?.obj.username}`)
+      if (u?.status === 200 && u.obj.subscribed) return navigate(`/dashboard/${u?.obj.username}`)
       // console.log(u);
     };
 

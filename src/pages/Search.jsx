@@ -3,7 +3,7 @@ import React from "react";
 // import CrispChat from "./CrispChat";
 // import Nav from "./Nav";
 // import SearchBox from "./search/SearchBox";
-import OnboardingSearchBox from "./search/OnboardingSearchBox";
+import OnboardingSearchBox from "../components/search/OnboardingSearchBox";
 import { useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { useState } from "react";
@@ -46,7 +46,7 @@ export default function Search() {
     <div id="affiliateScript"></div>
     {/* <CrispChat /> */}
 
-    <div className="text-[#757575] relative">
+    <div className="text-[#757575] relative bg-[#f8f8f8]">
       <div className="max-w-[1600px] mx-auto">
         <div className="hidden lg:block absolute top-[14px] right-[14px] z-[1] cursor-pointer">
           <div className="flex items-center gap-3" onClick={() => {
@@ -61,7 +61,7 @@ export default function Search() {
           </div>
         </div>
 
-        <div className="lg:hidden bg-white fixed top-0 left-0 z-[5] flex items-center justify-between w-full px-5 py-4 gap-2 font-[600] font-MontserratRegular shadow-[0_2px_4px_#00000026]" onClick={() => {
+        <div className="lg:hidden fixed top-0 left-0 z-[5] flex items-center justify-between w-full px-5 py-4 gap-2 font-[600] font-MontserratRegular shadow-[0_2px_4px_#00000026]" onClick={() => {
           showMenu && setShowMenu(false);
         }}>
           <div className="flex">

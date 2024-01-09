@@ -16,7 +16,7 @@ import {
 import { MdVerified } from "react-icons/md";
 import { RiUserSettingsFill } from "react-icons/ri";
 import { TiTimes } from "react-icons/ti";
-import { Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   countDays,
@@ -36,6 +36,7 @@ import GrowthChart from "./GrowthChart";
 import ColumnChart from "./ColumnChart";
 import AlertModal from "./AlertModal";
 import { ANALYST_NAME, LOGO } from "../config";
+import { IoChatboxEllipsesOutline } from "react-icons/io5";
 // import WelcomeModal from "./WelcomeModal";
 
 const Error = ({ value }) => {
@@ -1820,24 +1821,28 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                         transition: "all .5s ease-in-out",
                       }}
                     >
-                      Once you've added your targets, you can monitor their
-                      progress and make modifications, as all of them will be
-                      displayed here. To achieve maximum outcomes, aim to
-                      achieve a follow-back rate of 15% or higher for all
-                      targets.
+                      Please configure your targets. We will interact with the followers of your target accounts and convert them into your followers. To achieve maximum outcomes choose targets with similar content or in your niche.
                     </span>
                   </span>
                 </div>
               </span>
             </div>
 
-            <button
-              className="bg-black text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer"
-              onClick={() => setFilterModal(true)}
-            >
-              Targeting Filters
-              <img alt="" className="ml-2" src="/ic_filters.svg" />
-            </button>
+            <div className="flex items-center gap-3">
+              <Button
+                className="bg-black text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer"
+                onClick={() => setFilterModal(true)}
+              >
+                Targeting Filters
+                <img alt="" className="ml-2" src="/ic_filters.svg" />
+              </Button>
+              <a href="mailto:hello@grow-your-social.com">
+                <Button className="bg-primary text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer gap-3">
+                  <span>Send An Email</span>
+                  <IoChatboxEllipsesOutline />
+                </Button>
+              </a>
+            </div>
           </div>
 
           <div className="lg:hidden mt-[30px] mb-[12px]">
@@ -1872,11 +1877,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                         transition: "all .5s ease-in-out",
                       }}
                     >
-                      Once you've added your targets, you can monitor their
-                      progress and make modifications, as all of them will be
-                      displayed here. To achieve maximum outcomes, aim to
-                      achieve a follow-back rate of 15% or higher for all
-                      targets.
+                      Please configure your targets. We will interact with the followers of your target accounts and convert them into your followers. To achieve maximum outcomes choose targets with similar content or in your niche.
                     </span>
                   </span>
                 </div>

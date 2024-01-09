@@ -29,20 +29,6 @@ import PrimaryButton from '../PrimaryButton';
 axios.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded';
 
-const urlEncode = function (data) {
-  var str = [];
-  for (var p in data) {
-    if (data.hasOwnProperty(p) && !(data[p] === undefined || data[p] == null)) {
-      str.push(
-        encodeURIComponent(p) +
-          '=' +
-          (data[p] ? encodeURIComponent(data[p]) : '')
-      );
-    }
-  }
-  return str.join('&');
-};
-
 export default function OnboardingSearchBox({ user, currentUsername }) {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [loadingSpinner, setLoadingSpinner] = useState(false);
@@ -370,7 +356,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                 </div>
               )}
 
-              <h1 className="font-bold text-black font-MontserratBold text-[26px] pb-3">
+              <h1 className="mt-6 font-bold text-black font-MontserratBold text-[26px] pb-3">
                 Search your account
               </h1>
               <p className="text-[0.875rem] font-MontserratRegular lg:px-[100px]">
