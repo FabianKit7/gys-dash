@@ -484,9 +484,9 @@ export default function Settings() {
             ></p>
 
             <div className="flex justify-center gap-4">
-              <a href="mailto:support@grow-your-social.com">
+              <a href="mailto:support@grow-your-social.com" className="w-full">
                 <button
-                  className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-primary text-white flex justify-center items-center text-[1rem] md:text-lg gap-3"
+                  className="mt-8 m-auto py-3 rounded-[10px] font-MontserratRegular px-10 bg-primary text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 w-full"
                   onClick={() => {
                     setCancelModal(false);
                   }}
@@ -496,7 +496,7 @@ export default function Settings() {
                 </button>
               </a>
               <button
-                className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all"
+                className="mt-8 m-auto w-full py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all"
                 onClick={async () => {
                   setTimeout(async () => {
                     const user = userToCancel;
