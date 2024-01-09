@@ -374,7 +374,9 @@ export default function Settings() {
                     </div>
                     <div className="lg:text-[24px] w-full">
                       <div className="flex justify-between w-full gap-1 md:justify-start">
-                        <Link to={`/${account.username}/settings`}>@{account?.username}</Link>{" "}
+                        <Link to={`/${account.username}/settings`}>
+                          @{account?.username}
+                        </Link>{" "}
                         <span className="font-bold text-green-600">
                           {user?.status.toLowerCase() === "active" &&
                             user?.status}
@@ -394,7 +396,7 @@ export default function Settings() {
                     <div
                       className="px-3 lg:px-[13px] py-3 lg:py-0 lg:h-[52px] grid place-items-center whitespace-nowrap rounded-[10px] bg-[#c4c4c4] text-white font-bold cursor-pointer"
                       onClick={() => {
-                        if(!account.subscribed) return;
+                        if (!account.subscribed) return;
                         setUserToCancel(account);
                         setCancelModal(true);
                       }}
@@ -474,7 +476,7 @@ export default function Settings() {
             />
             <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">
               Are you sure you want to cancel your subscription for @
-              {userToCancel?.username}?
+              {userToCancel?.username}? Please contact your account manager before you cancel and give us a chance to improve.
             </h1>
             <p
               className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600"
@@ -482,54 +484,63 @@ export default function Settings() {
             ></p>
 
             <div className="flex justify-center gap-4">
-              <button
-                className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-red-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3"
-                onClick={() => {
-                  setCancelModal(false);
-                }}
-              >
-                {/* <BsFillEnvelopeFill /> */}
-                Close
-              </button>
+              <a href="mailto:support@grow-your-social.com">
+                <button
+                  className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-primary text-white flex justify-center items-center text-[1rem] md:text-lg gap-3"
+                  onClick={() => {
+                    setCancelModal(false);
+                  }}
+                >
+                  {/* <BsFillEnvelopeFill /> */}
+                  Send An Email
+                </button>
+              </a>
               <button
                 className="mt-8 m-auto w-fit py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all"
                 onClick={async () => {
-                  const user = userToCancel;
+                  setTimeout(async () => {
+                    const user = userToCancel;
+                    if (!user)
+                      return alert(
+                        "No account selected! Please try again or contact support."
+                      );
 
-                  const buttons = document.querySelectorAll("button")
-                  buttons.forEach((button) => {
-                    button.disabled = true;
-                  })
-                  const loadingdots = document.querySelector("#loadingdots");
-                  loadingdots.style.display = "block";
-                  const res = await cancelSubscription(user);
-                  loadingdots.style.display = "none";
-                  const cancelMsgElement = document.querySelector("#cancelMsg");
-                  cancelMsgElement.textContent = res.message;
+                    const buttons = document.querySelectorAll("button");
+                    buttons.forEach((button) => {
+                      button.disabled = true;
+                    });
+                    const loadingdots = document.querySelector("#loadingdots");
+                    loadingdots.style.display = "block";
+                    const res = await cancelSubscription(user);
+                    loadingdots.style.display = "none";
+                    const cancelMsgElement =
+                      document.querySelector("#cancelMsg");
+                    cancelMsgElement.textContent = res.message;
 
-                  console.log("res");
-                  console.log(res);
-                  console.log(res?.status);
+                    console.log("res");
+                    console.log(res);
+                    console.log(res?.status);
 
-                  if (res.status === 200) {
-                    const updateUser = await supabase
-                      .from("users")
-                      .update({ status: "cancelled", subscribed: false })
-                      .eq("id", user.id);
-                    if (updateUser?.error) {
-                      console.log(updateUser.error);
-                      setIsModalOpen(true);
-                      setErrorMsg({
-                        title: "Alert",
-                        message: `Error updating user's details`,
-                      });
+                    if (res.status === 200) {
+                      const updateUser = await supabase
+                        .from("users")
+                        .update({ status: "cancelled", subscribed: false })
+                        .eq("id", user.id);
+                      if (updateUser?.error) {
+                        console.log(updateUser.error);
+                        setIsModalOpen(true);
+                        setErrorMsg({
+                          title: "Alert",
+                          message: `Error updating user's details`,
+                        });
+                      }
                     }
-                  }
 
-                  setTimeout(() => {
-                    setCancelModal(false);
-                    window.location.reload();
-                  }, 2000);
+                    setTimeout(() => {
+                      setCancelModal(false);
+                      window.location.reload();
+                    }, 2000);
+                  }, 1000);
                 }}
               >
                 {/* <BsFillEnvelopeFill /> */}
@@ -638,7 +649,12 @@ export default function Settings() {
   );
 }
 
-const ActivateSubModal = ({ showActivateSub, setShowActivateSub, user, userWithSub }) => {
+const ActivateSubModal = ({
+  showActivateSub,
+  setShowActivateSub,
+  user,
+  userWithSub,
+}) => {
   const [processing, setProcessing] = useState(false);
   const [errorMsg, setErrorMsg] = useState({
     title: "",
@@ -716,17 +732,19 @@ const ActivateSubModal = ({ showActivateSub, setShowActivateSub, user, userWithS
           </DialogBody>
         )}
         <DialogFooter className="flex items-center gap-3">
-          {userWithSub && !userWithSub?.first_account && <Button
-            variant="text"
-            color="red"
-            onClick={() => {
-              window.location.href = `/${userWithSub?.username}/settings`
-            }}
-            className="mr-1"
-            disabled={processing}
-          >
-            <span>switch to @{userWithSub?.username}</span>
-          </Button>}
+          {userWithSub && !userWithSub?.first_account && (
+            <Button
+              variant="text"
+              color="red"
+              onClick={() => {
+                window.location.href = `/${userWithSub?.username}/settings`;
+              }}
+              className="mr-1"
+              disabled={processing}
+            >
+              <span>switch to @{userWithSub?.username}</span>
+            </Button>
+          )}
           <Button
             variant="text"
             color="red"

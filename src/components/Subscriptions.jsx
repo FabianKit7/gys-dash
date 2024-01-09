@@ -305,7 +305,7 @@ export default function Subscriptions() {
               <div className="px-5 pt-4 pb-5 bg-white">
                 <h1 className="text-black text-[20px] font-bold font-MontserratSemiBold">
                   {" "}
-                  Choose Your Plan after Trial
+                  Start 7-Day-Free-Trial 
                 </h1>
                 <p className="mt-1 mb-3 text-black text-[14px] font-normal">
                 Start Risk Free - Your card will only be charged after your Free Trial. Cancel anytime. Start Grow Real & Targeted Followers Every Month. Enjoy high quality analytics and tracking.

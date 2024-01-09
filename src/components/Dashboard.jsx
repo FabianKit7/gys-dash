@@ -1926,19 +1926,26 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
             </div>
           </div>
 
-          <div className="flex items-center w-full gap-2 mt-4 lg:hidden">
             <button
               className={`bg-primary text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer`}
               onClick={() => setMobileAdd({ show: true, pageProp })}
             >
               Add New Source
             </button>
+          <div className="flex items-center w-full gap-2 mt-4 lg:hidden">
             <button
-              className="bg-black w-fit text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-6 rounded-[10px] h-[50px] min-h-[50px] border-none cursor-pointer"
+              className="bg-black w-fit text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-2 rounded-[10px] h-[50px] min-h-[50px] border-none cursor-pointer gap-2"
               onClick={() => setFilterModal(true)}
             >
-              <img alt="" className="" src="/ic_filters.svg" />
+              Targeting Filter
+              <img alt="" className="w-[12px] h-auto" src="/ic_filters.svg" />
             </button>
+            <a href="mailto:support@grow-your-social.com">
+                <Button className="bg-primary text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-2 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer gap-3">
+                  <span>Send An Email</span>
+                  <IoChatboxEllipsesOutline />
+                </Button>
+              </a>
           </div>
 
           <div className="hidden lg:block">
