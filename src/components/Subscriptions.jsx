@@ -62,6 +62,8 @@ export default function Subscriptions() {
       // console.log(/Macintosh|Mac OS X|iPhone/i.test(userAgent));
 
       setIsIOSorMac(/Macintosh|Mac OS X|iPhone/i.test(userAgent));
+    }else{
+      setIsIOSorMac(false)
     }
 
     return () => {};
