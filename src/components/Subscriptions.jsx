@@ -1031,10 +1031,10 @@ const Content = ({
                             )}
                           </>
                         ) : (
-                          <>
+                          <p className="text-red-600">
                             Sorry, it seams your device does not support this
                             payment method.
-                          </>
+                          </p>
                         )}
                       </div>
                     )}
@@ -1885,7 +1885,7 @@ const ExternalPayComponent = ({
       {paymentRequest ? (
         <PaymentRequestButtonElement options={{ paymentRequest }} />
       ) : (
-        <>Sorry, it seams your device does not support this payment method.</>
+        <p className="text-red-600">Sorry, it seams your device does not support this payment method.</p>
       )}
     </>
   );
