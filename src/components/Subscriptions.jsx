@@ -1,6 +1,6 @@
 import Axios from "axios";
 import React, { useState, useEffect, useCallback } from "react";
-import { json, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { TbRefresh } from "react-icons/tb";
 import axios from "axios";
@@ -53,6 +53,19 @@ export default function Subscriptions() {
   });
   // const [showSelectedPlanType, setShowSelectedPlanType] = useState(false);
   const [selectedPlanType, setSelectedPlanType] = useState("1 month");
+  const [isIOSorMac, setIsIOSorMac] = useState(true);
+
+  useEffect(() => {
+    var userAgent = navigator?.userAgent;
+    if (userAgent) {
+      // console.log("/Macintosh|Mac OS X|iPhone/i.test(userAgent)");
+      // console.log(/Macintosh|Mac OS X|iPhone/i.test(userAgent));
+
+      setIsIOSorMac(/Macintosh|Mac OS X|iPhone/i.test(userAgent));
+    }
+
+    return () => {};
+  }, []);
 
   // set default selectedPlan
   useEffect(() => {
@@ -305,10 +318,13 @@ export default function Subscriptions() {
               <div className="px-5 pt-4 pb-5 bg-white">
                 <h1 className="text-black text-[20px] font-bold font-MontserratSemiBold">
                   {" "}
-                  Start 7-Day-Free-Trial 
+                  Start 7-Day-Free-Trial
                 </h1>
                 <p className="mt-1 mb-3 text-black text-[14px] font-normal">
-                Start Risk Free - Your card will only be charged after your Free Trial. Cancel anytime. Start Grow Real & Targeted Followers Every Month. Enjoy high quality analytics and tracking.
+                  Start Risk Free - Your card will only be charged after your
+                  Free Trial. Cancel anytime. Start Grow Real & Targeted
+                  Followers Every Month. Enjoy high quality analytics and
+                  tracking.
                 </p>
 
                 <div className="mb-[11px] flex gap-[10px] h-[80px] items-center">
@@ -354,26 +370,26 @@ export default function Subscriptions() {
 
                   <div
                     className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${
-                      paymentMethod.name === "apple_pay" &&
+                      paymentMethod.name === "external_pay" &&
                       "border-black border-2"
                     }`}
                     onClick={() => {
-                      setPaymentMethod({ id: 1, name: "apple_pay" });
+                      setPaymentMethod({ id: 1, name: "external_pay" });
                     }}
                   >
                     <span
                       className={`${
-                        paymentMethod.name === "apple_pay"
+                        paymentMethod.name === "external_pay"
                           ? "top-[13px] left-[10px] translate-x-0 translate-y-0"
                           : "top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
                       }
                         absolute transition-all duration-200 ease-in fill-black font-[none]`}
                     >
                       <img
-                        src={"/icons/apple_pay-icon.png"}
+                        src={`${isIOSorMac ? "/icons/apple_pay-icon.png":"/icons/gpay.png"}`}
                         alt=""
                         className={`${
-                          paymentMethod.name === "apple_pay"
+                          paymentMethod.name === "external_pay"
                             ? "h-[23.7px]"
                             : "h-[37px]"
                         }`}
@@ -382,13 +398,13 @@ export default function Subscriptions() {
 
                     <div
                       className={`${
-                        paymentMethod.name === "apple_pay"
+                        paymentMethod.name === "external_pay"
                           ? "opacity-100 translate-y-0 text-black"
                           : "opacity-0 translate-y-full"
                       }
                         absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
                     >
-                      ApplePay
+                      {`${isIOSorMac ? "ApplePay":"GooglePay"}`}
                     </div>
                   </div>
                 </div>
@@ -435,7 +451,11 @@ export default function Subscriptions() {
                     </div>
                   </button>
                   <div className="mt-2 text-center text-black">
-                    ${selectedPlan?.value?.toString()?.replace(".", ",")} {selectedPlan.name==="Monthly" ? "per month, billed monthly.":"billed every 3 months."} <br /> Cancel any time, no risk.
+                    ${selectedPlan?.value?.toString()?.replace(".", ",")}{" "}
+                    {selectedPlan.name === "Monthly"
+                      ? "per month, billed monthly."
+                      : "billed every 3 months."}{" "}
+                    <br /> Cancel any time, no risk.
                   </div>
                 </div>
               ) : (
@@ -456,7 +476,7 @@ export default function Subscriptions() {
                       setIsModalOpen(true);
                       setErrorMsg({
                         title: "Alert",
-                        message: "apple_pay not available yet!",
+                        message: "external_pay not available yet!",
                       });
                     }}
                   >
@@ -472,7 +492,11 @@ export default function Subscriptions() {
                   <div className="mt-2 text-center text-black">
                     {`Choose Your Plan After Your 7 Day Free Trial. $${selectedPlan?.value
                       ?.toString()
-                      ?.replace(".", ",")} ${selectedPlan.name==='Monthly' ? "per month, billed monthly.":"billed every 3 months."} Cancel any time, no risk.`}
+                      ?.replace(".", ",")} ${
+                      selectedPlan.name === "Monthly"
+                        ? "per month, billed monthly."
+                        : "billed every 3 months."
+                    } Cancel any time, no risk.`}
                   </div>
                 </div>
               )}
@@ -982,12 +1006,12 @@ const Content = ({
                             setIsModalOpen(true);
                             setErrorMsg({
                               title: "Alert",
-                              message: "apple_pay not available yet!",
+                              message: "external_pay not available yet!",
                             });
                           }}
                         >
                           <img
-                            src={"/icons/apple_pay-btn.svg"}
+                            src={"/icons/external_pay-btn.svg"}
                             alt=""
                             className="h-[25px]"
                           />
