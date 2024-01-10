@@ -474,6 +474,7 @@ export default function Subscriptions() {
                       setIsModalOpen={setIsModalOpen}
                       setErrorMsg={setErrorMsg}
                       setLoading={setLoading}
+                      isDesktop={isDesktop}
                     />
                   )}
                   {/* <button
@@ -594,7 +595,6 @@ const Content = ({
   Loading,
   setLoading,
   isDesktop,
-
   selectedPlan,
   setSelectedPlan,
   selectedPlanType,
@@ -630,8 +630,10 @@ const Content = ({
   const elements = useElements();
 
   useEffect(() => {
-    if (!stripe && !elements) return;
-    
+    // console.log('isDesktop');
+    // console.log(isDesktop);
+    if (!stripe || !elements || !isDesktop) return;
+
     setPaymentRequest(null);
 
     async function continueToSupabase(userIsNew, subscriptionObj, plan) {
@@ -734,9 +736,11 @@ const Content = ({
       },
     });
     pr.canMakePayment().then((result) => {
+      console.log("pr");
+      console.log(pr);
       if (result) {
-        // console.log("pr");
-        // console.log(pr);
+        console.log("result");
+        console.log(result);
         setPaymentRequest(pr);
       }
 
@@ -869,6 +873,7 @@ const Content = ({
   }, [
     elements,
     stripe,
+    isDesktop,
     selectedPlan,
     amount,
     user,
@@ -1635,6 +1640,7 @@ const ExternalPayComponent = ({
   setIsModalOpen,
   setErrorMsg,
   setLoading,
+  isDesktop
 }) => {
   const amount = parseFloat(selectedPlan?.value?.toString().replace(".", ""));
   const navigate = useNavigate();
@@ -1643,7 +1649,7 @@ const ExternalPayComponent = ({
   // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!stripe) return;
+    if (!stripe || isDesktop || !selectedPlan?.name) return;
 
     async function continueToSupabase(userIsNew, subscriptionObj, plan) {
       let data = {
@@ -1747,9 +1753,13 @@ const ExternalPayComponent = ({
       },
     });
     pr.canMakePayment().then((result) => {
+      console.log("pr mobile");
+      console.log(pr);
+      console.log("result1");
+      console.log(result);
       if (result) {
-        // console.log("pr");
-        // console.log(pr);
+        console.log("result2");
+        console.log(result);
         setPaymentRequest(pr);
       }
 
@@ -1871,6 +1881,7 @@ const ExternalPayComponent = ({
   }, [
     amount,
     navigate,
+    isDesktop,
     selectedPlan,
     setErrorMsg,
     setIsModalOpen,
@@ -1885,7 +1896,9 @@ const ExternalPayComponent = ({
       {paymentRequest ? (
         <PaymentRequestButtonElement options={{ paymentRequest }} />
       ) : (
-        <p className="text-red-600">Sorry, it seams your device does GooglePay</p>
+        <p className="text-red-600">
+          Sorry, it seams your device does GooglePay
+        </p>
       )}
     </>
   );
