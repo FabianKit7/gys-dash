@@ -62,8 +62,8 @@ export default function Subscriptions() {
       // console.log(/Macintosh|Mac OS X|iPhone/i.test(userAgent));
 
       setIsIOSorMac(/Macintosh|Mac OS X|iPhone/i.test(userAgent));
-    }else{
-      setIsIOSorMac(false)
+    } else {
+      setIsIOSorMac(false);
     }
 
     return () => {};
@@ -388,7 +388,11 @@ export default function Subscriptions() {
                         absolute transition-all duration-200 ease-in fill-black font-[none]`}
                     >
                       <img
-                        src={`${isIOSorMac ? "/icons/apple_pay-icon.png":"/icons/gpay.png"}`}
+                        src={`${
+                          isIOSorMac
+                            ? "/icons/apple_pay-icon.png"
+                            : "/icons/gpay.png"
+                        }`}
                         alt=""
                         className={`${
                           paymentMethod.name === "external_pay"
@@ -406,7 +410,7 @@ export default function Subscriptions() {
                       }
                         absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
                     >
-                      {`${isIOSorMac ? "ApplePay":"GooglePay"}`}
+                      {`${isIOSorMac ? "ApplePay" : "GooglePay"}`}
                     </div>
                   </div>
                 </div>
@@ -1018,10 +1022,19 @@ const Content = ({
                             className="h-[25px]"
                           />
                         </div> */}
-                        {paymentRequest && isDesktop && (
-                          <PaymentRequestButtonElement
-                            options={{ paymentRequest }}
-                          />
+                        {paymentRequest ? (
+                          <>
+                            {isDesktop && (
+                              <PaymentRequestButtonElement
+                                options={{ paymentRequest }}
+                              />
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            Sorry, it seams your device does not support this
+                            payment method.
+                          </>
                         )}
                       </div>
                     )}
@@ -1869,8 +1882,10 @@ const ExternalPayComponent = ({
 
   return (
     <>
-      {paymentRequest && (
+      {paymentRequest ? (
         <PaymentRequestButtonElement options={{ paymentRequest }} />
+      ) : (
+        <>Sorry, it seams your device does not support this payment method.</>
       )}
     </>
   );
