@@ -1927,7 +1927,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
           </div>
 
             <button
-              className={`bg-primary text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer`}
+              className={`bg-primary text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer lg:hidden`}
               onClick={() => setMobileAdd({ show: true, pageProp })}
             >
               Add New Source

@@ -631,6 +631,7 @@ const Content = ({
 
   useEffect(() => {
     if (!stripe && !elements) return;
+    
     setPaymentRequest(null);
 
     async function continueToSupabase(userIsNew, subscriptionObj, plan) {
@@ -1031,9 +1032,8 @@ const Content = ({
                             )}
                           </>
                         ) : (
-                          <p className="text-red-600">
-                            Sorry, it seams your device does not support this
-                            payment method.
+                          <p className="text-red-600 hidden">
+                            Sorry, it seams your device does GooglePay
                           </p>
                         )}
                       </div>
@@ -1885,7 +1885,7 @@ const ExternalPayComponent = ({
       {paymentRequest ? (
         <PaymentRequestButtonElement options={{ paymentRequest }} />
       ) : (
-        <p className="text-red-600">Sorry, it seams your device does not support this payment method.</p>
+        <p className="text-red-600">Sorry, it seams your device does GooglePay</p>
       )}
     </>
   );
