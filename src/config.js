@@ -1,38 +1,66 @@
+export const LOGO = "/Android.png";
+export const LOGO_WITH_NAME = "/color-logo-no-background.svg";
+export const ANALYST_NAME = "Mike P";
+export const EMAIL = "support@grow-your-social.com";
 
+export const SCRAPER_API_URL =
+  "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile";
+export const X_RAPID_API_HOST =
+  "instagram-bulk-profile-scrapper.p.rapidapi.com";
+export const X_RAPID_API_KEY = process.env.REACT_APP_X_RAPID_API_KEY;
 
-export const LOGO = "/Android.png" 
-export const LOGO_WITH_NAME = "/color-logo-no-background.svg" 
-export const ANALYST_NAME = "Mike P"
-export const EMAIL = "support@grow-your-social.com"
-
-export const SCRAPER_API_URL = "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile"
-export const X_RAPID_API_HOST = 'instagram-bulk-profile-scrapper.p.rapidapi.com'
-export const X_RAPID_API_KEY = process.env.REACT_APP_X_RAPID_API_KEY
-
-export const IS_SMS_ALLOWED = false
-
+export const IS_SMS_ALLOWED = false;
 
 // export const BACKEND_URL = process.env.REACT_APP_BASE_URL;
 // export const STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 // export const PRICE_ID = "price_1OUrTuGqRSmA1tlM2kYgY0te" #test
 
+export const BACKEND_URL =
+  process.env.NODE_ENV !== "production"
+    ? "http://localhost:8000"
+    : process.env.REACT_APP_BASE_URL;
+export const STRIPE_PUBLISHABLE_KEY =
+  process.env.NODE_ENV !== "production"
+    ? "pk_test_51LY8WXGqRSmA1tlMTNHaLNLdBJHPu4FwoSbT3zfIUFFHq8anMSnhyjLKbZvDb3qtANHaCbJ7UBSpWUhelCjyGCZK00C0WOHKPX"
+    : process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
 
-export const BACKEND_URL = process.env.NODE_ENV !== 'production' ? "http://localhost:8000" : process.env.REACT_APP_BASE_URL;
-export const STRIPE_PUBLISHABLE_KEY = process.env.NODE_ENV !== 'production' ? "pk_test_51LY8WXGqRSmA1tlMTNHaLNLdBJHPu4FwoSbT3zfIUFFHq8anMSnhyjLKbZvDb3qtANHaCbJ7UBSpWUhelCjyGCZK00C0WOHKPX" : process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
-
-export const PRICE_ID = process.env.NODE_ENV !== 'production' ? "price_1OUrSOGqRSmA1tlMhbLQZR1E" : "price_1OUrTuGqRSmA1tlM2kYgY0te"
+export const PRICE_ID =
+  process.env.NODE_ENV !== "production"
+    ? "price_1OUrSOGqRSmA1tlMhbLQZR1E"
+    : "price_1OUrTuGqRSmA1tlM2kYgY0te";
 
 const live_prices = [
-  { planId: 'price_1OUrTuGqRSmA1tlM2kYgY0te', value: '74.99', name: 'Monthly', type: '1 month' },
-  { planId: 'price_1OVYrOGqRSmA1tlM4ROGR9QQ', value: '185.99', name: 'Quaterly', type: '1 month' }
-]
+  {
+    planId: "price_1OUrTuGqRSmA1tlM2kYgY0te",
+    value: "74.99",
+    name: "Monthly",
+    type: "1 month",
+  },
+  {
+    planId: "price_1OVYrOGqRSmA1tlM4ROGR9QQ",
+    value: "185.99",
+    name: "Quaterly",
+    type: "1 month",
+  },
+];
 
 const test_prices = [
-  { planId: 'price_1OUrSOGqRSmA1tlMhbLQZR1E', value: '74.99', name: 'Monthly', type: '1 month' },
-  { planId: 'price_1OVYuCGqRSmA1tlMYhpZYax0', value: '185.99', name: 'Quaterly', type: '1 month' }
-]
+  {
+    planId: "price_1OUrSOGqRSmA1tlMhbLQZR1E",
+    value: "74.99",
+    name: "Monthly",
+    type: "1 month",
+  },
+  {
+    planId: "price_1OVYuCGqRSmA1tlMYhpZYax0",
+    value: "185.99",
+    name: "Quaterly",
+    type: "1 month",
+  },
+];
 
-export const SUBSCRIPTION_PLANS = process.env.NODE_ENV === 'production' ?  live_prices : test_prices;
+export const SUBSCRIPTION_PLANS =
+  process.env.NODE_ENV === "production" ? live_prices : test_prices;
 
 // SMS templates
 export const INCORRECT_PASSWORD_SMS_TEMPLATE = () => {
@@ -103,14 +131,16 @@ export const RETENTION_SMS_3 = () => {
 `;
 };
 
-
 // email templates
 export const INCORRECT_PASSWORD_TEMPLATE = (full_name, username) => {
   // Your password is incorrect
   return `
   <style type="text/css">
-  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
-  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
+  *{
+    font-size: 14px;
+  }
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times; min-height: 14.0px}
   span.s1 {text-decoration: underline ; color: #2f5496}
 </style>
 <p class="p1">Dear <b>${username}</b>,</p>
@@ -121,8 +151,6 @@ export const INCORRECT_PASSWORD_TEMPLATE = (full_name, username) => {
 <p class="p1">We kindly ask you to attempt re-logging into your dashboard by following this <a href="https://app.grow-your-social.com" class="s1">link</a>.<span class="Apple-converted-space"> </span></p>
 <p class="p1">Once the correct password is provided, our team will proceed to log in to your account within the next 24 hours.</p>
 <p class="p2"><br></p>
-<p class="p2"><span class="Apple-converted-space"> </span></p>
-<p class="p2"><br></p>
 <p class="p1">Should you require further assistance, please do not hesitate to answer to this e-mail or contact us at <a href="mailto:support@grow-your-social.com">support@grow-your-social.com</a>.</p>
 <p class="p2"><br></p>
 <p class="p2"><span class="Apple-converted-space"> </span></p>
@@ -130,16 +158,19 @@ export const INCORRECT_PASSWORD_TEMPLATE = (full_name, username) => {
 <p class="p1">Best regards,</p>
 <p class="p2"><br></p>
 <p class="p1">Grow-Your-Social Team</p>
-  `
-}
+  `;
+};
 
 export const TWO_FACTOR_TEMPLATE = (full_name, username) => {
   // 2FA backup codes required
-    return `
+  return `
     <style type="text/css">
-  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
-  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
-  p.p3 {margin: 0.0px 0.0px 0.0px 36.0px; font: 12.0px Times}
+  *{
+    font-size: 14px;
+  }
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times; min-height: 14.0px}
+  p.p3 {margin: 0.0px 0.0px 0.0px 36.0px; font: 14px Times}
   span.s1 {text-decoration: underline ; color: #2f5496}
   span.s2 {color: #2f5496}
   span.Apple-tab-span {white-space:pre}
@@ -171,15 +202,18 @@ Should you require further assistance, please do not hesitate to answer to this 
 <p class="p2"><br></p>
 <p class="p1">Grow-Your-Social Team</p>
 <p class="p2"><br></p>
-    `
-}
+    `;
+};
 
 export const NOT_CONNECTED_TEMPLATE = (full_name, username) => {
-    //Your account is not connected
-    return `
+  //Your account is not connected
+  return `
     <style type="text/css">
-  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
-  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
+  *{
+    font-size: 14px;
+  }
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times; min-height: 14.0px}
   span.s1 {text-decoration: underline ; color: #2f5496}
   span.s2 {color: #2f5496}
 </style>
@@ -210,16 +244,19 @@ We are committed to providing you with the support you need.</p>
 <p class="p1">Best regards,</p>
 <p class="p2"><br></p>
 <p class="p1">Grow-Your-Social Team</p>
-    `
-}
+    `;
+};
 
 export const ACTIVE_TEMPLATE = (full_name, username) => {
   //We are ready to go!
-    return `
+  return `
     <style type="text/css">
-  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
-  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
-  span.s1 {font: 12.0px 'Apple Color Emoji'}
+  *{
+    font-size: 14px;
+  }
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times; min-height: 14.0px}
+  span.s1 {font: 14px 'Apple Color Emoji'}
 </style>
 </p>
 <p class="p2"><br></p>
@@ -271,15 +308,18 @@ Default AI filters used for good growth and quality:<br>
 <p class="p1">Grow-Your-Social Team</p>
 <p class="p2"><br></p>
 <p class="p2"><br></p>
-    `
-}
+    `;
+};
 
 export const CHECKING_TEMPLATE = (full_name, username) => {
   //Please click „it was me“
-    return `
+  return `
     <style type="text/css">
-  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
-  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
+  *{
+    font-size: 14px;
+  }
+  p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times}
+  p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14px Times; min-height: 14.0px}
 </style>
 </p>
 <p class="p1">Dear <b>${username}</b>,</p>
@@ -301,5 +341,5 @@ export const CHECKING_TEMPLATE = (full_name, username) => {
 <p class="p1">Best regards,</p>
 <p class="p2"><br></p>
 <p class="p1">Grow-Your-Social Team</p>
-    `
-}
+    `;
+};
