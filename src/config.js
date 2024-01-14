@@ -9,7 +9,7 @@ export const X_RAPID_API_HOST =
   "instagram-bulk-profile-scrapper.p.rapidapi.com";
 export const X_RAPID_API_KEY = process.env.REACT_APP_X_RAPID_API_KEY;
 
-export const IS_SMS_ALLOWED = false;
+export const IS_SMS_ALLOWED = true;
 
 // export const BACKEND_URL = process.env.REACT_APP_BASE_URL;
 // export const STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
@@ -65,31 +65,31 @@ export const SUBSCRIPTION_PLANS =
 // SMS templates
 export const INCORRECT_PASSWORD_SMS_TEMPLATE = () => {
   return `
-  It seems the Instagram password you entered is incorrect. Please re-enter your password in your Grow-your-social dashboard for us to proceed.
+  It seems the Instagram password you entered is incorrect. Please re-enter your password in your Grow-your-social dashboard for us to proceed. If you need further assistance please contact us at support@grow-your-social.com
 `;
 };
 
 export const TWOFAC_BACKUP_SMS_TEMPLATE = () => {
   return `
-  Grow-your-social needs your Instagram backup code to complete the login process. Please enter it in your dashboard. Find the guide here: https://help.instagram.com/1006568999411025
+  We're almost there! Please enter your Instagram backup code in your Grow-your-social dashboard to complete the login process. Here is a guide on where to find your backup codes: https://help.instagram.com/1006568999411025. If you need further assistance please contact us at support@grow-your-social.com
 `;
 };
 
 export const TWOFAC_CODE_SMS_TEMPLATE = () => {
   return `
-  We're almost there! Please enter the two-factor authentication code you received from Instagram in your Grow-your-social dashboard.
+  We're almost there! Please enter the two-factor authentication code you received from Instagram in your Grow-your-social dashboard. If you need further assistance please contact us at support@grow-your-social.com
 `;
 };
 
 export const CHECKING_SMS_TEMPLATE = () => {
   return `
-  To start your growth on Grow-your-social, please check your Instagram activity for a foreign login request and confirm by clicking 'This was me'.
+  To start your growth on Grow-your-social, please check your Instagram activity for a new login request and confirm by clicking 'This was me'.
 `;
 };
 
 export const ACTIVE_SMS_TEMPLATE = () => {
   return `
-  Great news! Your account is now active on Grow-your-social. Expect to see your Instagram growth begin within the next 8 hours!
+  Great news! Your account is now active on Grow-your-social. Expect to see your Instagram growth begin within the next hours!
 `;
 };
 
@@ -101,7 +101,7 @@ export const CANCELLED_SMS_TEMPLATE = () => {
 
 export const TRUSTPILOT_SMS_TEMPLATE = () => {
   return `
-  👋We hope you're enjoying Grow-your-social! Mind leaving us a review on Trustpilot? We'll extend your subscription by 7 days if you do so: https://www.trustpilot.com/review/grow-your-social.com
+  👋 We hope you're enjoying Grow-your-social! Mind leaving us a review on Trustpilot? Feel free to send us an email afterwards, we are happy to extend your subscription by 7 days as a little "thank you" for your time: https://www.trustpilot.com/review/grow-your-social.com
 `;
 };
 
@@ -109,25 +109,25 @@ export const NOT_CONNECTED_SMS_TEMPLATE = (full_name) => {
   return `
   ${
     full_name && `${full_name}, `
-  }Welcome to Grow-your-social! To get started, please connect your Instagram account. Let's start with your growth now!
+  }welcome to Grow-your-social! We can't wait to get started with you! Please connect your Instagram account using your dashboard on grow-your-social.com! If you need further assistance please contact us at support@grow-your-social.com
 `;
 };
 
 export const RETENTION_SMS_1 = () => {
   return `
-  Hi👋 We've noticed you haven't completed your registration at Grow-your-social. Go back to our website and complete it within a minute! It's a service, not a marriage..
+  Hi👋 We've noticed you haven't completed your registration at Grow-your-social. Go back to our website and complete it within a minute! We are sure you will love our new dashboard showing your future growth! Don't miss out!
 `;
 };
 
 export const RETENTION_SMS_2 = () => {
   return `
-  Hey👋 Complete your Grow-your-social registration today and get an additional 7 days of growth to your first month. Let's start growing your Instagram presence!
+  Hey👋 Complete your Grow-your-social registration today and get an additional 7 days of growth to your first month. Let's start growing your Instagram today!
 `;
 };
 
 export const RETENTION_SMS_3 = () => {
   return `
-  Get additional 14 days of Instagram growth by completing your Grow-your-social registration within the next day. We are eager to see you! 🥳
+  Get additional 14 days of Instagram growth in your first month by completing your Grow-your-social registration within the next day. We can't wait to work with you! 🥳
 `;
 };
 

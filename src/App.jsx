@@ -175,9 +175,9 @@ function App() {
           <Route path="/admin/retention" exact element={<Retention />} />
 
           <Route path="/chat/:username" exact element={<Chat />} />
-          <Route path="/dashboard" exact element={<DashboardApp />} />
+          {/* <Route path="/dashboard" exact element={<DashboardApp />} /> */}
           <Route path="/dashboard/edit/:username" exact element={<Edit />} />
-          <Route path="/dashboard/login" exact element={<AdminLogin />} />
+          {/* <Route path="/dashboard/login" exact element={<AdminLogin />} /> */}
 
           <Route path="*" exact element={<Login />} />
         </Routes>
