@@ -644,7 +644,7 @@ export const SendSMSModal = ({ k, user, setShowSMSModal }) => {
   }, [isClickedOutside, setShowSMSModal]);
 
   const handleSendSMS = async (template_name, template) => {
-    return alert('Send SMS not available!')
+    return alert('Send SMS not available yet!, provide api keys and templetes')
     // if (processing.state) return;
     // setProcessing({ state: true, type: template_name });
     // const url = `${BACKEND_URL}/api/send_sms`;

@@ -15,7 +15,7 @@ import { supabase } from '../../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal';
 import axios from 'axios';
-import { getStartingDay } from '../Subscriptions';
+import { getStartingDay } from '../../pages/Subscriptions';
 import {
   BACKEND_URL,
   PRICE_ID,

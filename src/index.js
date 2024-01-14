@@ -8,13 +8,13 @@ import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; */
 import "./index.css";
 import { ThemeProvider } from "@material-tailwind/react";
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import { STRIPE_PUBLISHABLE_KEY } from "./config";
+// import { Elements } from '@stripe/react-stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
+// import { STRIPE_PUBLISHABLE_KEY } from "./config";
 
-// console.log("STRIPE_PUBLISHABLE_KEY");
-// console.log(STRIPE_PUBLISHABLE_KEY);
-const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY)
+// // console.log("STRIPE_PUBLISHABLE_KEY");
+// // console.log(STRIPE_PUBLISHABLE_KEY);
+// const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY)
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -22,9 +22,11 @@ root.render(
   // <React.StrictMode>
   <BrowserRouter>
     <ThemeProvider>
-      <Elements stripe={stripePromise}>
+      {/* <Elements stripe={stripePromise} options={{
+
+      }}> */}
         <App />
-      </Elements>
+      {/* </Elements> */}
     </ThemeProvider>
   </BrowserRouter>
   // </React.StrictMode>

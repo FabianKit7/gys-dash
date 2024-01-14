@@ -5,21 +5,21 @@ import { getRefCode } from "../helpers";
 import { supabase } from "../supabaseClient";
 import AlertModal from "./AlertModal";
 import PrimaryButton from "./PrimaryButton";
-// import * as PhoneNumber from "libphonenumber-js";
+import * as PhoneNumber from "libphonenumber-js";
 // import { BsFacebook } from "react-icons/bs";
 import countryCodes from "../CountryCodes.json"
 import axios from "axios";
-// import TinyFlag from "tiny-flag-react";
+import TinyFlag from "tiny-flag-react";
 import { LOGO_WITH_NAME } from "../config";
 
-// function isValidPhoneNumber(phoneNumber, countryCode) {
-//   try {
-//     const parsedNumber = PhoneNumber.parse(phoneNumber, countryCode);
-//     return PhoneNumber.isValidNumber(parsedNumber);
-//   } catch (error) {
-//     return false;
-//   }
-// }
+function isValidPhoneNumber(phoneNumber, countryCode) {
+  try {
+    const parsedNumber = PhoneNumber.parse(phoneNumber, countryCode);
+    return PhoneNumber.isValidNumber(parsedNumber);
+  } catch (error) {
+    return false;
+  }
+}
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
@@ -27,11 +27,11 @@ export default function SignUp() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [countryCode, setCountryCode] = useState({});
-  // const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
-  // const [searchCountryTerm, setSearchCountryTerm] = useState('')
-  // const [showCountriesList, setShowCountriesList] = useState(false)
+  const [searchCountryTerm, setSearchCountryTerm] = useState('')
+  const [showCountriesList, setShowCountriesList] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,16 +51,16 @@ export default function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault()
-    // const phoneIsValid = isValidPhoneNumber((`${countryCode.dial_code}${phone}`), countryCode.code);
-    // if (!phoneIsValid) {
-    //   setIsModalOpen(true);
-    //   setErrorMsg({
-    //     title: `Invalid phone number: `, message: `Phone number not valid for ${countryCode.name}`
-    //   })
-    //   return;
-    // }
-    // const phoneNumber = PhoneNumber.parsePhoneNumber(`${countryCode.dial_code}${phone}`)
-    // var formattedPhone = phoneNumber.formatInternational()
+    const phoneIsValid = isValidPhoneNumber((`${countryCode.dial_code}${phone}`), countryCode.code);
+    if (!phoneIsValid) {
+      setIsModalOpen(true);
+      setErrorMsg({
+        title: `Invalid phone number: `, message: `Phone number not valid for ${countryCode.name}`
+      })
+      return;
+    }
+    const phoneNumber = PhoneNumber.parsePhoneNumber(`${countryCode.dial_code}${phone}`)
+    var formattedPhone = phoneNumber.formatInternational()
 
     if (loading) return;
     setLoading(true);
@@ -77,8 +77,7 @@ export default function SignUp() {
       return;
     }
 
-    // const contd = await regContd(data?.user, formattedPhone)
-    const contd = await regContd(data?.user)
+    const contd = await regContd(data?.user, formattedPhone)
     if (contd?.status !== 200) {
       // alert(contd?.message)
       setIsModalOpen(true);
@@ -116,14 +115,14 @@ export default function SignUp() {
   //   setLoading(false);
   // }
 
-  const regContd = async (authUser) => {
+  const regContd = async (authUser, phone) => {
     if (authUser) {
       const { error } = await supabase
         .from("users")
         .insert({
           auth_user_id: authUser?.id,
           full_name: fullName,
-          // phone,
+          phone,
           email: email?.toLowerCase(),
           username: ''
         });
@@ -180,7 +179,7 @@ export default function SignUp() {
           </div>
 
 
-          {/* <div className="flex items-center justify-between gap-3 mb-3 w-72 md:w-80">
+          <div className="flex items-center justify-between gap-3 mb-3 w-72 md:w-80">
             <div className="w-[30%] h-[52px] rounded-[5px] px-4 border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] grid place-items-center">
               <div className="relative">
                 <div className="cursor-pointer flex items-center justify-evenly gap-2" onClick={() => {
@@ -240,6 +239,7 @@ export default function SignUp() {
             <div className="w-full h-[52px] rounded-[5px] px-4 border shadow-[inset_0_0px_1px_rgba(0,0,0,0.4)] flex items-center disableInc">
               <input
                 type="number"
+                inputMode="numeric"
                 pattern="[0-9]*"
                 id=""
                 className="outline-none border-none w-full"
@@ -249,7 +249,7 @@ export default function SignUp() {
                 onChange={({ target }) => setPhone(target.value)}
               />
             </div>
-          </div> */}
+          </div>
 
 
           <div className="mb-3 form-outline">

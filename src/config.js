@@ -9,6 +9,8 @@ export const SCRAPER_API_URL = "https://instagram-bulk-profile-scrapper.p.rapida
 export const X_RAPID_API_HOST = 'instagram-bulk-profile-scrapper.p.rapidapi.com'
 export const X_RAPID_API_KEY = process.env.REACT_APP_X_RAPID_API_KEY
 
+export const IS_SMS_ALLOWED = false
+
 
 // export const BACKEND_URL = process.env.REACT_APP_BASE_URL;
 // export const STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY

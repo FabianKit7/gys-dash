@@ -6,7 +6,7 @@ import { HiOutlineRefresh } from "react-icons/hi";
 import { IoClose } from 'react-icons/io5';
 import { supabase } from "../../supabaseClient";
 import AlertModal from "../AlertModal";
-import { ChargeBeeCard } from "../Subscriptions";
+import { ChargeBeeCard } from "../../pages/Subscriptions";
 import InfoAlert from "./InfoAlert";
 
 

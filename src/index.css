@@ -168,3 +168,43 @@ body {
         left: -253px;
     }
 }
+
+
+
+
+
+
+
+/* Example styles for the skeleton UI */
+.skeleton-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Adjust spacing between skeleton items */
+}
+
+.skeleton-item {
+    width: 100%;
+    height: 20px;
+    /* Adjust height of individual skeleton items */
+    background-color: #f0f0f0;
+    /* Placeholder color */
+    border-radius: 4px;
+    /* Adjust border radius or shape */
+    animation: skeleton-loading 1s ease-in-out infinite;
+    /* Add loading animation */
+}
+
+@keyframes skeleton-loading {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}

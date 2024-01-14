@@ -7,7 +7,7 @@ import axios from "axios";
 import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "react-click-outside-hook";
 import { FaAngleLeft } from "react-icons/fa";
-import AlertModal from "./AlertModal";
+import AlertModal from "../components/AlertModal";
 import { getRefCode } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
@@ -736,11 +736,11 @@ const Content = ({
       },
     });
     pr.canMakePayment().then((result) => {
-      console.log("pr");
-      console.log(pr);
+      // console.log("pr");
+      // console.log(pr);
       if (result) {
-        console.log("result");
-        console.log(result);
+        // console.log("result");
+        // console.log(result);
         setPaymentRequest(pr);
       }
 
@@ -1267,6 +1267,10 @@ export const ChargeBeeCard = ({
     if (user) {
       var userIsNew = true;
       const cardElement = elements.getElement(CardElement);
+      const addressElement = elements.getElement(AddressElement);
+
+      console.log("addressElement");
+      console.log(addressElement);
 
       try {
         const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -1303,9 +1307,12 @@ export const ChargeBeeCard = ({
           const clientSecret =
             createSubscription?.data?.subscription?.latest_invoice
               ?.payment_intent?.client_secret;
+          // const clientSecret =
+          // "seti_1OXOrZGqRSmA1tlMcn9B1zex_secret_PM75vgXO8fylqSBp9YTfmABzz9Ywzlw";
 
           console.log("createSubscription card");
           console.log(createSubscription);
+          console.log("clientSecret");
           console.log(clientSecret);
 
           if (!createSubscription?.data) {
@@ -1318,10 +1325,8 @@ export const ChargeBeeCard = ({
             return;
           }
 
-          if (createSubscription?.data?.clientSecret) {
-            const confirm = await stripe.confirmCardPayment(
-              createSubscription?.data?.clientSecret
-            );
+          if (clientSecret) {
+            const confirm = await stripe.confirmCardPayment(clientSecret);
             console.log("confirmCardPayment");
             console.error(confirm);
             if (confirm.error) {
@@ -1367,6 +1372,9 @@ export const ChargeBeeCard = ({
               });
             }
           } else {
+            setLoading(false);
+            alert("clientSecret not found!");
+            return;
             await continueToSupabase(
               userIsNew,
               createSubscription.data.subscription,
@@ -1640,7 +1648,7 @@ const ExternalPayComponent = ({
   setIsModalOpen,
   setErrorMsg,
   setLoading,
-  isDesktop
+  isDesktop,
 }) => {
   const amount = parseFloat(selectedPlan?.value?.toString().replace(".", ""));
   const navigate = useNavigate();
@@ -1753,13 +1761,13 @@ const ExternalPayComponent = ({
       },
     });
     pr.canMakePayment().then((result) => {
-      console.log("pr mobile");
-      console.log(pr);
-      console.log("result1");
-      console.log(result);
+      // console.log("pr mobile");
+      // console.log(pr);
+      // console.log("result1");
+      // console.log(result);
       if (result) {
-        console.log("result2");
-        console.log(result);
+        // console.log("result2");
+        // console.log(result);
         setPaymentRequest(pr);
       }
 
