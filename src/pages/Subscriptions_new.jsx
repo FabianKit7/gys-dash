@@ -104,6 +104,7 @@ export default function Subscriptions() {
     }
   }, [isClickedOutside]);
 
+  // setUser
   useEffect(() => {
     const getData = async () => {
       const {
@@ -179,6 +180,7 @@ export default function Subscriptions() {
     }
   }, [navigate, username]);
 
+  // setUserResults
   useEffect(() => {
     getData();
   }, [getData]);
@@ -1379,7 +1381,7 @@ export const ChargeBeeCard = ({
 }) => {
   // const navigate = useNavigate();
   // const [nameOnCard, setNameOnCard] = useState("");
-  const [processingPayment, setProcessingPayment] = useState(false);
+  const [, setProcessingPayment] = useState(false);
   const [clientSecret, setClientSecret] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
