@@ -1,28 +1,45 @@
 // import Axios from 'axios'
-import axios from "axios"
-import _ from 'lodash';
+import axios from "axios";
+import _ from "lodash";
 // import { slackClient } from "./slackClient";
-import { supabase } from "./supabaseClient"
-import { BACKEND_URL, PRICE_ID, SCRAPER_API_URL, X_RAPID_API_HOST, X_RAPID_API_KEY } from "./config";
+import { supabase } from "./supabaseClient";
+import {
+  BACKEND_URL,
+  PRICE_ID,
+  SCRAPER_API_URL,
+  X_RAPID_API_HOST,
+  X_RAPID_API_KEY,
+} from "./config";
 
 export const numFormatter = (num = 0) => {
   if (num > 999 && num <= 999949) {
-    return `${(num / 1000).toFixed(1)}k`
+    return `${(num / 1000).toFixed(1)}k`;
   }
 
   if (num > 999949) {
-    return `${(num / 1000000).toFixed(1)}m`
+    return `${(num / 1000000).toFixed(1)}m`;
   }
 
-  if (num === 0) return 0
+  if (num === 0) return 0;
 
   if (num) {
-    return num
+    return num;
   }
-}
+};
 
-export const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+export const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const months = [
@@ -38,58 +55,60 @@ const months = [
   { month: "Oct", days: 31 },
   { month: "Nov", days: 30 },
   { month: "Dec", days: 31 },
-]
+];
 
 export const dateFormatter = (timeFrame) => {
   const getPrevDay = () => {
     // if the day is 0 that means need to the get the last day of the the previous month
 
-    let prevMonth // will be obj
+    let prevMonth; // will be obj
 
-    if (!months[today.getMonth()-1].month) {
-      prevMonth = months[months.length-1]
-      previousMonth = prevMonth.month
+    if (!months[today.getMonth() - 1].month) {
+      prevMonth = months[months.length - 1];
+      previousMonth = prevMonth.month;
     } else {
-      prevMonth = months[today.getMonth()-1].month
+      prevMonth = months[today.getMonth() - 1].month;
     }
-    return prevMonth
-  }
+    return prevMonth;
+  };
 
-  const today = new Date()
-  console.log("🚀 ~ file: helpers.js:42 ~ dateFormatter ~ today", today)
+  const today = new Date();
+  console.log("🚀 ~ file: helpers.js:42 ~ dateFormatter ~ today", today);
 
-  let previousMonth
-  let currentDate
-  let previousDate
+  let previousMonth;
+  let currentDate;
+  let previousDate;
 
   if (timeFrame === "Monthly") {
     // ex. Month ---  Mar
-    currentDate = `${months[today.getMonth()].month}`
-    previousDate = `${months[today.getMonth()-1].month
-      ? months[today.getMonth()-1].month
-      : "Dec"
-      }`
+    currentDate = `${months[today.getMonth()].month}`;
+    previousDate = `${
+      months[today.getMonth() - 1].month
+        ? months[today.getMonth() - 1].month
+        : "Dec"
+    }`;
   } else if (timeFrame === "Daily") {
     // ex. Day and Month ---  25 Mar
-    currentDate = `${today.getDate()} ${months[today.getMonth()].month}`
-    previousDate = `${today.getDate()-1 ? today.getDate()-1 : getPrevDay().days
-      } ${previousMonth ? previousMonth : months[today.getMonth()].month}`
+    currentDate = `${today.getDate()} ${months[today.getMonth()].month}`;
+    previousDate = `${
+      today.getDate() - 1 ? today.getDate() - 1 : getPrevDay().days
+    } ${previousMonth ? previousMonth : months[today.getMonth()].month}`;
   }
 
-  return [previousDate, currentDate]
-}
+  return [previousDate, currentDate];
+};
 
 export const getRateDiff = (currRate, prevRate) => {
   //get percentage value
-  let percent = (currRate / prevRate) * 100
+  let percent = (currRate / prevRate) * 100;
 
   // if 'percent' is more than a 100, it means there was an increase from the previous value
   if (percent > 100) {
     // subtract from 100 to get the value of by HOW MUCH the current value increased
     return {
       change: "more",
-      value: percent-100,
-    }
+      value: percent - 100,
+    };
   }
 
   // if 'percent' is less than a 100, it means there was an DECREASE from the previous value
@@ -97,35 +116,35 @@ export const getRateDiff = (currRate, prevRate) => {
     // get the value of by HOW MUCH it decreased compared to the before value
     return {
       change: "less",
-      value: 100-percent,
-    }
+      value: 100 - percent,
+    };
   }
 
   // if 'percent' is equal to 100, there was no change from previous value
   if (percent === 100) {
-    return null
+    return null;
   }
-}
+};
 
 export const countDays = (day) => {
-  var today = new Date()
-  var dd = String(today.getDate()).padStart(2, "0")
-  var mm = String(today.getMonth() + 1).padStart(2, "0") //January is 0!
-  var yyyy = today.getFullYear()
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
 
-  today = yyyy + "-" + mm + "-" + dd
+  today = yyyy + "-" + mm + "-" + dd;
 
-  if (today === day) return "today"
+  if (today === day) return "today";
 
-  var date1 = new Date(day)
-  var date2 = new Date(today)
-  var Difference_In_Time = date2.getTime()-date1.getTime()
-  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24)
+  var date1 = new Date(day);
+  var date2 = new Date(today);
+  var Difference_In_Time = date2.getTime() - date1.getTime();
+  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
   return Difference_In_Days === 1
     ? "one day ago"
-    : Difference_In_Days + " days ago"
-}
+    : Difference_In_Days + " days ago";
+};
 
 export const getAccount = async (account) => {
   const options = {
@@ -136,12 +155,12 @@ export const getAccount = async (account) => {
       "X-RapidAPI-Key": X_RAPID_API_KEY,
       "X-RapidAPI-Host": X_RAPID_API_HOST,
     },
-  }
+  };
 
-  const userResults = await axios.request(options)
+  const userResults = await axios.request(options);
 
-  return userResults
-}
+  return userResults;
+};
 
 export const searchAccount = _.memoize(async (username) => {
   const options = {
@@ -153,26 +172,32 @@ export const searchAccount = _.memoize(async (username) => {
       "X-RapidAPI-Key": X_RAPID_API_KEY,
       "X-RapidAPI-Host": X_RAPID_API_HOST,
     },
-  }
+  };
 
-  const request = await axios.request(options).catch(err => console.log(err))
-  return request?.data?.[0]
-})
+  const request = await axios.request(options).catch((err) => console.log(err));
+  return request?.data?.[0];
+});
 
 export const updateUserProfilePicUrl = async (user, from) => {
   try {
     const username = from ? user.account : user.username;
     // console.log(username, from);
     if (username) {
-      const userResults = await instabulkProfileAPI(username)
+      const userResults = await instabulkProfileAPI(username);
       // console.log(userResults?.data[0]?.username);
-      if (!userResults?.data[0]?.username) return console.log('User account not found!: ', username, ' =>: ', userResults?.data[0]?.username);
+      if (!userResults?.data[0]?.username)
+        return console.log(
+          "User account not found!: ",
+          username,
+          " =>: ",
+          userResults?.data[0]?.username
+        );
       if (userResults?.data?.[0]?.profile_pic_url) {
-        var profile_pic_url = '';
-        const uploadImageFromURLRes = await uploadImageFromURL(username)
-        console.log(uploadImageFromURLRes)
-        if (uploadImageFromURLRes?.status === 'success') {
-          profile_pic_url = uploadImageFromURLRes?.data
+        var profile_pic_url = "";
+        const uploadImageFromURLRes = await uploadImageFromURL(username);
+        console.log(uploadImageFromURLRes);
+        if (uploadImageFromURLRes?.status === "success") {
+          profile_pic_url = uploadImageFromURLRes?.data;
         }
 
         if (from) {
@@ -181,32 +206,34 @@ export const updateUserProfilePicUrl = async (user, from) => {
             .from(from)
             .update({
               avatar: profile_pic_url,
-              imageUrlChanged: true
+              imageUrlChanged: true,
             })
-            .eq('id', user?.id);
+            .eq("id", user?.id);
 
-          error && console.log(error)
+          error && console.log(error);
         } else {
           const { error } = await supabase
             .from("users")
             .update({
               profile_pic_url: profile_pic_url,
-            }).eq("auth_user_id", user?.auth_user_id).eq("username", user?.username);
+            })
+            .eq("auth_user_id", user?.auth_user_id)
+            .eq("username", user?.username);
 
-          error && console.log(error)
-          return { success: true, ppu: profile_pic_url }
+          error && console.log(error);
+          return { success: true, ppu: profile_pic_url };
         }
 
-        console.log('fixed for: ', username)
-        return { succuss: true, message: 'ok' }
+        console.log("fixed for: ", username);
+        return { succuss: true, message: "ok" };
       }
     } else {
-      return { succuss: false, message: 'username invalid' }
+      return { succuss: false, message: "username invalid" };
     }
   } catch (error) {
-    console.log("updateUserProfilePicUrl: ", error)
+    console.log("updateUserProfilePicUrl: ", error);
   }
-}
+};
 
 export async function instabulkProfileAPI(ig) {
   try {
@@ -223,7 +250,7 @@ export async function instabulkProfileAPI(ig) {
     };
     return await axios.request(options);
   } catch (error) {
-    console.log("instabulkProfileAPI: ", error)
+    console.log("instabulkProfileAPI: ", error);
   }
 }
 
@@ -237,94 +264,103 @@ export const totalLikes = (name) => {
         "X-RapidAPI-Key": X_RAPID_API_KEY,
         "X-RapidAPI-Host": X_RAPID_API_HOST,
       },
-    }
+    };
 
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data)
+        console.log(response.data);
       })
       .catch(function (error) {
-        console.error(error)
-      })
+        console.error(error);
+      });
   } catch (error) {
-    console.log("totalLikes: ", error)
+    console.log("totalLikes: ", error);
   }
-}
+};
 
 export const getThDayNameFromDate = (date) => {
-  const day = new Date(date).toDateString().slice(0, 3)
-  return day
-}
+  const day = new Date(date).toDateString().slice(0, 3);
+  return day;
+};
 
 export const deleteAccount = async (from, id) => {
   // console.log(from, id);
   // if (id && window.confirm("Are you sure you want to delete this account?")) {
-  const { data, error } = await supabase
-    .from(from)
-    .delete()
-    .match({ id: id })
+  const { data, error } = await supabase.from(from).delete().match({ id: id });
   // .eq('id', id).select();
-  error && console.log(error)
+  error && console.log(error);
   // alert('error deleting account! contact admin');
-  return data
+  return data;
   // }
-}
+};
 
 export const deleteUserDetails = async (auth_user_id, first_account) => {
-  await deleteUser(auth_user_id, first_account, 'users');
-  await deleteUser(auth_user_id, first_account, 'targeting');
-  await deleteUser(auth_user_id, first_account, 'whitelist');
-  await deleteUser(auth_user_id, first_account, 'blacklist');
-  return 'success'
-}
+  await deleteUser(auth_user_id, first_account, "users");
+  await deleteUser(auth_user_id, first_account, "targeting");
+  await deleteUser(auth_user_id, first_account, "whitelist");
+  await deleteUser(auth_user_id, first_account, "blacklist");
+  return "success";
+};
 
 export const deleteUser = async (auth_user_id, first_account, table) => {
-  const { error } = await supabase.from(table).delete().eq(first_account ? "auth_user_id" : table === 'users' ? "username" : "main_user_username", auth_user_id)
-  console.log(error)
-}
+  const { error } = await supabase
+    .from(table)
+    .delete()
+    .eq(
+      first_account
+        ? "auth_user_id"
+        : table === "users"
+        ? "username"
+        : "main_user_username",
+      auth_user_id
+    );
+  console.log(error);
+};
 
 export const getUser = async (a_uid) => {
   var error;
   if (a_uid) {
     const userObj = await supabase
-      .from('users')
-      .select('*')
+      .from("users")
+      .select("*")
       .eq("auth_user_id", a_uid)
-      .eq('first_account', true)
-    error = userObj.error
-    const r = { status: 200, obj: userObj?.data?.[0] }
+      .eq("first_account", true);
+    error = userObj.error;
+    const r = { status: 200, obj: userObj?.data?.[0] };
     // console.log(r);
     return r;
   }
   return { status: 500, obj: error };
-}
+};
 
 export const messageSlack = async (message) => {
-  const r = await axios.post(BACKEND_URL + '/api/notify', {
-    webhookUrl: process.env.REACT_APP_SLACK_WEBHOOK_URL,
-    message
-  }).then(r => {
-    if (r?.data?.e?.status === null || r?.data?.e?.status === 404) {
-      console.log('error while sending message to Slack');
-      console.log(r);
-      return r
-    }
-    console.log('message sent to Slack');
-    console.log(r);
-    return r
-  })
-    .catch((e) => {
-      console.log('error while sending message to Slack');
-      console.log(e);
+  const r = await axios
+    .post(BACKEND_URL + "/api/notify", {
+      webhookUrl: process.env.REACT_APP_SLACK_WEBHOOK_URL,
+      message,
     })
-  return r
-}
+    .then((r) => {
+      if (r?.data?.e?.status === null || r?.data?.e?.status === 404) {
+        console.log("error while sending message to Slack");
+        console.log(r);
+        return r;
+      }
+      console.log("message sent to Slack");
+      console.log(r);
+      return r;
+    })
+    .catch((e) => {
+      console.log("error while sending message to Slack");
+      console.log(e);
+    });
+  return r;
+};
 
-export const slackSubNotify = async (username) => {
+export const slackSubNotify = async (username, cancellation) => {
   console.log("slackSubNotify", username);
   const r = await axios
-    .post(BACKEND_URL + "/api/slack-notify", { username })
+    .post(BACKEND_URL + "/api/slack-notify", { username, cancellation })
     .then((r) => {
       if (!r?.data?.ok) {
         console.log("error while sending message to Slack");
@@ -347,9 +383,9 @@ export async function uploadImageFromURL(username, imageURL) {
   // console.log(username, imageURL);
   try {
     // Fetch image data from URL
-    var response = imageURL && await fetch(imageURL);
+    var response = imageURL && (await fetch(imageURL));
     if (!imageURL) {
-      const r = await getAccount(username)
+      const r = await getAccount(username);
       response = await fetch(r.data?.[0]?.profile_pic_url);
     }
     // console.log("r: ",r);
@@ -358,9 +394,9 @@ export async function uploadImageFromURL(username, imageURL) {
     if (imageData) {
       // Upload image to Supabase storage
       const { data, error } = await supabase.storage
-        .from('profilePictures')
+        .from("profilePictures")
         .upload(`${username}.jpg`, imageData, {
-          upsert: true
+          upsert: true,
         });
 
       // if (error.message === 'The resource already exists') {
@@ -368,32 +404,30 @@ export async function uploadImageFromURL(username, imageURL) {
       // }
       if (error) {
         console.log(error);
-        return { status: 'failed', data: error }
+        return { status: "failed", data: error };
       } else {
         // console.log(`Image uploaded to ${data}`);
-        const publicUrl = getDownloadedFilePublicUrl(data.path)
+        const publicUrl = getDownloadedFilePublicUrl(data.path);
         // console.log("publicUrl: ", publicUrl?.data?.publicUrl)
-        return { status: 'success', data: publicUrl?.data?.publicUrl }
+        return { status: "success", data: publicUrl?.data?.publicUrl };
       }
     }
   } catch (error) {
-    console.log("uploadImageFromURLError: ", error)
+    console.log("uploadImageFromURLError: ", error);
   }
 }
 
 export function getDownloadedFilePublicUrl(path) {
-  const publicUrl = supabase.storage
-    .from('profilePictures')
-    .getPublicUrl(path)
-  return publicUrl
+  const publicUrl = supabase.storage.from("profilePictures").getPublicUrl(path);
+  return publicUrl;
 }
 
 export function getCookie(name) {
-  var nameEQ = name + '='
-  var ca = document.cookie.split(';');
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(";");
   for (var i = 0; i < ca.length; i++) {
-    var c = ca[i]
-    while (c.charAt(0) === '') c = c.substring(1, c.length);
+    var c = ca[i];
+    while (c.charAt(0) === "") c = c.substring(1, c.length);
     if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
   }
   return null;
@@ -401,15 +435,15 @@ export function getCookie(name) {
 
 export function getRefCode() {
   var urlParams = new URLSearchParams(window.location.search);
-  var refParam = urlParams.get('ref');
+  var refParam = urlParams.get("ref");
   if (refParam) {
-    return refParam
+    return refParam;
     // var newUrl = "https://app.grow-your-social.com/signup/?ref=" + refParam;
     // var signupLink = document.getElementById('signup');
     // if (signupLink) {
     //   signupLink.href = newUrl;
   }
-  return ''
+  return "";
 }
 
 export function sumTotalInteractions(arr) {
@@ -424,31 +458,52 @@ export function sumTotalInteractions(arr) {
 }
 
 export async function cancelSubscription(user) {
-  let cancelled = await axios.post(`${BACKEND_URL}/api/stripe/cancel_subscription`, { subscription_id: user?.subscription_id || '' }
-  ).catch(err => {
-    console.error(err)
-    return err
-  })
+  let cancelled = await axios
+    .post(`${BACKEND_URL}/api/stripe/cancel_subscription`, {
+      subscription_id: user?.subscription_id || "",
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
   if (cancelled.status === 200) {
-    return { status: 200, message: 'Your subscription has been cancelled!' }
+    const cancellation = true;
+    process.env.NODE_ENV === "production" &&
+      (await slackSubNotify(user?.username || user?.email, cancellation));
+    return { status: 200, message: "Your subscription has been cancelled!" };
   } else {
-    return { status: 500, message: 'An error occured please try again or contact our support' }
+    return {
+      status: 500,
+      message: "An error occured please try again or contact our support",
+    };
   }
 }
 
 export async function reActivateSubscription(user) {
-  let reActivate = await axios.post(`${BACKEND_URL}/api/stripe/create_subscription_for_customer`, { customer_id: user?.customer_id || '', price: user?.current_plan_id || PRICE_ID || '' }
-  ).catch(err => {
-    console.error(err)
-    return err
-  })
-  
+  let reActivate = await axios
+    .post(`${BACKEND_URL}/api/stripe/create_subscription_for_customer`, {
+      customer_id: user?.customer_id || "",
+      price: user?.current_plan_id || PRICE_ID || "",
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+
   // console.log("reActivate");
   // console.log(reActivate);
 
   if (reActivate.status === 200) {
-    return { status: 200, message: 'Your subscription has been re-activated!', subscription_id: reActivate?.data?.subscription?.id }
+    return {
+      status: 200,
+      message: "Your subscription has been re-activated!",
+      subscription_id: reActivate?.data?.subscription?.id,
+    };
   } else {
-    return { status: 500, message: 'An error occured please try again or contact our support', subscription_id: null }
+    return {
+      status: 500,
+      message: "An error occured please try again or contact our support",
+      subscription_id: null,
+    };
   }
 }

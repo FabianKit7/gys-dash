@@ -109,7 +109,10 @@ export default function Subscriptions() {
       const {
         data: { user: authUser },
       } = await supabase.auth.getUser();
-      if (!authUser) return;
+      if (!authUser) {
+        console.log('no auth user');
+        return
+      };
 
       const { data } = await supabase
         .from("users")
@@ -117,10 +120,6 @@ export default function Subscriptions() {
         .eq("auth_user_id", authUser?.id)
         .eq("first_account", true)
         .single();
-
-      console.log(username);
-      console.log(data?.username);
-      console.log(username !== data?.username);
 
       if (data && username !== data?.username) {
         window.location.href = `/subscriptions/${data?.username}`;
@@ -1366,20 +1365,20 @@ export const getStartingDay = () => {
 
 export const ChargeBeeCard = ({
   user,
-  userResults,
+  // userResults,
   addCard,
-  username,
+  // username,
   setIsModalOpen,
   setErrorMsg,
-  mobile,
+  // mobile,
   Loading,
   setLoading,
-  setRefresh,
-  refresh,
-  selectedPlan,
+  // setRefresh,
+  // refresh,
+  // selectedPlan,
 }) => {
-  const navigate = useNavigate();
-  const [nameOnCard, setNameOnCard] = useState("");
+  // const navigate = useNavigate();
+  // const [nameOnCard, setNameOnCard] = useState("");
   const [processingPayment, setProcessingPayment] = useState(false);
   const [clientSecret, setClientSecret] = useState(null);
   const stripe = useStripe();
@@ -1388,6 +1387,7 @@ export const ChargeBeeCard = ({
   const [addressElementState, setAddressElementState] = useState(null);
   const [paymentElementState, setPaymentElementState] = useState(null);
 
+  // display card elements
   useEffect(() => {
     const addressEl = document.querySelector("#address-element");
     if (!elements || !addressEl || addressElementState || paymentElementState)

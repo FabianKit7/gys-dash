@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Search from "./pages/Search";
 import Dashboard from "./components/Dashboard";
 // import Subscriptions from "./pages/Subscriptions";
@@ -10,9 +10,9 @@ import Settings from "./components/Settings/Settings";
 import Admin from "./components/Admin/Admin";
 // import Nav from "./components/Nav";
 import { useEffect } from "react";
-import DashboardApp from "./dashboard";
+// import DashboardApp from "./dashboard";
 import Edit from "./dashboard/edit";
-import AdminLogin from "./dashboard/adminLogin";
+// import AdminLogin from "./dashboard/adminLogin";
 import ForgetPassword from "./pages/forgetPassword";
 import ResetPassword from "./pages/resetPassword";
 import Chat from "./pages/chat";
@@ -36,7 +36,8 @@ import { supabase } from "./supabaseClient";
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 function App() {
-  const pathname = window.location.pathname;
+  // const pathname = window.location.pathname;
+  const location = useLocation();
   useEffect(() => {
     // const clickId = getCookie('_vid_t')
     // console.log(clickId);
@@ -60,43 +61,47 @@ function App() {
   const [addPadding, setAddPadding] = useState(true);
   useEffect(() => {
     // console.log(pathname);
-    if (pathname.includes("/search") || pathname.startsWith("/subscriptions")) {
+    if (location.pathname.includes("/search") || location.pathname.startsWith("/subscriptions")) {
       setAddPadding(false);
     }
-  }, [pathname]);
+  }, [location]);
 
   const [clientSecret, setClientSecret] = useState("");
+  
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const _getUser = async () => {
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
+      if (!authUser) return;
 
+      const { data } = await supabase
+        .from("users")
+        .select()
+        .eq("auth_user_id", authUser?.id)
+        .eq("first_account", true)
+        .single();
+      setUser(data);
+    };
+    _getUser();
+  }, []);
+
+  // setClientSecret
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     const fetch = async () => {
-      if (!pathname.startsWith("/subscriptions")) return;
-
-      const _getUser = async () => {
-        const {
-          data: { user: authUser },
-        } = await supabase.auth.getUser();
-        if (!authUser) return;
-
-        const { data } = await supabase
-          .from("users")
-          .select()
-          .eq("auth_user_id", authUser?.id)
-          .eq("first_account", true)
-          .single();
-        return data;
-      };
-      const user = await _getUser();
+      if (!location.pathname.startsWith("/subscriptions")) return;
 
       let setupIntentRes = await axios
         .post(`${BACKEND_URL}/api/stripe/create_setupIntent`, {
           name: user?.full_name || user?.username,
           email: user?.email,
         })
-        .then((response) => response.data)
-        // .catch((err) => {
-        //   console.log(err);
-        // });
+        .then((response) => response.data);
+      // .catch((err) => {
+      //   console.log(err);
+      // });
 
       // console.log("setupIntentRes");
       // console.log(setupIntentRes);
@@ -106,7 +111,7 @@ function App() {
       }
     };
     fetch();
-  }, [pathname]);
+  }, [location, user]);
 
   const appearance = {
     // theme: 'stripe',

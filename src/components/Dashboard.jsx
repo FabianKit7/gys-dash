@@ -291,24 +291,25 @@ export default function Dashboard() {
               return;
             }
 
-            // if (errorMsg?.message === "Please reactivate your subscription") {
-            //   window.location.href = `/${username}/settings`;
-            //   return;
-            // }
+            if (errorMsg?.message === "Please reactivate your subscription") {
+              window.location.href = `/${username}/settings`;
+              return;
+            }
 
-            // if (errorMsg?.message === "Please finish your registration") {
-            //   if (userData?.username) {
-            //     window.location.pathname = `subscriptions/${userData?.username}`;
-            //   } else {
-            //     // window.location.pathname = `search`;
-            //   }
-            // } else {
-            //   if (userData?.username) {
-            //     window.location.pathname = `subscriptions/${userData?.username}`;
-            //   } else {
-            //     // window.location.pathname = `search`;
-            //   }
-            // }
+            if (errorMsg?.message === "Please finish your registration") {
+              if (userData?.username) {
+                // window.location.pathname = `subscriptions/${userData?.username}`;
+                navigate(`/subscriptions/${userData?.username}`)
+              } else {
+                window.location.pathname = `search`;
+              }
+            } else {
+              if (userData?.username) {
+                window.location.pathname = `subscriptions/${userData?.username}`;
+              } else {
+                window.location.pathname = `search`;
+              }
+            }
           }}
           title={errorMsg?.title}
           message={errorMsg?.message}
