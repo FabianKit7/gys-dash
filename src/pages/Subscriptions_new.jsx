@@ -185,12 +185,15 @@ export default function Subscriptions() {
     getData();
   }, [getData]);
 
+  const [creatingSubscription, setCreatingSubscription] = useState(false)
+
   // confirm setup_intent_client_secret;
   useEffect(() => {
     const setup_intent_client_secret = new URLSearchParams(
       window.location.search
     ).get("setup_intent_client_secret");
     if (!setup_intent_client_secret) return setConfirmingSetUpIntent(false);
+    if(creatingSubscription) return;
 
     async function continueToSupabase(userIsNew, subscriptionObj, plan) {
       let data = {
@@ -336,6 +339,7 @@ export default function Subscriptions() {
             //   //   return err;
             //   // });
 
+            setCreatingSubscription(true)
             let createSubscription = await axios.post(
               `${BACKEND_URL}/api/stripe/create_subscription`,
               {
