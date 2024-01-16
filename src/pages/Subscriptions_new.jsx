@@ -269,8 +269,8 @@ export default function Subscriptions() {
         if (!IS_SMS_ALLOWED) return;
         const url = `${BACKEND_URL}/api/send_sms`;
         const sms_data = {
-          recipient: user?.phone,
-          content: NOT_CONNECTED_SMS_TEMPLATE(),
+          recipient: user?.phone?.toString()?.replace(/\s/g, ""),
+          content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
         };
         await axios.post(url, sms_data);
       } catch (error) {}
@@ -935,8 +935,8 @@ const Content = ({
         if (IS_SMS_ALLOWED) {
           const url = `${BACKEND_URL}/api/send_sms`;
           const sms_data = {
-            recipient: user?.phone,
-            content: NOT_CONNECTED_SMS_TEMPLATE(),
+            recipient: user?.phone?.toString()?.replace(/\s/g, ""),
+            content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
           };
           await axios.post(url, sms_data);
         }
@@ -1834,8 +1834,8 @@ export const ChargeBeeCard = ({
   //   if (IS_SMS_ALLOWED) {
   //     const url = `${BACKEND_URL}/api/send_sms`;
   //     const sms_data = {
-  //       recipient: user?.phone,
-  //       content: NOT_CONNECTED_SMS_TEMPLATE(),
+  //       recipient: user?.phone?.toString()?.replace(/\s/g, ""),
+  //       content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
   //     };
   //     await axios.post(url, sms_data);
   //   }
@@ -2106,8 +2106,8 @@ const ExternalPayComponent = ({
         if (!IS_SMS_ALLOWED) return;
         const url = `${BACKEND_URL}/api/send_sms`;
         const sms_data = {
-          recipient: user?.phone,
-          content: NOT_CONNECTED_SMS_TEMPLATE(),
+          recipient: user?.phone?.toString()?.replace(/\s/g, ""),
+          content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
         };
         await axios.post(url, sms_data);
       } catch (error) {}

@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import Header from './components/header';
+import React, { useEffect, useState } from "react";
+import Header from "./components/header";
 // import { Chargebee } from '../../dashboard';
-import { supabase } from '../../supabaseClient';
-import { Link, useNavigate } from 'react-router-dom';
-import { countDays } from '../../helpers';
-import copy from 'copy-to-clipboard';
+import { supabase } from "../../supabaseClient";
+import { Link, useNavigate } from "react-router-dom";
+import { countDays } from "../../helpers";
+import copy from "copy-to-clipboard";
 import {
   ChangeStatusModal,
   calculateLast7DaysGrowth,
   statuses,
-} from './ManagePage';
-import { FaInstagram, FaSms, FaTimes } from 'react-icons/fa';
-import { LuSend } from 'react-icons/lu';
-import { GiFlameSpin } from 'react-icons/gi';
+} from "./ManagePage";
+import { FaInstagram, FaSms, FaTimes } from "react-icons/fa";
+import { LuSend } from "react-icons/lu";
+import { GiFlameSpin } from "react-icons/gi";
 import {
   ACTIVE_SMS_TEMPLATE,
   BACKEND_URL,
@@ -27,22 +27,22 @@ import {
   TRUSTPILOT_SMS_TEMPLATE,
   TWOFAC_BACKUP_SMS_TEMPLATE,
   TWOFAC_CODE_SMS_TEMPLATE,
-} from '../../config';
-import axios from 'axios';
-import { useClickOutside } from 'react-click-outside-hook';
+} from "../../config";
+import axios from "axios";
+import { useClickOutside } from "react-click-outside-hook";
 
 export default function Retention() {
   const navigate = useNavigate();
   const [fetchingUser, setFetchingUser] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sectionName, setSectionName] = useState('active');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sectionName, setSectionName] = useState("active");
   const [sectionTotal, setSectionTotal] = useState(0);
   const [selectedUser, setSelectedUser] = useState();
   const [showSMSModal, setShowSMSModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [refreshUsers, setRefreshUsers] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ sectionName: '', value: '' });
+  const [message, setMessage] = useState({ sectionName: "", value: "" });
   const [showCheckActiveUsersModal, setSetshowCheckActiveUsersModal] =
     useState(false);
 
@@ -50,14 +50,14 @@ export default function Retention() {
   useEffect(() => {
     const getData = async () => {
       const authUserRes = await supabase.auth.getUser();
-      if (authUserRes.error) return navigate('/login');
+      if (authUserRes.error) return navigate("/login");
       const authUser = authUserRes?.data?.user;
       const getSuperUser = await supabase
-        .from('users')
+        .from("users")
         .select()
-        .eq('email', authUser.email);
+        .eq("email", authUser.email);
       const superUser = getSuperUser?.data?.[0];
-      if (!superUser || !superUser?.admin) return navigate('/login');
+      if (!superUser || !superUser?.admin) return navigate("/login");
       setFetchingUser(false);
     };
 
@@ -69,10 +69,10 @@ export default function Retention() {
       if (!sectionName) return;
       setLoading(true);
       const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('status', sectionName.toLocaleLowerCase())
-        .order('created_at', { ascending: false })
+        .from("users")
+        .select("*")
+        .eq("status", sectionName.toLocaleLowerCase())
+        .order("created_at", { ascending: false })
         .limit(3000);
       error && console.log(error);
       if (error) return;
@@ -93,9 +93,9 @@ export default function Retention() {
     if (users.length > 0) {
       users.forEach(async (user) => {
         const resData = await supabase
-          .from('sessions')
+          .from("sessions")
           .select()
-          .eq('username', user?.username);
+          .eq("username", user?.username);
         resData.error && console.log(resData.error);
         var d = resData?.data?.[0]?.data;
         // console.log(d);
@@ -106,11 +106,11 @@ export default function Retention() {
           v = `
           <div class="${
             growthDifference > 0
-              ? 'text-primary/90'
+              ? "text-primary/90"
               : `${
                   parseInt(growthDifference) === 0
-                    ? 'text-[#000]'
-                    : 'text-[#E9C81B]'
+                    ? "text-[#000]"
+                    : "text-[#E9C81B]"
                 }`
           } font-black">${growthDifference}</div>
           `;
@@ -221,7 +221,7 @@ export default function Retention() {
         <tbody>
           {users.map((user, index) => {
             if (!user) {
-              return 'Loading';
+              return "Loading";
             }
 
             return (
@@ -243,14 +243,14 @@ export default function Retention() {
                       onClick={() => {
                         copy(user?.username, {
                           debug: true,
-                          message: 'Press #{key} to copy',
+                          message: "Press #{key} to copy",
                         });
                         setMessage({
                           sectionName: `username-${user?.username}`,
-                          value: 'copied',
+                          value: "copied",
                         });
                         setTimeout(() => {
-                          setMessage({ sectionName: '', value: '' });
+                          setMessage({ sectionName: "", value: "" });
                         }, 1000);
                       }}
                     >
@@ -287,7 +287,7 @@ export default function Retention() {
                   <div>
                     {user?.session_updated_at
                       ? countDays(user?.session_updated_at)
-                      : 'N/A'}
+                      : "N/A"}
                   </div>
                 </td>
                 {/* <td>
@@ -335,16 +335,16 @@ export default function Retention() {
 const CheckActiveUsers = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [message, setMessage] = useState({ sectionName: '', value: '' });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [message, setMessage] = useState({ sectionName: "", value: "" });
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
       const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('status', 'active'.toLocaleLowerCase())
+        .from("users")
+        .select("*")
+        .eq("status", "active".toLocaleLowerCase())
         .limit(3000);
       error && console.log(error);
       if (error) return;
@@ -364,7 +364,7 @@ const CheckActiveUsers = () => {
             })
             .then((response) => response.data);
           const status =
-            subscription?.status === 'active' &&
+            subscription?.status === "active" &&
             subscription?.due_invoices_count > 0
               ? `Invoice Due ( ${subscription?.due_invoices_count} )`
               : subscription?.status;
@@ -384,14 +384,14 @@ const CheckActiveUsers = () => {
 
   const hangleSearch = async () => {
     document.getElementById(`cau_u_${searchTerm}`).style.backgroundColor =
-      'yellow';
+      "yellow";
     document.getElementById(`cau_${searchTerm}`).scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
+      behavior: "smooth",
+      block: "center",
     });
     setTimeout(() => {
       document.getElementById(`cau_u_${searchTerm}`).style.backgroundColor =
-        'transparent';
+        "transparent";
     }, 2000);
   };
 
@@ -412,7 +412,7 @@ const CheckActiveUsers = () => {
       }
     }
     if (!subscription_id) {
-      alert('Subscription id not found!');
+      alert("Subscription id not found!");
       setLoading(false);
       return;
     }
@@ -431,19 +431,19 @@ const CheckActiveUsers = () => {
     }
     // cancel user in supabase
     const res = await supabase
-      .from('users')
-      .update({ status: 'cancelled' })
-      .eq('email', user?.email)
-      .eq('username', user?.username);
+      .from("users")
+      .update({ status: "cancelled" })
+      .eq("email", user?.email)
+      .eq("username", user?.username);
     if (res?.error) {
       console.log(res);
-      alert('an error occurred!');
+      alert("an error occurred!");
     }
 
     // remove the user from list.
     const userRow = document.getElementById(`cau_${user.username}`);
     if (userRow) {
-      userRow.style.display = 'none';
+      userRow.style.display = "none";
     }
 
     setLoading(false);
@@ -498,7 +498,7 @@ const CheckActiveUsers = () => {
         <tbody>
           {users.map((user, index) => {
             if (!user) {
-              return 'Loading';
+              return "Loading";
             }
 
             return (
@@ -524,14 +524,14 @@ const CheckActiveUsers = () => {
                       onClick={() => {
                         copy(user?.username, {
                           debug: true,
-                          message: 'Press #{key} to copy',
+                          message: "Press #{key} to copy",
                         });
                         setMessage({
                           sectionName: `username-${user?.username}`,
-                          value: 'copied',
+                          value: "copied",
                         });
                         setTimeout(() => {
-                          setMessage({ sectionName: '', value: '' });
+                          setMessage({ sectionName: "", value: "" });
                         }, 1000);
                       }}
                     >
@@ -568,7 +568,7 @@ const CheckActiveUsers = () => {
                       onClick={() => {
                         if (
                           window.confirm(
-                            'Are you sure you want to set this user to cancel?'
+                            "Are you sure you want to set this user to cancel?"
                           )
                         ) {
                           cancelUser(user);
@@ -588,51 +588,51 @@ const CheckActiveUsers = () => {
 
 export const SendSMSModal = ({ k, user, setShowSMSModal }) => {
   const [parentRef, isClickedOutside] = useClickOutside();
-  const [message, setMessage] = useState('');
-  const [processing, setProcessing] = useState({ state: false, type: '' });
+  const [message, setMessage] = useState("");
+  const [processing, setProcessing] = useState({ state: false, type: "" });
   const types = [
     {
-      name: 'Incorrect Password SMS',
+      name: "Incorrect Password SMS",
       template: INCORRECT_PASSWORD_SMS_TEMPLATE(),
     },
     {
-      name: 'Twofactor Backup SMS',
+      name: "Twofactor Backup SMS",
       template: TWOFAC_BACKUP_SMS_TEMPLATE(),
     },
     {
-      name: 'Twofactor Code SMS',
+      name: "Twofactor Code SMS",
       template: TWOFAC_CODE_SMS_TEMPLATE(),
     },
     {
-      name: 'Checking SMS',
+      name: "Checking SMS",
       template: CHECKING_SMS_TEMPLATE(),
     },
     {
-      name: 'Active SMS',
+      name: "Active SMS",
       template: ACTIVE_SMS_TEMPLATE(),
     },
     {
-      name: 'Cancelled SMS',
+      name: "Cancelled SMS",
       template: CANCELLED_SMS_TEMPLATE(),
     },
     {
-      name: 'Trustpilot SMS',
+      name: "Trustpilot SMS",
       template: TRUSTPILOT_SMS_TEMPLATE(),
     },
     {
-      name: 'Not Connected SMS',
+      name: "Not Connected SMS",
       template: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
     },
     {
-      name: 'Retention #1 SMS',
+      name: "Retention #1 SMS",
       template: RETENTION_SMS_1(),
     },
     {
-      name: 'Retention #2 SMS',
+      name: "Retention #2 SMS",
       template: RETENTION_SMS_2(),
     },
     {
-      name: 'Retention #3 SMS',
+      name: "Retention #3 SMS",
       template: RETENTION_SMS_3(),
     },
   ];
@@ -644,27 +644,28 @@ export const SendSMSModal = ({ k, user, setShowSMSModal }) => {
   }, [isClickedOutside, setShowSMSModal]);
 
   const handleSendSMS = async (template_name, template) => {
-    return alert('Send SMS not available yet!, provide api keys and templetes')
-    // if (processing.state) return;
-    // setProcessing({ state: true, type: template_name });
-    // const url = `${BACKEND_URL}/api/send_sms`;
+    // return alert('Send SMS not available yet!, provide api keys and templetes')
+    if (processing.state) return;
+    setProcessing({ state: true, type: template_name });
+    
+    const url = `${BACKEND_URL}/api/send_sms`;
 
-    // // console.log(user?.phone?.toString()?.replace(/\s/g, ''));
+    // console.log(user?.phone?.toString()?.replace(/\s/g, ''));
 
-    // const data = {
-    //   recipient: user?.phone?.toString()?.replace(/\s/g, ''),
-    //   content: template,
-    // };
-    // const resp = await axios.post(url, data);
+    const data = {
+      recipient: user?.phone?.toString()?.replace(/\s/g, ""),
+      content: template,
+    };
+    const resp = await axios.post(url, data);
 
-    // setProcessing({ state: false, type: '' });
-    // setMessage(resp?.data?.message || 'something went wrong');
-    // setTimeout(() => {
-    //   setMessage('');
-    // }, 3000);
+    setProcessing({ state: false, type: "" });
+    setMessage(resp?.data?.message || "something went wrong");
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
 
-    // console.log('resp');
-    // console.log(resp);
+    console.log("resp");
+    console.log(resp);
   };
 
   return (
@@ -678,7 +679,7 @@ export const SendSMSModal = ({ k, user, setShowSMSModal }) => {
       >
         <div
           className={`${
-            message ? 'h-[120px]' : 'h-0'
+            message ? "h-[120px]" : "h-0"
           } w-[250px] transition-all duration-300 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black font-bold bg-white rounded-lg shadow-2xl grid place-items-center`}
         >
           {message}
@@ -702,7 +703,7 @@ export const SendSMSModal = ({ k, user, setShowSMSModal }) => {
               <div className="">{type.name}</div>
               <div
                 className={`bg-primary rounded-full text-white flex items-center gap-2 w-[100px] px-4 py-2 ${
-                  processing.state ? 'cursor-wait' : 'cursor-pointer'
+                  processing.state ? "cursor-wait" : "cursor-pointer"
                 }`}
                 onClick={() => handleSendSMS(type.name, type.template)}
               >

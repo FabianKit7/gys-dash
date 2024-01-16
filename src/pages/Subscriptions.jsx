@@ -715,7 +715,7 @@ const Content = ({
       //   const url = `${BACKEND_URL}/api/send_sms`;
       //   const sms_data = {
       //     recipient: user?.phone,
-      //     content: NOT_CONNECTED_SMS_TEMPLATE(),
+      //     content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
       //   };
       //   await axios.post(url, sms_data);
       // } catch (error) {
@@ -1487,7 +1487,7 @@ export const ChargeBeeCard = ({
     //   const url = `${BACKEND_URL}/api/send_sms`;
     //   const sms_data = {
     //     recipient: user?.phone,
-    //     content: NOT_CONNECTED_SMS_TEMPLATE(),
+    //     content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
     //   };
     //   await axios.post(url, sms_data);
     // } catch (error) {
@@ -1752,7 +1752,7 @@ const ExternalPayComponent = ({
       //   const url = `${BACKEND_URL}/api/send_sms`;
       //   const sms_data = {
       //     recipient: user?.phone,
-      //     content: NOT_CONNECTED_SMS_TEMPLATE(),
+      //     content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
       //   };
       //   await axios.post(url, sms_data);
       // } catch (error) {
