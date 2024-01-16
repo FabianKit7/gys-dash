@@ -8,7 +8,7 @@ import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "react-click-outside-hook";
 import { FaAngleLeft } from "react-icons/fa";
 import AlertModal from "../components/AlertModal";
-import { getRefCode } from "../helpers";
+import { getRefCode, slackSubNotify } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
   BACKEND_URL,
@@ -691,6 +691,13 @@ const Content = ({
           setIsModalOpen(true);
           setErrorMsg({ title: "Alert", message: `Error adding new account` });
         }
+      }
+
+      try {
+        process.env.NODE_ENV === "production" &&
+          (await slackSubNotify(user?.username || user?.email));
+      } catch (error) {
+        console.log(error);
       }
 
       let sendEmail = await axios
@@ -1458,6 +1465,13 @@ export const ChargeBeeCard = ({
       }
     }
 
+    try {
+      process.env.NODE_ENV === "production" &&
+        (await slackSubNotify(user?.username || user?.email));
+    } catch (error) {
+      console.log(error);
+    }
+
     let sendEmail = await axios
       .post(`${BACKEND_URL}/api/send_email`, {
         email: user?.email,
@@ -1714,6 +1728,13 @@ const ExternalPayComponent = ({
           setIsModalOpen(true);
           setErrorMsg({ title: "Alert", message: `Error adding new account` });
         }
+      }
+
+      try {
+        process.env.NODE_ENV === "production" &&
+          (await slackSubNotify(user?.username || user?.email));
+      } catch (error) {
+        console.log(error);
       }
 
       let sendEmail = await axios

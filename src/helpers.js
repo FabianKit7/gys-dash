@@ -300,26 +300,47 @@ export const getUser = async (a_uid) => {
   return { status: 500, obj: error };
 }
 
-// export const messageSlack = async (message) => {
-//   const r = await axios.post(BACKEND_URL + '/api/notify', {
-//     webhookUrl: process.env.REACT_APP_SLACK_WEBHOOK_URL,
-//     message
-//   }).then(r => {
-//     if (r?.data?.e?.status === null || r?.data?.e?.status === 404) {
-//       console.log('error while sending message to Slack');
-//       console.log(r);
-//       return r
-//     }
-//     console.log('message sent to Slack');
-//     console.log(r);
-//     return r
-//   })
-//     .catch((e) => {
-//       console.log('error while sending message to Slack');
-//       console.log(e);
-//     })
-//   return r
-// }
+export const messageSlack = async (message) => {
+  const r = await axios.post(BACKEND_URL + '/api/notify', {
+    webhookUrl: process.env.REACT_APP_SLACK_WEBHOOK_URL,
+    message
+  }).then(r => {
+    if (r?.data?.e?.status === null || r?.data?.e?.status === 404) {
+      console.log('error while sending message to Slack');
+      console.log(r);
+      return r
+    }
+    console.log('message sent to Slack');
+    console.log(r);
+    return r
+  })
+    .catch((e) => {
+      console.log('error while sending message to Slack');
+      console.log(e);
+    })
+  return r
+}
+
+export const slackSubNotify = async (username) => {
+  console.log("slackSubNotify", username);
+  const r = await axios
+    .post(BACKEND_URL + "/api/slack-notify", { username })
+    .then((r) => {
+      if (!r?.data?.ok) {
+        console.log("error while sending message to Slack");
+        console.log(r);
+        return r;
+      }
+      console.log("message sent to Slack");
+      console.log(r);
+      return r;
+    })
+    .catch((e) => {
+      console.log("error while sending message to Slack");
+      console.log(e);
+    });
+  return r;
+};
 
 // Function to fetch and upload image in subscriptions.js 183
 export async function uploadImageFromURL(username, imageURL) {

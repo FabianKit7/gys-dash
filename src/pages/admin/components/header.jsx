@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { RefreshModal } from '../../../dashboard'
 import { supabase } from '../../../supabaseClient'
-// import { messageSlack } from '../../../helpers'
+import { messageSlack } from '../../../helpers'
 import { LOGO, LOGO_WITH_NAME } from '../../../config'
 import { TbLogout } from 'react-icons/tb'
 
@@ -66,22 +66,22 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
         const twofactorUsers = allTodaySignups.filter(user => user.status === 'twofactor');
         const incorrectUsers = allTodaySignups.filter(user => user.status === 'incorrect');
 
-        // try {
-        //     const msg = `
-        //     Date: ${date}\n
-        //     Active Users: ${activeUsers.length}\n
-        //     Checking Users: ${checkingUsers.length}\n
-        //     New Users: ${newUsers.length}\n
-        //     Pending Users: ${pendingUsers.length}\n
-        //     Two-Factor Users: ${twofactorUsers.length}\n
-        //     Incorrect Users: ${incorrectUsers.length}\n
-        //     `;
-        //     // const msg = `hello hi`;
-        //     await messageSlack(msg);
-        //     // console.log(r);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            const msg = `
+            Date: ${date}\n
+            Active Users: ${activeUsers.length}\n
+            Checking Users: ${checkingUsers.length}\n
+            New Users: ${newUsers.length}\n
+            Pending Users: ${pendingUsers.length}\n
+            Two-Factor Users: ${twofactorUsers.length}\n
+            Incorrect Users: ${incorrectUsers.length}\n
+            `;
+            // const msg = `hello hi`;
+            await messageSlack(msg);
+            // console.log(r);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (

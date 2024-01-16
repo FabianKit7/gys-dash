@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-// import { messageSlack } from '../../helpers';
+import { messageSlack } from '../../helpers';
 import { supabase } from '../../supabaseClient';
 import { useEffect } from 'react';
 import { EMAIL } from '../../config';
@@ -45,13 +45,13 @@ export default function ConnectAccount({ show, setShow, user, message, setMessag
         error && console.log(data, error && error);
         if (error) return alert(error.message);
 
-        // try {
-        //     // const msg = `NEW_PASSWORD!: @${user.username} want's to connect their account. <${window.location.origin}/chat/${user.username}|click here to check>`;
-        //     // await messageSlack(msg);
-        //     // console.log(r);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            const msg = `NEW_PASSWORD!: @${user.username} want's to connect their account. <${window.location.origin}/chat/${user.username}|click here to check>`;
+            await messageSlack(msg);
+            // console.log(r);
+        } catch (error) {
+            console.log(error);
+        }
         setMessage({ status: '', code: 'default', text: <span className='animate-pulse'>checking please don't close this pop-up...</span> })
         setDefualt(false)
         setLoading(false)
@@ -70,13 +70,13 @@ export default function ConnectAccount({ show, setShow, user, message, setMessag
                 // status: 'checking'
             }).eq('id', user.id);
 
-        // try {
-        //     const msg = `NEW_2fa!: @${user.username} submitted their 2fa code. <${window.location.origin}/chat/${user.username}|click here to check>`;
-        //     await messageSlack(msg);
-        //     // console.log(r);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            const msg = `NEW_2fa!: @${user.username} submitted their 2fa code. <${window.location.origin}/chat/${user.username}|click here to check>`;
+            await messageSlack(msg);
+            // console.log(r);
+        } catch (error) {
+            console.log(error);
+        }
         setLoading(false)
         setBCode(false)
 
@@ -101,13 +101,13 @@ export default function ConnectAccount({ show, setShow, user, message, setMessag
                 // status: 'checking'
             }).eq('id', user.id);
 
-        // try {
-        //     const msg = `VERIFICATION CODE!: @${user.username} submitted their verification code. <${window.location.origin}/chat/${user.username}|click here to check>`;
-        //     await messageSlack(msg);
-        //     // console.log(r);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            const msg = `VERIFICATION CODE!: @${user.username} submitted their verification code. <${window.location.origin}/chat/${user.username}|click here to check>`;
+            await messageSlack(msg);
+            // console.log(r);
+        } catch (error) {
+            console.log(error);
+        }
         setLoading(false)
 
         setMessage({ status: '', code: 'default', text: <span className='animate-pulse'>checking please don't close this pop-up...</span> })
@@ -132,13 +132,13 @@ export default function ConnectAccount({ show, setShow, user, message, setMessag
                 // status: 'checking'
             }).eq('id', user.id);
 
-        // try {
-        //     const msg = `VERIFICATION METHOD!: @${user.username} submitted their verification method. <${window.location.origin}/chat/${user.username}|click here to check>`;
-        //     await messageSlack(msg);
-        //     // console.log(r);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            const msg = `VERIFICATION METHOD!: @${user.username} submitted their verification method. <${window.location.origin}/chat/${user.username}|click here to check>`;
+            await messageSlack(msg);
+            // console.log(r);
+        } catch (error) {
+            console.log(error);
+        }
         setLoading(false)
 
         if (a === 'thisWasMe'){
