@@ -358,7 +358,7 @@ export const messageSlack = async (message) => {
 };
 
 export const slackSubNotify = async (username, cancellation) => {
-  console.log("slackSubNotify", username);
+  // console.log("slackSubNotify", username);
   const r = await axios
     .post(BACKEND_URL + "/api/slack-notify", { username, cancellation })
     .then((r) => {

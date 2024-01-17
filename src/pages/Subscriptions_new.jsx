@@ -382,7 +382,7 @@ export default function Subscriptions() {
     };
     if (!user) return;
     fetch();
-  }, [navigate, selectedPlan, stripe, user, userResults, username]);
+  }, [creatingSubscription, navigate, selectedPlan, stripe, user, userResults, username]);
 
   if (confirmingSetUpIntent) {
     return (
@@ -1711,8 +1711,6 @@ export const ChargeBeeCard = ({
     setLoading(true);
     // Trigger form validation and wallet collection
     const { error: submitError } = await elements.submit();
-    console.log("submitError");
-    console.log(submitError);
     if (submitError) {
       console.log("submitError:", submitError);
       alert(submitError.type + ": " + submitError.message);
