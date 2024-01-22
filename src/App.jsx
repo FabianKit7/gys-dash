@@ -98,6 +98,7 @@ function App() {
         .post(`${BACKEND_URL}/api/stripe/create_setupIntent`, {
           name: user?.full_name || user?.username,
           email: user?.email,
+          username: user?.username
         })
         .then((response) => response.data);
       // .catch((err) => {

@@ -193,7 +193,6 @@ export default function Subscriptions() {
       window.location.search
     ).get("setup_intent_client_secret");
     if (!setup_intent_client_secret) return setConfirmingSetUpIntent(false);
-    if (creatingSubscription) return;
 
     async function continueToSupabase(userIsNew, subscriptionObj, plan) {
       let data = {
@@ -304,44 +303,19 @@ export default function Subscriptions() {
         return setConfirmingSetUpIntent(false);
       }
 
-      console.log("setup_intent_client_secret suc!");
+      if (creatingSubscription) return;
+
+      // console.log("setup_intent_client_secret suc!");
       const paymentIntent = await stripe.retrieveSetupIntent(clientSecret);
       // .then(({ paymentIntent }) => {
       // console.log(paymentIntent?.setupIntent?.status);
       switch (paymentIntent?.setupIntent?.status) {
         case "succeeded":
-          console.log("Payment succeeded!");
-          // let contCreateSubscription = await axios
-          //   .post(`${BACKEND_URL}/api/stripe/cont_create_subscription`, {
-          //     customer_id: user?.chargebee_customer_id,
-          //     payment_method: paymentIntent?.setupIntent?.payment_method,
-          //   })
-          //   .catch((err) => {
-          //     console.error(err);
-          //     return err;
-          //   });
-          // if (contCreateSubscription?.status === 200) {
+          setCreatingSubscription(true);
+          console.log("setupIntent passed!");
           const payment_method = paymentIntent.setupIntent.payment_method;
-          // console.log("payment_method");
-          // console.log(payment_method);
 
           try {
-            // create customer and subscription
-            // let createSubscription = await axios
-            //   .post(`${BACKEND_URL}/api/stripe/create_subscription`, {
-            //     name: user?.full_name, // 'nameOnCard',
-            //     email: user?.email,
-            //     price: STRIPE_PRICE_ID, // 'selectedPlan.planId',
-            //     customer_id: user?.chargebee_customer_id,
-            //     payment_method, //attach_payment_method_to_customer
-            //     billing_details: user?.billing_details,
-            //   })
-            //   // .catch((err) => {
-            //   //   console.error(err);
-            //   //   return err;
-            //   // });
-
-            setCreatingSubscription(true);
             let createSubscription = await axios.post(
               `${BACKEND_URL}/api/stripe/create_subscription`,
               {
