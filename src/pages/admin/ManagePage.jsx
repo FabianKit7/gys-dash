@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import Header from './components/header';
-import { FaCaretUp, FaPen, FaPlus, FaSms, FaTimes } from 'react-icons/fa';
-import { supabase } from '../../supabaseClient';
-import { Link, useNavigate } from 'react-router-dom';
-import copy from 'copy-to-clipboard';
-import axios from 'axios';
-import * as PhoneNumber from 'libphonenumber-js';
+import React, { useEffect, useState } from "react";
+import Header from "./components/header";
+import { FaCaretUp, FaPen, FaPlus, FaSms, FaTimes } from "react-icons/fa";
+import { supabase } from "../../supabaseClient";
+import { Link, useNavigate } from "react-router-dom";
+import copy from "copy-to-clipboard";
+import axios from "axios";
+import * as PhoneNumber from "libphonenumber-js";
 import {
   ACTIVE_TEMPLATE,
   BACKEND_URL,
@@ -13,49 +13,49 @@ import {
   INCORRECT_PASSWORD_TEMPLATE,
   LOGO,
   TWO_FACTOR_TEMPLATE,
-} from '../../config';
-import { SendSMSModal } from './Retention';
+} from "../../config";
+import { SendSMSModal } from "./Retention";
 
 export const calculateLast7DaysGrowth = (sessionData) => {
   if (!sessionData) return;
   const previous7DaysGrowth =
-    sessionData[sessionData.length-7]?.profile?.followers;
+    sessionData[sessionData.length - 7]?.profile?.followers;
   const last7DaysGrowth =
-    sessionData[sessionData.length-1]?.profile?.followers;
+    sessionData[sessionData.length - 1]?.profile?.followers;
 
   // Calculate the growth difference and determine if it's positive, negative, or zero
   let growthDifference;
   if (last7DaysGrowth > previous7DaysGrowth) {
-    growthDifference = `+${last7DaysGrowth-previous7DaysGrowth}`;
+    growthDifference = `+${last7DaysGrowth - previous7DaysGrowth}`;
   } else if (last7DaysGrowth < previous7DaysGrowth) {
-    growthDifference = `-${previous7DaysGrowth-last7DaysGrowth}`;
+    growthDifference = `-${previous7DaysGrowth - last7DaysGrowth}`;
   } else {
-    growthDifference = '0';
+    growthDifference = "0";
   }
 
   return growthDifference;
 };
 
 export const statuses = [
-  'new',
-  'active',
-  'checking',
-  'pending',
-  'twofactor',
-  'incorrect',
-  'cancelled',
+  "new",
+  "active",
+  "checking",
+  "pending",
+  "twofactor",
+  "incorrect",
+  "cancelled",
 ];
 
 export default function ManagePage() {
   const navigate = useNavigate();
   const [fetchingUser, setFetchingUser] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sectionName, setSectionName] = useState('new');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sectionName, setSectionName] = useState("new");
   const [sectionTotal, setSectionTotal] = useState(0);
   const [users, setUsers] = useState([]);
   const [refreshUsers, setRefreshUsers] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ sectionName: '', value: '' });
+  const [message, setMessage] = useState({ sectionName: "", value: "" });
   const [showAddTagModal, setShowAddTagModal] = useState(false);
   const [userToAddTagFor, setUserToAddTagFor] = useState();
   const [showChargebee, setShowChargebee] = useState(false);
@@ -64,14 +64,14 @@ export default function ManagePage() {
   useEffect(() => {
     const getData = async () => {
       const authUserRes = await supabase.auth.getUser();
-      if (authUserRes.error) return navigate('/login');
+      if (authUserRes.error) return navigate("/login");
       const authUser = authUserRes?.data?.user;
       const getSuperUser = await supabase
-        .from('users')
+        .from("users")
         .select()
-        .eq('email', authUser.email);
+        .eq("email", authUser.email);
       const superUser = getSuperUser?.data?.[0];
-      if (!superUser || !superUser?.admin) return navigate('/login');
+      if (!superUser || !superUser?.admin) return navigate("/login");
       setFetchingUser(false);
     };
 
@@ -81,14 +81,14 @@ export default function ManagePage() {
   // setUsers([]); and setSectionTotal(0)
   useEffect(() => {
     const fetch = async () => {
-      setSearchTerm('');
+      setSearchTerm("");
       if (!sectionName) return;
       setLoading(true);
       const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('status', sectionName.toLocaleLowerCase())
-        .order('created_at', { ascending: false })
+        .from("users")
+        .select("*")
+        .eq("status", sectionName.toLocaleLowerCase())
+        .order("created_at", { ascending: false })
         .limit(3000);
       error && console.log(error);
       if (error) return;
@@ -124,9 +124,9 @@ export default function ManagePage() {
     if (users.length > 0) {
       users.forEach(async (user) => {
         const resData = await supabase
-          .from('sessions')
+          .from("sessions")
           .select()
-          .eq('username', user?.username);
+          .eq("username", user?.username);
         resData.error && console.log(resData.error);
         var d = resData?.data?.[0]?.data;
         const growthDifference = calculateLast7DaysGrowth(d);
@@ -135,11 +135,11 @@ export default function ManagePage() {
           v = `
           <div class="${
             growthDifference > 0
-              ? 'text-primary/90'
+              ? "text-primary/90"
               : `${
                   parseInt(growthDifference) === 0
-                    ? 'text-[#000]'
-                    : 'text-[#E9C81B]'
+                    ? "text-[#000]"
+                    : "text-[#E9C81B]"
                 }`
           } font-black">${growthDifference}</div>
           `;
@@ -156,7 +156,7 @@ export default function ManagePage() {
 
         try {
           document.getElementById(`phone_${user?.username} `).innerHTML =
-            formatUserPhoneNumber(user?.phone || '');
+            formatUserPhoneNumber(user?.phone || "");
         } catch (error) {}
       });
     }
@@ -242,14 +242,14 @@ export default function ManagePage() {
           </thead>
 
           <tbody>
-            {users.map((user) => {
+            {users.map((user, i) => {
               if (!user) {
-                return 'Loading';
+                return "Loading";
               }
 
               return (
                 <tr
-                  key={`${user?.username} _row`}
+                  key={`${user?.username}_row_${i}`}
                   className="rounded-[10px] bg-[#F8F8F8] h-[64px] w-full"
                 >
                   <td>
@@ -266,14 +266,14 @@ export default function ManagePage() {
                       onClick={() => {
                         copy(user?.username, {
                           debug: true,
-                          message: 'Press #{key} to copy',
+                          message: "Press #{key} to copy",
                         });
                         setMessage({
                           sectionName: `username-${user?.username} `,
-                          value: 'copied',
+                          value: "copied",
                         });
                         setTimeout(() => {
-                          setMessage({ sectionName: '', value: '' });
+                          setMessage({ sectionName: "", value: "" });
                         }, 1000);
                       }}
                     >
@@ -301,14 +301,14 @@ export default function ManagePage() {
                       onClick={() => {
                         copy(user?.instagramPassword, {
                           debug: true,
-                          message: 'Press #{key} to copy',
+                          message: "Press #{key} to copy",
                         });
                         setMessage({
                           sectionName: `password-${user?.username} `,
-                          value: 'copied',
+                          value: "copied",
                         });
                         setTimeout(() => {
-                          setMessage({ sectionName: '', value: '' });
+                          setMessage({ sectionName: "", value: "" });
                         }, 1000);
                       }}
                     >
@@ -328,20 +328,20 @@ export default function ManagePage() {
                       onClick={() => {
                         copy(user?.backupcode, {
                           debug: true,
-                          message: 'Press #{key} to copy',
+                          message: "Press #{key} to copy",
                         });
                         setMessage({
                           sectionName: `backupcode-${user?.username} `,
-                          value: 'copied',
+                          value: "copied",
                         });
                         setTimeout(() => {
-                          setMessage({ sectionName: '', value: '' });
+                          setMessage({ sectionName: "", value: "" });
                         }, 1000);
                       }}
                     >
                       {user?.backupcode.length > 7
-                        ? user?.backupcode.substring(0, 6) + '...'
-                        : user?.backupcode || 'N/A'}
+                        ? user?.backupcode.substring(0, 6) + "..."
+                        : user?.backupcode || "N/A"}
                       {message.sectionName ===
                         `backupcode-${user?.username} ` && (
                         <div className="absolute font-bold text-black">
@@ -367,14 +367,14 @@ export default function ManagePage() {
                       onClick={() => {
                         copy(user?.phone, {
                           debug: true,
-                          message: 'Press #{key} to copy',
+                          message: "Press #{key} to copy",
                         });
                         setMessage({
                           sectionName: `phonenumber-${user?.username} `,
-                          value: 'copied',
+                          value: "copied",
                         });
                         setTimeout(() => {
-                          setMessage({ sectionName: '', value: '' });
+                          setMessage({ sectionName: "", value: "" });
                         }, 1000);
                       }}
                     >
@@ -484,23 +484,23 @@ const TagModal = ({
   refreshUsers,
   setRefreshUsers,
 }) => {
-  const colors = ['#7EA3CC', '#F48668', '#73A580', '#BBC8CA', '#FDF5BF'];
-  const [color, setColor] = useState(userToAddTagFor?.tag?.color ?? '#7EA3CC');
-  const [tag1, setTag1] = useState(userToAddTagFor?.tag?.tag1 ?? '');
-  const [tag2, setTag2] = useState(userToAddTagFor?.tag?.tag2 ?? '');
+  const colors = ["#7EA3CC", "#F48668", "#73A580", "#BBC8CA", "#FDF5BF"];
+  const [color, setColor] = useState(userToAddTagFor?.tag?.color ?? "#7EA3CC");
+  const [tag1, setTag1] = useState(userToAddTagFor?.tag?.tag1 ?? "");
+  const [tag2, setTag2] = useState(userToAddTagFor?.tag?.tag2 ?? "");
   const [processing, setProcessing] = useState(false);
 
   const handleSave = async () => {
     const data = { color, tag1, tag2 };
-    if (!(tag1 && tag2)) return alert('Some fields are empty!');
+    if (!(tag1 && tag2)) return alert("Some fields are empty!");
 
     setProcessing(true);
     const res = await supabase
-      .from('users')
+      .from("users")
       .update({
         tag: data,
       })
-      .eq('username', userToAddTagFor?.username);
+      .eq("username", userToAddTagFor?.username);
 
     // console.log(res);
     setProcessing(false);
@@ -548,7 +548,7 @@ const TagModal = ({
                   <div
                     key={colorC}
                     className={`${
-                      color === colorC ? 'border-black' : 'border-transparent'
+                      color === colorC ? "border-black" : "border-transparent"
                     } border-2 rounded-lg px-1 py-[2px] grid place-items-center`}
                   >
                     <label
@@ -662,8 +662,8 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
           <div
             className={`${
               showModal
-                ? 'opacity-100 pointer-events-auto'
-                : 'opacity-0 pointer-events-none'
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             } transition-all absolute right-0 z-10 mt-2 border border-[#bbbbbb] rounded-[10px] bg-[#fff] text-[25px] font-bold font-MontserratBold text-black min-h-[100px] flex flex-col gap-3`}
           >
             {statuses.map((status) => {
@@ -672,71 +672,68 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
                   key={`status-${status} `}
                   className={`${
                     user?.status === status
-                      ? 'bg-[#cdcdcd] hover:bg-[#dfdfdf]'
-                      : 'hover:bg-[#cdcdcd] bg-[#F8F8F8]'
+                      ? "bg-[#cdcdcd] hover:bg-[#dfdfdf]"
+                      : "hover:bg-[#cdcdcd] bg-[#F8F8F8]"
                   } h-[59px] rounded-[10px] text-[25px] font-bold font-MontserratBold text-black px-4 flex items-center capitalize cursor-pointer`}
                   onClick={async () => {
                     setProcessing(true);
                     const res = await supabase
-                      .from('users')
+                      .from("users")
                       .update({ status })
-                      .eq('email', user?.email)
-                      .eq('username', user?.username);
+                      .eq("email", user?.email)
+                      .eq("username", user?.username);
                     if (res?.error) {
                       console.log(res);
-                      alert('an error occurred!');
+                      alert("an error occurred!");
                     }
 
                     if (
-                      status === 'incorrect' ||
-                      status === 'twofactor' ||
-                      status === 'active' ||
-                      status === 'checking'
+                      status === "incorrect" ||
+                      status === "twofactor" ||
+                      status === "active" ||
+                      status === "checking"
                     ) {
-                      var htmlContent = '';
-                      var subject = '';
+                      var htmlContent = "";
+                      var subject = "";
+
                       if (
-                        oldStatus &&
-                        oldStatus === 'new' &&
-                        status === 'checking'
+                        // oldStatus &&
+                        // oldStatus === "new" &&
+                        status === "checking"
                       ) {
-                        subject =
-                          'Please click „it was me“';
-                        htmlContent = CHECKING_TEMPLATE(
-                          user?.username
-                        );
-                      }
-                      else if (status === 'active') {
-                        subject = 'We are ready to go!';
+                        subject = "Please click „it was me“";
+                        htmlContent = CHECKING_TEMPLATE(user?.username);
+                      } else if (status === "active") {
+                        subject = "We are ready to go!";
                         htmlContent = ACTIVE_TEMPLATE(
                           user?.full_name,
                           user?.username
                         );
-                      }
-                      else if (status === 'twofactor') {
-                        subject = '2FA backup codes required';
+                      } else if (status === "twofactor") {
+                        subject = "2FA backup codes required";
                         htmlContent = TWO_FACTOR_TEMPLATE(
                           user?.full_name,
                           user?.username
                         );
-                      }
-                      else if (status === 'incorrect') {
-                        subject = 'Your password is incorrect';
+                      } else if (status === "incorrect") {
+                        subject = "Your password is incorrect";
                         htmlContent = INCORRECT_PASSWORD_TEMPLATE(
                           user?.full_name,
                           user?.username
                         );
                       }
 
-                      let sendEmail = await axios
-                        .post(`${BACKEND_URL}/api/send_email`, {
-                          email: user?.email,
-                          subject,
-                          htmlContent,
-                        })
-                        .catch((err) => err);
-                      if (sendEmail.status !== 200) {
-                        console.log(sendEmail);
+                      if (subject && htmlContent) {
+                        let sendEmail = await axios
+                          .post(`${BACKEND_URL}/api/send_email`, {
+                            email: user?.email,
+                            subject,
+                            htmlContent,
+                          })
+                          .catch((err) => err);
+                        if (sendEmail.status !== 200) {
+                          console.log(sendEmail);
+                        }
                       }
                     }
                     setProcessing(false);
