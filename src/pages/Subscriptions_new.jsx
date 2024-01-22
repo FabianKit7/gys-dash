@@ -365,7 +365,9 @@ export default function Subscriptions() {
               selectedPlan.planId
             );
           } catch (error) {
-            alert(error?.message);
+            // alert(error?.message);
+            setIsModalOpen(true);
+            setErrorMsg({ title: "Alert", message: error.message });
             return setConfirmingSetUpIntent(false);
           }
           setConfirmingSetUpIntent(false);
@@ -385,9 +387,7 @@ export default function Subscriptions() {
         default:
           console.log("Something went wrong.");
           // alert("Something went wrong");
-          if (
-            window.confirm("Something went wrong")
-          ) {
+          if (window.confirm("Something went wrong")) {
             navigate(`/subscriptions/${user?.username}`);
           }
           break;
@@ -409,6 +409,16 @@ export default function Subscriptions() {
   if (confirmingSetUpIntent) {
     return (
       <div className="">
+        <AlertModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            window.location.href = `/subscriptions/${user?.username}`;
+          }}
+          title={errorMsg?.title}
+          message={errorMsg?.message}
+        />
+
         <div className="skeleton-container">
           <div className="skeleton-item"></div>
           <div className="skeleton-item"></div>
