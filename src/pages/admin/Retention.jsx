@@ -10,7 +10,7 @@ import {
   calculateLast7DaysGrowth,
   statuses,
 } from "./ManagePage";
-import { FaInstagram, FaSms, FaTimes } from "react-icons/fa";
+import { FaInstagram, FaTimes } from "react-icons/fa";
 import { LuSend } from "react-icons/lu";
 import { GiFlameSpin } from "react-icons/gi";
 import {
@@ -37,8 +37,8 @@ export default function Retention() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionName, setSectionName] = useState("active");
   const [sectionTotal, setSectionTotal] = useState(0);
-  const [selectedUser, setSelectedUser] = useState();
-  const [showSMSModal, setShowSMSModal] = useState(false);
+  // const [selectedUser, setSelectedUser] = useState();
+  // const [showSMSModal, setShowSMSModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [refreshUsers, setRefreshUsers] = useState(false);
   const [loading, setLoading] = useState(false);

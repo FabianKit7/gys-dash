@@ -311,7 +311,7 @@ Default AI filters used for good growth and quality:<br>
     `;
 };
 
-export const CHECKING_TEMPLATE = (full_name, username) => {
+export const CHECKING_TEMPLATE = (username) => {
   //Please click „it was me“
   return `
     <style type="text/css">
@@ -328,7 +328,7 @@ export const CHECKING_TEMPLATE = (full_name, username) => {
 <p class="p1">we wanted to let you know that we already logged in and everything worked perfectly.</p>
 <p class="p1">If you open Instagram now you will see a notification informing you about a new login from a new device.<br>
 </p>
-<p class="p1">Please approve our login by clicking “<b>it was me</b>” on the notification.</p>
+<p class="p1">Please approve our login by clicking “this was me” on the notification.</p>
 <p class="p1">Once approved we will start working within only a few hours.<br>
 </p>
 <p class="p1">Once this is done our team will send you more information on how to use your new dashboard on our website. We are excited to start!<br>

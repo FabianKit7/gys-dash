@@ -253,7 +253,12 @@ export default function Settings() {
                 ) : (
                   <div
                     className="text-black cursor-pointer"
-                    onClick={() => setCancelModal(true)}
+                    // onClick={() => setCancelModal(true)}
+                    onClick={() => {
+                      if (!user.subscribed) return;
+                      setUserToCancel(user);
+                      setCancelModal(true);
+                    }}
                   >
                     Cancel
                   </div>
@@ -537,8 +542,8 @@ export default function Settings() {
                     }
 
                     setTimeout(() => {
-                      setCancelModal(false);
                       window.location.reload();
+                      // setCancelModal(false);
                     }, 2000);
                   }, 1000);
                 }}

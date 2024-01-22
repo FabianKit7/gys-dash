@@ -111,9 +111,9 @@ export default function Subscriptions() {
         data: { user: authUser },
       } = await supabase.auth.getUser();
       if (!authUser) {
-        console.log('no auth user');
-        return
-      };
+        console.log("no auth user");
+        return;
+      }
 
       const { data } = await supabase
         .from("users")
@@ -185,7 +185,7 @@ export default function Subscriptions() {
     getData();
   }, [getData]);
 
-  const [creatingSubscription, setCreatingSubscription] = useState(false)
+  const [creatingSubscription, setCreatingSubscription] = useState(false);
 
   // confirm setup_intent_client_secret;
   useEffect(() => {
@@ -193,7 +193,7 @@ export default function Subscriptions() {
       window.location.search
     ).get("setup_intent_client_secret");
     if (!setup_intent_client_secret) return setConfirmingSetUpIntent(false);
-    if(creatingSubscription) return;
+    if (creatingSubscription) return;
 
     async function continueToSupabase(userIsNew, subscriptionObj, plan) {
       let data = {
@@ -253,8 +253,9 @@ export default function Subscriptions() {
       }
 
       try {
-        process.env.NODE_ENV === "production" &&
-          (await slackSubNotify(user?.username || user?.email));
+        // process.env.NODE_ENV === "production" &&
+        //   (await slackSubNotify(user?.username || user?.email));
+        await slackSubNotify(user?.username || user?.email);
       } catch (error) {
         console.log(error);
       }
@@ -277,7 +278,8 @@ export default function Subscriptions() {
           recipient: user?.phone?.toString()?.replace(/\s/g, ""),
           content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
         };
-        await axios.post(url, sms_data);
+        process.env.NODE_ENV === "production" &&
+          (await axios.post(url, sms_data));
       } catch (error) {}
 
       const ref = getRefCode();
@@ -339,7 +341,7 @@ export default function Subscriptions() {
             //   //   return err;
             //   // });
 
-            setCreatingSubscription(true)
+            setCreatingSubscription(true);
             let createSubscription = await axios.post(
               `${BACKEND_URL}/api/stripe/create_subscription`,
               {
@@ -373,16 +375,36 @@ export default function Subscriptions() {
           break;
         case "requires_payment_method":
           console.log("Your payment was not successful, please try again.");
+          // alert("Your payment was not successful, please try again.");
+          if (
+            window.confirm("Your payment was not successful, please try again")
+          ) {
+            navigate(`/subscriptions/${user?.username}`);
+          }
           break;
         default:
           console.log("Something went wrong.");
+          // alert("Something went wrong");
+          if (
+            window.confirm("Something went wrong")
+          ) {
+            navigate(`/subscriptions/${user?.username}`);
+          }
           break;
       }
       // });
     };
     if (!user) return;
     fetch();
-  }, [creatingSubscription, navigate, selectedPlan, stripe, user, userResults, username]);
+  }, [
+    creatingSubscription,
+    navigate,
+    selectedPlan,
+    stripe,
+    user,
+    userResults,
+    username,
+  ]);
 
   if (confirmingSetUpIntent) {
     return (
@@ -1409,7 +1431,7 @@ export const ChargeBeeCard = ({
     const paymentElement = elements.create("payment", paymentElementOptions);
     setAddressElementState(addressElement);
     setPaymentElementState(paymentElement);
-    // addressElement.mount("#address-element");
+    addressElement.mount("#address-element");
 
     paymentElement.mount("#payment-element");
   }, [addressElementState, elements, clientSecret, paymentElementState]);

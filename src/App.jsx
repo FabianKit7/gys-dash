@@ -60,9 +60,10 @@ function App() {
 
   const [addPadding, setAddPadding] = useState(true);
   useEffect(() => {
-    // console.log(pathname);
     if (location.pathname.includes("/search") || location.pathname.startsWith("/subscriptions")) {
       setAddPadding(false);
+    }else{
+      setAddPadding(true);
     }
   }, [location]);
 

@@ -181,7 +181,7 @@ export default function ManagePage() {
         <SendSMSModal
           k={selectedUser?.id}
           user={selectedUser}
-          setShowChargebee={setShowChargebee}
+          setShowSMSModal={setShowChargebee}
         />
       )}
 
@@ -703,25 +703,24 @@ export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
                         subject =
                           'Please click „it was me“';
                         htmlContent = CHECKING_TEMPLATE(
-                          user?.full_name,
                           user?.username
                         );
                       }
-                      if (status === 'active') {
+                      else if (status === 'active') {
                         subject = 'We are ready to go!';
                         htmlContent = ACTIVE_TEMPLATE(
                           user?.full_name,
                           user?.username
                         );
                       }
-                      if (status === 'twofactor') {
+                      else if (status === 'twofactor') {
                         subject = '2FA backup codes required';
                         htmlContent = TWO_FACTOR_TEMPLATE(
                           user?.full_name,
                           user?.username
                         );
                       }
-                      if (status === 'incorrect') {
+                      else if (status === 'incorrect') {
                         subject = 'Your password is incorrect';
                         htmlContent = INCORRECT_PASSWORD_TEMPLATE(
                           user?.full_name,
