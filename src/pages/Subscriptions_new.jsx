@@ -1726,19 +1726,30 @@ export const ChargeBeeCard = ({
     //   defaultValues: billingAddress,
     // });
 
-    // const addressElement = elements.getElement("address");
-    // var value = null;
-    // if (addressElement) {
-    //   var aeobj = await addressElement.getValue();
-    //   value = aeobj.value;
-    // }
-    // await supabase
-    //   .from("users")
-    //   .update({
-    // //     billing_details: value,
-    //     full_name: value?.name || user?.username,
-    //   })
-    //   .eq("auth_user_id", user?.auth_user_id);
+    const addressElement = elements.getElement("address");
+    var value = null;
+    if (addressElement) {
+      var aeobj = await addressElement.getValue();
+      value = aeobj.value;
+    }
+    try {
+      let updateCustomerAddress = await axios.post(
+        `${BACKEND_URL}/api/stripe/updateCustomer`,
+        {
+          customer_id: user.customer_id,
+          address: value.address,
+        }
+      );
+      console.log("updateCustomerAddress");
+      console.log(updateCustomerAddress);
+    } catch (error) {
+      console.log("failed to update customer address");
+      console.log(error);
+      console.log(error.message);
+    }
+
+    // setLoading(false);
+    // return;
 
     setProcessingPayment(true);
 
