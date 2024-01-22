@@ -1726,13 +1726,13 @@ export const ChargeBeeCard = ({
     //   defaultValues: billingAddress,
     // });
 
-    const addressElement = elements.getElement("address");
-    var value = null;
-    if (addressElement) {
-      var aeobj = await addressElement.getValue();
-      value = aeobj.value;
-    }
     try {
+      const addressElement = elements.getElement("address");
+      var value = null;
+      if (addressElement) {
+        var aeobj = await addressElement.getValue();
+        value = aeobj.value;
+      }
       let updateCustomerAddress = await axios.post(
         `${BACKEND_URL}/api/stripe/updateCustomer`,
         {
