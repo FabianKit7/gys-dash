@@ -315,35 +315,40 @@ export default function Subscriptions() {
           console.log("setupIntent passed!");
           const payment_method = paymentIntent.setupIntent.payment_method;
 
-          try {
-            let createSubscription = await axios.post(
-              `${BACKEND_URL}/api/stripe/create_subscription`,
-              {
-                name: user?.full_name,
-                username,
-                email: user?.email,
-                paymentMethod: payment_method,
-                // price: PRICE_ID,
-                price: selectedPlan.planId,
-              }
-            );
-            // .catch((err) => {
-            //   console.error(err);
-            //   return err;
-            // });
+          // try {
+          let createSubscription = await axios.post(
+            `${BACKEND_URL}/api/stripe/create_subscription`,
+            {
+              name: user?.full_name,
+              username,
+              email: user?.email,
+              paymentMethod: payment_method,
+              // price: PRICE_ID,
+              price: selectedPlan.planId,
+            }
+          );
+          // .catch((err) => {
+          //   console.error(err);
+          //   return err;
+          // });
 
-            const userIsNew = true;
-            await continueToSupabase(
-              userIsNew,
-              createSubscription.data.subscription,
-              selectedPlan.planId
-            );
-          } catch (error) {
-            // alert(error?.message);
+          if (createSubscription.status === 500) {
             setIsModalOpen(true);
-            setErrorMsg({ title: "Alert", message: error.message });
+            setErrorMsg({ title: "Alert", message: createSubscription?.data?.message ?? 'Failed to create subscription. Please contact support' });
             return setConfirmingSetUpIntent(false);
           }
+          const userIsNew = true;
+          await continueToSupabase(
+            userIsNew,
+            createSubscription.data.subscription,
+            selectedPlan.planId
+          );
+          // } catch (error) {
+          //   // alert(error?.message);
+          //   setIsModalOpen(true);
+          //   setErrorMsg({ title: "Alert", message: error.message });
+          //   return setConfirmingSetUpIntent(false);
+          // }
           setConfirmingSetUpIntent(false);
           break;
         case "processing":

@@ -621,7 +621,7 @@ const TagModal = ({
 export const ChangeStatusModal = ({ user, refreshUsers, setRefreshUsers }) => {
   const [showModal, setShowModal] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const oldStatus = user?.status;
+  // const oldStatus = user?.status;
 
   useEffect(() => {
     // console.log(showModal);
