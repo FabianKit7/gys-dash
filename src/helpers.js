@@ -1,4 +1,6 @@
-// import Axios from 'axios'
+
+
+import moment from "moment";
 import axios from "axios";
 import _ from "lodash";
 // import { slackClient } from "./slackClient";
@@ -506,4 +508,10 @@ export async function reActivateSubscription(user) {
       subscription_id: null,
     };
   }
+}
+
+
+export function formatDateToTimeAgo(timestamp) {
+  const timeago = moment(timestamp).fromNow();
+  return timeago;
 }

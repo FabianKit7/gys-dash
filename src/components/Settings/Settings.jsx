@@ -265,6 +265,24 @@ export default function Settings() {
                 )}
               </div>
             </div>
+
+            <div className="flex flex-col md:flex-row justify-between md:items-center md:h-[70px] text-[18px] mb-3 md:mb-0">
+              <div className="mb-2 border-b md:mb-0 md:border-b-0">
+                Invoices
+              </div>
+              <div className="flex items-center justify-between gap-3 md:justify-end">
+                <div
+                  className="text-black cursor-pointer"
+                  onClick={() => {
+                    setShowModal(true);
+                    setRefresh(!refresh);
+                    setModalToShow("invoices");
+                  }}
+                >
+                  See All
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -481,7 +499,8 @@ export default function Settings() {
             />
             <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">
               Are you sure you want to cancel your subscription for @
-              {userToCancel?.username}? Please contact your account manager before you cancel and give us a chance to improve.
+              {userToCancel?.username}? Please contact your account manager
+              before you cancel and give us a chance to improve.
             </h1>
             <p
               className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600"
