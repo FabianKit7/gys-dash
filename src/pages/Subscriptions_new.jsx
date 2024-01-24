@@ -295,6 +295,30 @@ export default function Subscriptions() {
         return;
       }
 
+      if (!userResults) return;
+      if (
+        !(
+          creatingSubscription &&
+          navigate &&
+          selectedPlan &&
+          stripe &&
+          user &&
+          userResults &&
+          username
+        )
+      ) {
+        // console.log(
+        //   creatingSubscription,
+        //   navigate,
+        //   selectedPlan,
+        //   stripe,
+        //   user,
+        //   userResults,
+        //   username
+        // );
+        // return;
+      }
+
       const clientSecret = new URLSearchParams(window.location.search).get(
         "setup_intent_client_secret"
       );
@@ -303,15 +327,30 @@ export default function Subscriptions() {
         return setConfirmingSetUpIntent(false);
       }
 
-      if (creatingSubscription) return;
+      // if (creatingSubscription) return;
 
       // console.log("setup_intent_client_secret suc!");
       const paymentIntent = await stripe.retrieveSetupIntent(clientSecret);
+      if (!paymentIntent) return;
       // .then(({ paymentIntent }) => {
       // console.log(paymentIntent?.setupIntent?.status);
+      let count = 0;
       switch (paymentIntent?.setupIntent?.status) {
         case "succeeded":
+          console.log("count");
+          console.log(count);
+          if (count > 0) return;
+          count += 1;
+          console.log(count);
           setCreatingSubscription(true);
+          let c = localStorage.getItem("count");
+          if (c) {
+            console.log("c is set");
+            console.log(c);
+            localStorage.removeItem("count");
+            return;
+          }
+          localStorage.setItem("count", count);
           console.log("setupIntent passed!");
           const payment_method = paymentIntent.setupIntent.payment_method;
 
@@ -334,7 +373,12 @@ export default function Subscriptions() {
 
           if (createSubscription.status === 500) {
             setIsModalOpen(true);
-            setErrorMsg({ title: "Alert", message: createSubscription?.data?.message ?? 'Failed to create subscription. Please contact support' });
+            setErrorMsg({
+              title: "Alert",
+              message:
+                createSubscription?.data?.message ??
+                "Failed to create subscription. Please contact support",
+            });
             return setConfirmingSetUpIntent(false);
           }
           const userIsNew = true;
@@ -1725,6 +1769,7 @@ export const ChargeBeeCard = ({
     if (submitError) {
       console.log("submitError:", submitError);
       alert(submitError.type + ": " + submitError.message);
+      setLoading(false);
       return;
     }
     // elements.getElement(PaymentElement).update({
