@@ -349,6 +349,18 @@ export default function Subscriptions() {
           console.log("setupIntent passed!");
           const payment_method = paymentIntent.setupIntent.payment_method;
 
+          try {
+            await axios.post(
+              `${BACKEND_URL}/api/stripe/attach_payment_method_to_customer`,
+              { customer_id: user?.customer_id, pm_id: payment_method }
+            );
+          } catch (error) {
+            console.log("attach_payment_method_to_customer error");
+            console.log(error.message);
+            console.log(error);
+            console.log(error.message);
+          }
+
           // try {
           let createSubscription = await axios.post(
             `${BACKEND_URL}/api/stripe/create_subscription`,
