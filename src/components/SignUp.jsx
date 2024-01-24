@@ -244,7 +244,7 @@ export default function SignUp() {
                 id=""
                 className="outline-none border-none w-full"
                 value={phone}
-                placeholder="Phone Number"
+                placeholder="Phone Number (Optional)"
                 // required
                 onChange={({ target }) => setPhone(target.value)}
               />
