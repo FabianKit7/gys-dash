@@ -337,16 +337,11 @@ export default function Subscriptions() {
       let count = 0;
       switch (paymentIntent?.setupIntent?.status) {
         case "succeeded":
-          console.log("count");
-          console.log(count);
           if (count > 0) return;
           count += 1;
-          console.log(count);
           setCreatingSubscription(true);
           let c = localStorage.getItem("count");
           if (c) {
-            console.log("c is set");
-            console.log(c);
             localStorage.removeItem("count");
             return;
           }
@@ -1784,9 +1779,10 @@ export const ChargeBeeCard = ({
         value = aeobj.value;
       }
       let updateCustomerAddress = await axios.post(
-        `${BACKEND_URL}/api/stripe/updateCustomer`,
+        `${BACKEND_URL}/api/stripe/updateCustomerAddress`,
         {
-          customer_id: user.customer_id,
+          customer_id: user?.customer_id,
+          email: user?.email,
           address: value.address,
         }
       );
