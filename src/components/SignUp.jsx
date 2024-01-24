@@ -51,16 +51,19 @@ export default function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault()
-    const phoneIsValid = isValidPhoneNumber((`${countryCode.dial_code}${phone}`), countryCode.code);
-    if (!phoneIsValid) {
-      setIsModalOpen(true);
-      setErrorMsg({
-        title: `Invalid phone number: `, message: `Phone number not valid for ${countryCode.name}`
-      })
-      return;
+    var formattedPhone=phone
+    if(phone){
+      const phoneIsValid = isValidPhoneNumber((`${countryCode.dial_code}${phone}`), countryCode.code);
+      if (!phoneIsValid) {
+        setIsModalOpen(true);
+        setErrorMsg({
+          title: `Invalid phone number: `, message: `Phone number not valid for ${countryCode.name}`
+        })
+        return;
+      }
+      const phoneNumber = PhoneNumber.parsePhoneNumber(`${countryCode.dial_code}${phone}`)
+      formattedPhone = phoneNumber.formatInternational()
     }
-    const phoneNumber = PhoneNumber.parsePhoneNumber(`${countryCode.dial_code}${phone}`)
-    var formattedPhone = phoneNumber.formatInternational()
 
     if (loading) return;
     setLoading(true);
@@ -122,7 +125,7 @@ export default function SignUp() {
         .insert({
           auth_user_id: authUser?.id,
           full_name: fullName,
-          phone,
+          phone: phone || '',
           email: email?.toLowerCase(),
           username: ''
         });
