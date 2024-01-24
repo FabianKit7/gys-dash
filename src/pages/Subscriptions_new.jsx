@@ -271,7 +271,7 @@ export default function Subscriptions() {
       }
 
       try {
-        if (!IS_SMS_ALLOWED) return;
+        if (!IS_SMS_ALLOWED && user?.phone) return;
         const url = `${BACKEND_URL}/api/send_sms`;
         const sms_data = {
           recipient: user?.phone?.toString()?.replace(/\s/g, ""),
@@ -1000,7 +1000,7 @@ const Content = ({
       }
 
       try {
-        if (IS_SMS_ALLOWED) {
+        if (IS_SMS_ALLOWED && user?.phone) {
           const url = `${BACKEND_URL}/api/send_sms`;
           const sms_data = {
             recipient: user?.phone?.toString()?.replace(/\s/g, ""),
@@ -1910,7 +1910,7 @@ export const ChargeBeeCard = ({
   //   }
 
   // try {
-  //   if (IS_SMS_ALLOWED) {
+  //   if (IS_SMS_ALLOWED && user?.phone) {
   //     const url = `${BACKEND_URL}/api/send_sms`;
   //     const sms_data = {
   //       recipient: user?.phone?.toString()?.replace(/\s/g, ""),
@@ -2182,7 +2182,7 @@ const ExternalPayComponent = ({
       }
 
       try {
-        if (!IS_SMS_ALLOWED) return;
+        if (!IS_SMS_ALLOWED && user?.phone) return;
         const url = `${BACKEND_URL}/api/send_sms`;
         const sms_data = {
           recipient: user?.phone?.toString()?.replace(/\s/g, ""),

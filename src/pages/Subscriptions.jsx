@@ -712,6 +712,7 @@ const Content = ({
       }
 
       // try {
+        // if(!user?.phone) return;
       //   const url = `${BACKEND_URL}/api/send_sms`;
       //   const sms_data = {
       //     recipient: user?.phone,
@@ -1484,6 +1485,7 @@ export const ChargeBeeCard = ({
     }
 
     // try {
+      // if(!user?.phone) return;
     //   const url = `${BACKEND_URL}/api/send_sms`;
     //   const sms_data = {
     //     recipient: user?.phone,
@@ -1749,6 +1751,7 @@ const ExternalPayComponent = ({
       }
 
       // try {
+        // if(!user?.phone) return;
       //   const url = `${BACKEND_URL}/api/send_sms`;
       //   const sms_data = {
       //     recipient: user?.phone,

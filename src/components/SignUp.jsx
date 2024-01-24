@@ -245,7 +245,7 @@ export default function SignUp() {
                 className="outline-none border-none w-full"
                 value={phone}
                 placeholder="Phone Number"
-                required
+                // required
                 onChange={({ target }) => setPhone(target.value)}
               />
             </div>
