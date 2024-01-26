@@ -24,7 +24,7 @@ export default function Whitelist({ user, userId, page }) {
   const [addSuccess, setAddSuccess] = useState(false);
 
   useEffect(() => {
-    if (accountName.length > 0) {
+    if (accountName?.length > 0) {
       setLoadingSpinner(true)
       const getData = async () => {
         const data = await searchAccount(accountName);
@@ -80,7 +80,7 @@ export default function Whitelist({ user, userId, page }) {
           <div className="flex items-center gap-3">
             <h3 className="font-bold text-[28px] font-MontserratBold">Whitelist</h3>
             <div className="bg-gray-800 rounded w-8 h-8 flex justify-center items-center">
-              <h2 className="text-white font-MontserratSemiBold">{whitelistAccounts.length}</h2>
+              <h2 className="text-white font-MontserratSemiBold">{whitelistAccounts?.length}</h2>
             </div>
             {loadingSpinner && (<Spinner animation="border" />)}
           </div>

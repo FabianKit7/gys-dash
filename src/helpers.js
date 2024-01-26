@@ -66,7 +66,7 @@ export const dateFormatter = (timeFrame) => {
     let prevMonth; // will be obj
 
     if (!months[today.getMonth() - 1].month) {
-      prevMonth = months[months.length - 1];
+      prevMonth = months[months?.length - 1];
       previousMonth = prevMonth.month;
     } else {
       prevMonth = months[today.getMonth() - 1].month;
@@ -427,10 +427,10 @@ export function getDownloadedFilePublicUrl(path) {
 export function getCookie(name) {
   var nameEQ = name + "=";
   var ca = document.cookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
+  for (var i = 0; i < ca?.length; i++) {
     var c = ca[i];
-    while (c.charAt(0) === "") c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    while (c.charAt(0) === "") c = c.substring(1, c?.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ?.length, c?.length);
   }
   return null;
 }
@@ -450,7 +450,7 @@ export function getRefCode() {
 
 export function sumTotalInteractions(arr) {
   let sum = 0;
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr?.length; i++) {
     const obj = arr[i];
     if (obj.hasOwnProperty("total_interactions")) {
       sum += obj.total_interactions;

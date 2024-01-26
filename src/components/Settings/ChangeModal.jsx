@@ -788,7 +788,7 @@ const InvoiceComp = ({ setShowModal, user, setRefresh, refresh }) => {
                         className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
                       >
                         {head}{" "}
-                        {/* {index !== TABLE_HEAD.length - 1 && (
+                        {/* {index !== TABLE_HEAD?.length - 1 && (
                           <BsChevronExpand
                             strokeWidth={2}
                             className="h-4 w-4"
@@ -805,7 +805,7 @@ const InvoiceComp = ({ setShowModal, user, setRefresh, refresh }) => {
                     { id, created, billing_reason, status, hosted_invoice_url },
                     index
                   ) => {
-                    const isLast = index === invoices.length - 1;
+                    const isLast = index === invoices?.length - 1;
                     const classes = isLast
                       ? "p-4"
                       : "p-4 border-b border-blue-gray-50";

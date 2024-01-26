@@ -24,7 +24,7 @@ export default function Blacklist({ user, userId, page }) {
   const [addSuccess, setAddSuccess] = useState(false);
 
   useEffect(() => {
-    if (accountName.length > 0) {
+    if (accountName?.length > 0) {
       setLoadingSpinner(true);
       const getData = async () => {
         const data = await searchAccount(accountName);
@@ -80,7 +80,7 @@ export default function Blacklist({ user, userId, page }) {
           <div className="flex items-center gap-3">
             <h3 className="font-bold text-[28px] font-MontserratBold">Blacklist</h3>
             <div className="flex items-center justify-center w-8 h-8 bg-gray-800 rounded">
-              <h2 className="text-white font-MontserratSemiBold">{blacklistAccounts.length}</h2>
+              <h2 className="text-white font-MontserratSemiBold">{blacklistAccounts?.length}</h2>
             </div>
             {loadingSpinner && (<Spinner animation="border" />)}
           </div>

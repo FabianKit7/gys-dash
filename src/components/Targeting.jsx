@@ -23,7 +23,7 @@ export default function Targeting({ user, userId, page }) {
   const [addSuccess, setAddSuccess] = useState(false);
 
   // useEffect(() => {
-  //   if (accountName.length > 0) {
+  //   if (accountName?.length > 0) {
   //     setLoadingSpinner(true);
   //     const getData = async () => {
   //       const data = await searchAccount(accountName);

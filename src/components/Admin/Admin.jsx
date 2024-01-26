@@ -44,8 +44,8 @@ export default function Admin() {
   };
 
   function readNextReceipt() {
-    if (receiptsRead.length < receipts.length) {
-      currentReceipt = receipts[receiptsRead.length];
+    if (receiptsRead?.length < receipts?.length) {
+      currentReceipt = receipts[receiptsRead?.length];
       // receiptReader.readAsArrayBuffer(currentReceipt);
       receiptReader.readAsText(currentReceipt, "UTF-8");
     } else {
@@ -130,7 +130,7 @@ export default function Admin() {
           {reading && (<Spinner animation="border" />)}
         </div>
 
-        <button className={`${files.length > 0 ? 'bg-secondaryblue' : 'bg-gray-600'} w-full mt-4 rounded-[10px] py-4 text-base text-white font-bold`}
+        <button className={`${files?.length > 0 ? 'bg-secondaryblue' : 'bg-gray-600'} w-full mt-4 rounded-[10px] py-4 text-base text-white font-bold`}
           onClick={handleUploadSessionFile}
         >
           {Loading ? "Loading " : "Upload"}

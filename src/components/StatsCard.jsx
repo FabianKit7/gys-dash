@@ -12,7 +12,7 @@ const StatsCard = ({ userData, sessionsData }) => {
     const [day7, setDay7] = useState(7)
     const [day30, setDay30] = useState(30)
     useEffect(() => {
-        if (sessionsData.length > 0) {
+        if (sessionsData?.length > 0) {
             const lastData = sessionsData.slice(-1)[0]
 
             if (!_7daysGrowth) {
@@ -57,7 +57,7 @@ const StatsCard = ({ userData, sessionsData }) => {
 
             if (!total_interactions){
                 var count = 0;
-                for (let i = 0; i < sessionsData.length; i++) {
+                for (let i = 0; i < sessionsData?.length; i++) {
                     count += parseInt(sessionsData[i].total_interactions)
                 }
                 // setTotal_interactions(sessionsData[0]?.total_interactions)

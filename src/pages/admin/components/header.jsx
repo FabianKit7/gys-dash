@@ -69,12 +69,12 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
         try {
             const msg = `
             Date: ${date}\n
-            Active Users: ${activeUsers.length}\n
-            Checking Users: ${checkingUsers.length}\n
-            New Users: ${newUsers.length}\n
-            Pending Users: ${pendingUsers.length}\n
-            Two-Factor Users: ${twofactorUsers.length}\n
-            Incorrect Users: ${incorrectUsers.length}\n
+            Active Users: ${activeUsers?.length}\n
+            Checking Users: ${checkingUsers?.length}\n
+            New Users: ${newUsers?.length}\n
+            Pending Users: ${pendingUsers?.length}\n
+            Two-Factor Users: ${twofactorUsers?.length}\n
+            Incorrect Users: ${incorrectUsers?.length}\n
             `;
             // const msg = `hello hi`;
             await messageSlack(msg);
@@ -164,7 +164,7 @@ export default function Header({ setUsers, searchTerm, setSearchTerm, setLoading
               setSearchTerm(e.target.value);
             }}
             type="search"
-            className="placeholder-[#C4C4C4] text-[#363636] outline-none border-none ml-5 w-full"
+            className="placeholder-[#C4C4C4] bg-transparent text-[#363636] outline-none border-none ml-5 w-full"
             placeholder="Search by @account, email or CB Customer ID"
           />
         </form>}

@@ -33,7 +33,7 @@ export default function ManageAccounts() {
     // useEffect(() => {
     //     const list = totalInteractions
     //     const fetch = async () => {
-    //         if (accounts.length === 0) return;
+    //         if (accounts?.length === 0) return;
     //         accounts.forEach(async (account) => {
     //             const alreadyExists = totalInteractions.find(a => a.username === account.username)
     //             console.log(alreadyExists);

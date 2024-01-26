@@ -90,7 +90,7 @@ export default function Retention() {
 
   // growthDifference
   useEffect(() => {
-    if (users.length > 0) {
+    if (users?.length > 0) {
       users.forEach(async (user) => {
         const resData = await supabase
           .from("sessions")
@@ -353,7 +353,7 @@ const CheckActiveUsers = () => {
       setLoading(false);
 
       var count = 0;
-      while (count < data.length) {
+      while (count < data?.length) {
         const user = data[count];
         const customer_id = user.customer_id;
         const baseUrl = BACKEND_URL;

@@ -1797,7 +1797,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
               <div className="bg-[#f8f8f8] font-bold font-MontserratBold text-[26px] flex items-center relatve h-[60px] rounded-[10px] px-6">
                 Targeting
                 <span className="bg-primary text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
-                  {targetingAccounts.length}
+                  {targetingAccounts?.length}
                 </span>
               </div>
 
@@ -1889,7 +1889,7 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                 <div className="font-bold font-MontserratBold text-[16px] flex items-center relatve h-[60px] rounded-[10px] px-6">
                   Targeting
                   <span className="bg-primary text-white rounded-[10px] h-9 leading-9 px-[10px] ml-[12px]">
-                    {targetingAccounts.length}
+                    {targetingAccounts?.length}
                   </span>
                 </div>
               </div>
