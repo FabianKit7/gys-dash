@@ -25,9 +25,29 @@ export default function GrowthChart({ isPrivate, sessionsData, days }) {
   // }, [sessionsData, days])
   
   useEffect(() => {
+    // Function to merge objects based on the same day of start_time
+    function mergeObjectsByDay(data) {
+      const mergedData = data.reduce((acc, obj) => {
+        const day = obj.start_time.split(" ")[0]; // Extracting the day portion from start_time
+
+        if (!acc[day]) {
+          acc[day] = { ...obj }; // Create a new entry for the day
+        } else {
+          acc[day] = { ...acc[day], ...obj }; // Merge the properties if day entry exists
+        }
+
+        return acc;
+      }, {});
+
+      return Object.values(mergedData);
+    }
+
     let followersData = [];
     let categories = [];
-    sessionsData?.slice(-days).forEach(items => {
+    var mSessionsData = mergeObjectsByDay(sessionsData);
+
+    mSessionsData?.slice(-days).forEach((items) => {
+    // sessionsData?.slice(-days).forEach(items => {
       const dateParts = (items?.start_time)?.split(/[- :]/); // Split date string into parts
       // const year = parseInt(dateParts[0]);
       const month = parseInt(dateParts[1])-1; // Adjust month (zero-based index)
