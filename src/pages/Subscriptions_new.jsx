@@ -5,6 +5,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { TbRefresh } from "react-icons/tb";
+import { RiErrorWarningLine } from "react-icons/ri";
 import axios from "axios";
 import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "react-click-outside-hook";
@@ -31,6 +32,8 @@ import {
   // AddressElement,
   PaymentRequestButtonElement,
 } from "@stripe/react-stripe-js";
+import VATSupportedCountries from "../vat_supported_countries..json";
+import countryCodes from "../CountryCodes.json";
 
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";
@@ -59,6 +62,29 @@ export default function Subscriptions() {
   const [isIOSorMac, setIsIOSorMac] = useState(true);
   const [confirmingSetUpIntent, setConfirmingSetUpIntent] = useState(true);
   const stripe = useStripe();
+  const [VATSupportedCountry, setVATSupportedCountry] = useState(null);
+
+  // setVATSupportedCountry
+  useEffect(() => {
+    const fetchUserCountry = async () => {
+      try {
+        const response = await axios.get(
+          "https://ipinfo.io?token=3ca9e388b8033f"
+        );
+        const { country } = response.data;
+        const countryDetail = countryCodes.find((c) => c.code === country);
+        const filteredData = VATSupportedCountries.countries.find(
+          (country) =>
+            country.country.toLowerCase() === countryDetail.name.toLowerCase()
+        );
+        setVATSupportedCountry(filteredData);
+      } catch (error) {
+        setVATSupportedCountry(null);
+        console.error("Error fetching user country:", error);
+      }
+    };
+    fetchUserCountry();
+  }, []);
 
   // setIsIOSorMac
   useEffect(() => {
@@ -714,6 +740,7 @@ export default function Subscriptions() {
                   {!isDesktop && (
                     <ChargeBeeCard
                       user={user}
+                      VATSupportedCountry={VATSupportedCountry}
                       userResults={userResults}
                       username={username}
                       setIsModalOpen={setIsModalOpen}
@@ -876,6 +903,7 @@ export default function Subscriptions() {
 
 const Content = ({
   user,
+  VATSupportedCountry,
   userResults,
   navigate,
   setIsModalOpen,
@@ -1352,6 +1380,7 @@ const Content = ({
                       {isDesktop && (
                         <ChargeBeeCard
                           user={user}
+                          VATSupportedCountry={VATSupportedCountry}
                           userResults={userResults}
                           username={username}
                           setIsModalOpen={setIsModalOpen}
@@ -1434,6 +1463,7 @@ export const getStartingDay = () => {
 
 export const ChargeBeeCard = ({
   user,
+  VATSupportedCountry,
   // userResults,
   addCard,
   // username,
@@ -1476,6 +1506,7 @@ export const ChargeBeeCard = ({
 
     paymentElement.mount("#payment-element");
   }, [addressElementState, elements, clientSecret, paymentElementState]);
+  const [vatDetails, setVatDetails] = useState({ company_name: "", id: "" });
 
   // create_setupIntent and setClientSecret
   useEffect(() => {
@@ -1791,7 +1822,7 @@ export const ChargeBeeCard = ({
         var aeobj = await addressElement.getValue();
         value = aeobj.value;
       }
-      if (value) {
+      if (value.address.postal_code) {
         let updateCustomerAddress = await axios.post(
           `${BACKEND_URL}/api/stripe/updateCustomerAddress`,
           {
@@ -1808,6 +1839,27 @@ export const ChargeBeeCard = ({
       console.log(error);
       console.log(error.message);
     }
+
+    // try {
+    //   if (value.address.country) {
+    //     let updateCustomerAddress = await axios.post(
+    //       `${BACKEND_URL}/api/stripe/updateCustomerTax`,
+    //       {
+    //         customer_id: user?.customer_id,
+    //         email: user?.email,
+    //         tax_id: vatDetails.id,
+    //         company_name: vatDetails.company_name,
+    //         country_enum: VATSupportedCountry.enum,
+    //       }
+    //     );
+    //     console.log("updateCustomerAddress");
+    //     console.log(updateCustomerAddress);
+    //   }
+    // } catch (error) {
+    //   console.log("failed to update customer address");
+    //   console.log(error);
+    //   console.log(error.message);
+    // }
 
     // setLoading(false);
     // return;
@@ -2017,6 +2069,52 @@ export const ChargeBeeCard = ({
 
         <div id="payment-element"></div>
         <div id="address-element"></div>
+        {/* 
+        {VATSupportedCountry && ( */}
+        <div className="mt-0 md:mt-4">
+          <div className="flex gap-2 items-center">
+            <input type="checkbox" name="" id="" />
+            <div className="">Buy as a company</div>
+          </div>
+
+          <div className="mt-2">
+            <div className="flex items-center gap-2">
+              VAT details <RiErrorWarningLine className="rotate-180" />
+            </div>
+
+            <div className="mt-2 border border-gray-400 rounded-md">
+              <div className="border-b border-gray-400 h-[50px] flex items-center px-3">
+                <input
+                  type="text"
+                  className="w-full outline-none border-none"
+                  placeholder="Company name"
+                  value={vatDetails.company_name}
+                  onChange={(e) => {
+                    setVatDetails({
+                      ...vatDetails,
+                      company_name: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <div className="h-[50px] flex items-center px-3">
+                <input
+                  type="text"
+                  className="w-full outline-none border-none"
+                  placeholder={`ID`}
+                  value={vatDetails.id}
+                  onChange={(e) => {
+                    setVatDetails({
+                      ...vatDetails,
+                      id: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* )} */}
       </form>
 
       <div className={`${addCard ? "block" : "hidden lg:block"}`}>
