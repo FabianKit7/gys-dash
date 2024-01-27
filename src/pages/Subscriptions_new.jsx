@@ -618,10 +618,10 @@ export default function Subscriptions() {
                   tracking.
                 </p>
 
-                <div className="mb-[11px] flex gap-[10px] h-[80px] items-center">
+                {/* <div className="mb-[11px] flex gap-[10px] h-[80px] items-center">
                   <div
                     className={`flex-1 bg-[#f8f8f8] rounded-[6px] cursor-pointer h-full relative transition-all duration-100 ease-in ${
-                      paymentMethod.name === "card" && "border-black border-2"
+                      paymentMethod.name === "card" && ""
                     }`}
                     onClick={() => {
                       setPaymentMethod({ id: 1, name: "card" });
@@ -653,9 +653,9 @@ export default function Subscriptions() {
                           ? "opacity-100 translate-y-0 text-black"
                           : "opacity-0 translate-y-full"
                       }
-                        absolute bottom-[10px] left-[10px] w-[22px] h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
+                        absolute bottom-[10px] left-[10px] w-full h-[18px] text-[14px] font-[500] transition-all duration-200 ease-in fill-black font-[none]`}
                     >
-                      Card
+                      Payment Options
                     </div>
                   </div>
 
@@ -702,7 +702,7 @@ export default function Subscriptions() {
                       {`${isIOSorMac ? "ApplePay" : "GooglePay"}`}
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div
                   className={`${
