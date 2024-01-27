@@ -1790,16 +1790,18 @@ export const ChargeBeeCard = ({
         var aeobj = await addressElement.getValue();
         value = aeobj.value;
       }
-      let updateCustomerAddress = await axios.post(
-        `${BACKEND_URL}/api/stripe/updateCustomerAddress`,
-        {
-          customer_id: user?.customer_id,
-          email: user?.email,
-          address: value.address,
-        }
-      );
-      console.log("updateCustomerAddress");
-      console.log(updateCustomerAddress);
+      if (value) {
+        let updateCustomerAddress = await axios.post(
+          `${BACKEND_URL}/api/stripe/updateCustomerAddress`,
+          {
+            customer_id: user?.customer_id,
+            email: user?.email,
+            address: value.address,
+          }
+        );
+        console.log("updateCustomerAddress");
+        console.log(updateCustomerAddress);
+      }
     } catch (error) {
       console.log("failed to update customer address");
       console.log(error);
