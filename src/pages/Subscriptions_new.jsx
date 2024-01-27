@@ -270,16 +270,17 @@ export default function Subscriptions() {
         console.log(sendEmail);
       }
 
-      try {
-        if (!IS_SMS_ALLOWED && user?.phone) return;
-        const url = `${BACKEND_URL}/api/send_sms`;
-        const sms_data = {
-          recipient: user?.phone?.toString()?.replace(/\s/g, ""),
-          content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
-        };
-        process.env.NODE_ENV === "production" &&
-          (await axios.post(url, sms_data));
-      } catch (error) {}
+      if (!IS_SMS_ALLOWED && user?.phone) {
+        try {
+          const url = `${BACKEND_URL}/api/send_sms`;
+          const sms_data = {
+            recipient: user?.phone?.toString()?.replace(/\s/g, ""),
+            content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
+          };
+          process.env.NODE_ENV === "production" &&
+            (await axios.post(url, sms_data));
+        } catch (error) {}
+      }
 
       const ref = getRefCode();
       if (ref) {
@@ -999,17 +1000,17 @@ const Content = ({
         console.log(sendEmail);
       }
 
-      try {
-        if (IS_SMS_ALLOWED && user?.phone) {
+      if (IS_SMS_ALLOWED && user?.phone) {
+        try {
           const url = `${BACKEND_URL}/api/send_sms`;
           const sms_data = {
             recipient: user?.phone?.toString()?.replace(/\s/g, ""),
             content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
           };
           await axios.post(url, sms_data);
+        } catch (error) {
+          console.log(`failed to send sms: ${error.message}`);
         }
-      } catch (error) {
-        console.log(`failed to send sms: ${error.message}`);
       }
 
       const ref = getRefCode();
@@ -1271,7 +1272,7 @@ const Content = ({
                 <div className="overflow-auto basis-[100%] rounded-[20px] py-10 px-4 lg:px-[50px] shadow-[0_5px_10px_#0a17530d] bg-[#ffffff]">
                   <div className="">
                     <div className="flex items-center gap-3">
-                    {/* {showCreaditCardInput && (
+                      {/* {showCreaditCardInput && (
                         <div
                           className="w-[32px] h-[32px] rounded-full grid place-items-center shadow-[0_3px_8px_#0000001a] cursor-pointer bg-[#f8f8f8]"
                           onClick={() => {
@@ -2183,15 +2184,16 @@ const ExternalPayComponent = ({
         console.log(sendEmail);
       }
 
-      try {
-        if (!IS_SMS_ALLOWED && user?.phone) return;
-        const url = `${BACKEND_URL}/api/send_sms`;
-        const sms_data = {
-          recipient: user?.phone?.toString()?.replace(/\s/g, ""),
-          content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
-        };
-        await axios.post(url, sms_data);
-      } catch (error) {}
+      if (!IS_SMS_ALLOWED && user?.phone) {
+        try {
+          const url = `${BACKEND_URL}/api/send_sms`;
+          const sms_data = {
+            recipient: user?.phone?.toString()?.replace(/\s/g, ""),
+            content: NOT_CONNECTED_SMS_TEMPLATE(user?.full_name),
+          };
+          await axios.post(url, sms_data);
+        } catch (error) {}
+      }
 
       const ref = getRefCode();
       if (ref) {
