@@ -2071,7 +2071,7 @@ export const ChargeBeeCard = ({
         <div id="address-element"></div>
         {/* 
         {VATSupportedCountry && ( */}
-        <div className="mt-0 md:mt-4">
+        {/* <div className="mt-0 md:mt-4">
           <div className="flex gap-2 items-center">
             <input type="checkbox" name="" id="" />
             <div className="">Buy as a company</div>
@@ -2113,7 +2113,7 @@ export const ChargeBeeCard = ({
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* )} */}
       </form>
 
