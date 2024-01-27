@@ -1840,26 +1840,26 @@ export const ChargeBeeCard = ({
       console.log(error.message);
     }
 
-    // try {
-    //   if (value.address.country) {
-    //     let updateCustomerAddress = await axios.post(
-    //       `${BACKEND_URL}/api/stripe/updateCustomerTax`,
-    //       {
-    //         customer_id: user?.customer_id,
-    //         email: user?.email,
-    //         tax_id: vatDetails.id,
-    //         company_name: vatDetails.company_name,
-    //         country_enum: VATSupportedCountry.enum,
-    //       }
-    //     );
-    //     console.log("updateCustomerAddress");
-    //     console.log(updateCustomerAddress);
-    //   }
-    // } catch (error) {
-    //   console.log("failed to update customer address");
-    //   console.log(error);
-    //   console.log(error.message);
-    // }
+    try {
+      if (value.address.country) {
+        let updateCustomerAddress = await axios.post(
+          `${BACKEND_URL}/api/stripe/updateCustomerTax`,
+          {
+            customer_id: user?.customer_id,
+            email: user?.email,
+            tax_id: vatDetails.id,
+            company_name: vatDetails.company_name,
+            country_enum: VATSupportedCountry.enum,
+          }
+        );
+        console.log("updateCustomerAddress");
+        console.log(updateCustomerAddress);
+      }
+    } catch (error) {
+      console.log("failed to update customer address");
+      console.log(error);
+      console.log(error.message);
+    }
 
     // setLoading(false);
     // return;
@@ -2071,7 +2071,7 @@ export const ChargeBeeCard = ({
         <div id="address-element"></div>
         {/* 
         {VATSupportedCountry && ( */}
-        {/* <div className="mt-0 md:mt-4">
+        <div className="mt-0 md:mt-4">
           <div className="flex gap-2 items-center">
             <input type="checkbox" name="" id="" />
             <div className="">Buy as a company</div>
@@ -2113,7 +2113,7 @@ export const ChargeBeeCard = ({
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
         {/* )} */}
       </form>
 
