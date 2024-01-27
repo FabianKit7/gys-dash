@@ -8,7 +8,7 @@ import { TbRefresh } from "react-icons/tb";
 import axios from "axios";
 import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "react-click-outside-hook";
-import { FaAngleLeft } from "react-icons/fa";
+// import { FaAngleLeft } from "react-icons/fa";
 import AlertModal from "../components/AlertModal";
 import { getRefCode, slackSubNotify } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -889,7 +889,7 @@ const Content = ({
   setSelectedPlanType,
 }) => {
   const amount = parseFloat(selectedPlan?.value?.toString().replace(".", ""));
-  const [showCreaditCardInput, setShowCreaditCardInput] = useState(false);
+  const [showCreaditCardInput, setShowCreaditCardInput] = useState(true);
   const featureA = [
     "400+ Real Monthly Followers",
     "Get Higher Engagement on Posts",
@@ -1271,7 +1271,7 @@ const Content = ({
                 <div className="overflow-auto basis-[100%] rounded-[20px] py-10 px-4 lg:px-[50px] shadow-[0_5px_10px_#0a17530d] bg-[#ffffff]">
                   <div className="">
                     <div className="flex items-center gap-3">
-                      {showCreaditCardInput && (
+                    {/* {showCreaditCardInput && (
                         <div
                           className="w-[32px] h-[32px] rounded-full grid place-items-center shadow-[0_3px_8px_#0000001a] cursor-pointer bg-[#f8f8f8]"
                           onClick={() => {
@@ -1280,7 +1280,7 @@ const Content = ({
                         >
                           <FaAngleLeft className="font-semibold text-gray-600" />
                         </div>
-                      )}
+                      )} */}
                       <h1 className="text-[20px] lg:text-[20px] font-bold text-black font-MontserratBold">
                         Payment method
                       </h1>
