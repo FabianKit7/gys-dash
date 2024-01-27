@@ -1507,6 +1507,7 @@ export const ChargeBeeCard = ({
     paymentElement.mount("#payment-element");
   }, [addressElementState, elements, clientSecret, paymentElementState]);
   const [vatDetails, setVatDetails] = useState({ company_name: "", id: "" });
+  const [showCollectVATDetails, setShowCollectVATDetails] = useState(false);
 
   // create_setupIntent and setClientSecret
   useEffect(() => {
@@ -2069,52 +2070,64 @@ export const ChargeBeeCard = ({
 
         <div id="payment-element"></div>
         <div id="address-element"></div>
-        {/* 
-        {VATSupportedCountry && ( */}
         <div className="mt-0 md:mt-4">
+          {/* {VATSupportedCountry && ( */}
           <div className="flex gap-2 items-center">
-            <input type="checkbox" name="" id="" />
+            <input
+              type="checkbox"
+              name=""
+              id=""
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setShowCollectVATDetails(true);
+                } else {
+                  setShowCollectVATDetails(false);
+                }
+              }}
+            />
             <div className="">Buy as a company</div>
           </div>
+          {/*  )} */}
 
-          <div className="mt-2">
-            <div className="flex items-center gap-2">
-              VAT details <RiErrorWarningLine className="rotate-180" />
-            </div>
+          {showCollectVATDetails && (
+            <div className="mt-2">
+              <div className="flex items-center gap-2">
+                VAT details <RiErrorWarningLine className="rotate-180" />
+              </div>
 
-            <div className="mt-2 border border-gray-400 rounded-md">
-              <div className="border-b border-gray-400 h-[50px] flex items-center px-3">
-                <input
-                  type="text"
-                  className="w-full outline-none border-none"
-                  placeholder="Company name"
-                  value={vatDetails.company_name}
-                  onChange={(e) => {
-                    setVatDetails({
-                      ...vatDetails,
-                      company_name: e.target.value,
-                    });
-                  }}
-                />
-              </div>
-              <div className="h-[50px] flex items-center px-3">
-                <input
-                  type="text"
-                  className="w-full outline-none border-none"
-                  placeholder={`ID`}
-                  value={vatDetails.id}
-                  onChange={(e) => {
-                    setVatDetails({
-                      ...vatDetails,
-                      id: e.target.value,
-                    });
-                  }}
-                />
+              <div className="mt-2 border border-gray-400 rounded-md">
+                <div className="border-b border-gray-400 h-[50px] flex items-center px-3">
+                  <input
+                    type="text"
+                    className="w-full outline-none border-none"
+                    placeholder="Company name"
+                    value={vatDetails.company_name}
+                    onChange={(e) => {
+                      setVatDetails({
+                        ...vatDetails,
+                        company_name: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="h-[50px] flex items-center px-3">
+                  <input
+                    type="text"
+                    className="w-full outline-none border-none"
+                    placeholder={`ID`}
+                    value={vatDetails.id}
+                    onChange={(e) => {
+                      setVatDetails({
+                        ...vatDetails,
+                        id: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
-        {/* )} */}
       </form>
 
       <div className={`${addCard ? "block" : "hidden lg:block"}`}>
