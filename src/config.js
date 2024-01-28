@@ -39,7 +39,7 @@ const live_prices = [
   {
     planId: "price_1OVYrOGqRSmA1tlM4ROGR9QQ",
     value: "185.99",
-    name: "Quaterly",
+    name: "Quarterly",
     type: "1 month",
   },
 ];
@@ -54,7 +54,7 @@ const test_prices = [
   {
     planId: "price_1OVYuCGqRSmA1tlMYhpZYax0",
     value: "185.99",
-    name: "Quaterly",
+    name: "Quarterly",
     type: "1 month",
   },
 ];

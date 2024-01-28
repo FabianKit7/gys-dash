@@ -489,7 +489,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                           <div className="">
                             <div className="flex">{debouncedQuery}</div>
                             <div className="flex mt-1 opacity-40 text-[.9rem]">
-                              click here to open account profile
+                              click here to select your account
                             </div>
                           </div>
                         </div>

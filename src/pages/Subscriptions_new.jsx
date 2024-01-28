@@ -1420,7 +1420,7 @@ const Content = ({
                   </div>
                   <p className="text-[14px] mb-5">
                     Billed{" "}
-                    {selectedPlan.name === "Monthly" ? "monthly" : "quaterly"},
+                    {selectedPlan.name === "Monthly" ? "monthly" : "quarterly"},
                     after 7 day free trial.
                   </p>
 

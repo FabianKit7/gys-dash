@@ -162,7 +162,7 @@ const ModalAdd = ({ from, modalIsOpen, setIsOpen, title, subtitle, extraSubtitle
                   </div>
                   <div className="">
                     <div className="">{debouncedQuery}</div>
-                    <div className="mt-1 opacity-40 text-[.9rem]">click here to open account profile</div>
+                    <div className="mt-1 opacity-40 text-[.9rem]">click here to select your account</div>
                   </div>
                 </div>}
                 {searchedAccounts.map((data, index) => {
