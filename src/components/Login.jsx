@@ -151,9 +151,9 @@ export default function Login() {
             <Link to="/forget-password"><span className="text-black font-MontserratSemiBold font-[600] text-[14px] mt-3">Forgot Password?</span></Link>
           </div>
 
-          <button type="submit" className="mt-6 mb-2">
-            <PrimaryButton title={loading ? 'Processing...' : 'Continue'} customClass={'h-[52px] w-72 md:w-80 font-semibold text-[16px]'} />
-          </button>
+          <div className="mt-6 mb-2">
+            <PrimaryButton type="submit" title={loading ? 'Processing...' : 'Continue'} customClass={'h-[52px] w-72 md:w-80 font-semibold text-[16px]'} />
+          </div>
         </form>
 
         <div className="text-center">

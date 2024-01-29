@@ -291,9 +291,9 @@ export default function SignUp() {
           >
             {loading ? 'Processing...' : 'Sign Up Now'}
           </button> */}
-          <button type="submit" className="mt-6 mb-2">
-            <PrimaryButton title={loading ? 'Processing...' : 'Sign Up Now'} customClass={'h-[52px] w-72 md:w-80 font-semibold text-[16px]'} />
-          </button>
+          <div className="mt-6 mb-2">
+            <PrimaryButton type="submit" title={loading ? 'Processing...' : 'Sign Up Now'} customClass={'h-[52px] w-72 md:w-80 font-semibold text-[16px]'} />
+          </div>
         </form>
 
         <div className="text-center">
