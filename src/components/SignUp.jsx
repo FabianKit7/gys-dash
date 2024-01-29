@@ -50,7 +50,10 @@ export default function SignUp() {
 
 
   const handleSignUp = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+
     var formattedPhone=phone
     if(phone){
       const phoneIsValid = isValidPhoneNumber((`${countryCode.dial_code}${phone}`), countryCode.code);
@@ -65,8 +68,6 @@ export default function SignUp() {
       formattedPhone = phoneNumber.formatInternational()
     }
 
-    if (loading) return;
-    setLoading(true);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
