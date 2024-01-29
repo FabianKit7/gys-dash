@@ -48,7 +48,7 @@ export default function Subscriptions() {
     message: "something went wrong",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState({ id: 1, name: "card" });
+  const [paymentMethod] = useState({ id: 1, name: "card" });
   const [Loading, setLoading] = useState(false);
   const [isDesktop, setIsDesktop] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState({
@@ -59,7 +59,7 @@ export default function Subscriptions() {
   });
   // const [showSelectedPlanType, setShowSelectedPlanType] = useState(false);
   const [selectedPlanType, setSelectedPlanType] = useState("1 month");
-  const [isIOSorMac, setIsIOSorMac] = useState(true);
+  const [, setIsIOSorMac] = useState(true);
   const [confirmingSetUpIntent, setConfirmingSetUpIntent] = useState(true);
   const stripe = useStripe();
   const [VATSupportedCountry, setVATSupportedCountry] = useState(null);
@@ -1842,19 +1842,31 @@ export const ChargeBeeCard = ({
     }
 
     try {
-      if (value.address.country) {
-        let updateCustomerAddress = await axios.post(
+      if (value?.address?.country) {
+        //         import VATSupportedCountries from "../vat_supported_countries..json";
+        // import countryCodes from "../CountryCodes.json";
+        const country = countryCodes.find(
+          (countryCode) => countryCode.code === value?.address?.country
+        );
+
+        const VATSupportedCountry = VATSupportedCountries.countries.find(
+          (sCountry) => sCountry.country === country.name
+        );
+        
+        console.log("VATSupportedCountry");
+        console.log(VATSupportedCountry);
+        let updateCustomerTax = await axios.post(
           `${BACKEND_URL}/api/stripe/updateCustomerTax`,
           {
             customer_id: user?.customer_id,
             email: user?.email,
             tax_id: vatDetails.id,
             company_name: vatDetails.company_name,
-            country_enum: VATSupportedCountry.enum,
+            country_enum: VATSupportedCountry?.enum,
           }
         );
-        console.log("updateCustomerAddress");
-        console.log(updateCustomerAddress);
+        console.log("updateCustomerTax");
+        console.log(updateCustomerTax);
       }
     } catch (error) {
       console.log("failed to update customer address");
@@ -1862,8 +1874,8 @@ export const ChargeBeeCard = ({
       console.log(error.message);
     }
 
-    // setLoading(false);
-    // return;
+    setLoading(false);
+    return;
 
     setProcessingPayment(true);
 
@@ -2085,7 +2097,7 @@ export const ChargeBeeCard = ({
                 }
               }}
             />
-            <div className="">Buy as a company</div>
+            <div className="">Sign up as a company</div>
           </div>
           {/*  )} */}
 
@@ -2114,7 +2126,7 @@ export const ChargeBeeCard = ({
                   <input
                     type="text"
                     className="w-full outline-none border-none"
-                    placeholder={`ID`}
+                    placeholder={`EU VAT number (optional)`}
                     value={vatDetails.id}
                     onChange={(e) => {
                       setVatDetails({
