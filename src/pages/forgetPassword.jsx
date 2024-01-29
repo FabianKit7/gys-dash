@@ -81,9 +81,9 @@ export default function ForgetPassword() {
                             />
                         </div>
 
-                        <button type="submit" className="mt-6 mb-2">
-                            <PrimaryButton title={loading ? 'Processing...' : 'Send'} customClass={'h-[52px] w-72 md:w-80 font-semibold text-[16px]'} />
-                        </button>
+                        <div className="mt-6 mb-2">
+                            <PrimaryButton type="submit" title={loading ? 'Processing...' : 'Send'} customClass={'h-[52px] w-72 md:w-80 font-semibold text-[16px]'} />
+                        </div>
                     </form>
 
                     <div className="text-center">
@@ -96,12 +96,12 @@ export default function ForgetPassword() {
                     <h5 className="font-semibold text-[2rem] text-center text-black font-MontserratSemiBold mt-[30px]">Email has been sent!</h5>
                     <p className="text-center text-[0.8rem] mt-2 mb-6 font-MontserratRegular text-black max-w-[320px] mx-auto">The recovery email has been sent out to your registered email address. If there isn't any account associated with provided email. Please try again.</p>
 
-                    <button type="button" className="mt-6 mb-2 w-full mx-auto" onClick={() => {
+                    <div className="mt-6 mb-2 w-full mx-auto" onClick={() => {
                         // navigate('/')
                         setPage(0)
                     }}>
                         <PrimaryButton title={loading ? 'Processing...' : 'Back'} customClass={'h-[52px] w-full max-w-[250px] mx-auto md:w-72 md:w-80 font-semibold text-[16px]'} />
-                    </button>
+                    </div>
                 </div>
 
                 <br /><br />

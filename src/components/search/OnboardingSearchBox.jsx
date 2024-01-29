@@ -538,7 +538,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                   {processing ? <span className="animate-pulse">Processing your account…</span> : <div className='flex items-center justify-center gap-2'>Select Account <FaAngleRight size={25} /></div>}
                 </button> */}
 
-                  <button
+                  <div
                     className={` hidden lg:block mt-[40px] w-full lg:w-[350px] h-[60px] py-[15px] rounded-[10px] text-[1.125rem] font-semibold text-white`}
                     onClick={() => {
                       selected && !processing && handleSubmit();
@@ -556,7 +556,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                         processing && 'cursor-wait bg-primary/70'
                       }`}
                     />
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>

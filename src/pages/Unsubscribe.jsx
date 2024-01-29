@@ -148,11 +148,11 @@ export default function EmailUnsubscribe() {
                                             </div>
                                         </div>
 
-                                        <button className={` hidden lg:block mt-[40px] w-full lg:w-[350px] h-[60px] py-[15px] rounded-[10px] text-[1.125rem] font-semibold text-white`}
+                                        <div className={` hidden lg:block mt-[40px] w-full lg:w-[350px] h-[60px] py-[15px] rounded-[10px] text-[1.125rem] font-semibold text-white`}
                                             // onClick={() => { (selected && !processing) && handleSubmit() }}
                                         >
                                             <PrimaryButton title={processing ? 'Processingt…' : 'Unsubscribe'} customClass={`h-[52px] w-72 md:w-80 font-semibold text-[16px] ${processing && 'animate-pulse'} bg-primary ${processing && 'cursor-wait bg-primary/70'}`} />
-                                        </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
