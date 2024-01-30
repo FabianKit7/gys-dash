@@ -1874,8 +1874,8 @@ export const ChargeBeeCard = ({
       console.log(error.message);
     }
 
-    setLoading(false);
-    return;
+    // setLoading(false);
+    // return;
 
     setProcessingPayment(true);
 
