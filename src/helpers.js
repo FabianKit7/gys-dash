@@ -349,7 +349,7 @@ export const messageSlack = async (message) => {
         return r;
       }
       console.log("message sent to Slack");
-      console.log(r);
+      // console.log(r);
       return r;
     })
     .catch((e) => {
@@ -370,7 +370,7 @@ export const slackSubNotify = async (username, cancellation) => {
         return r;
       }
       console.log("message sent to Slack");
-      console.log(r);
+      // console.log(r);
       return r;
     })
     .catch((e) => {
