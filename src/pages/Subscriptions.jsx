@@ -1198,7 +1198,7 @@ export const ChargeBeeCard = ({
                 return error;
               });
             if (updateCustomerPaymentMethodRes?.id) {
-              alert("Updated updateCustomerPaymentMethodRes successfully!");
+              alert("Updated PaymentMethod successfully!");
               setRefresh(!refresh);
               setLoading(false);
               setIsModalOpen(false);
