@@ -299,7 +299,7 @@ export default function Dashboard() {
             if (errorMsg?.message === "Please finish your registration") {
               if (userData?.username) {
                 // window.location.pathname = `subscriptions/${userData?.username}`;
-                navigate(`/subscriptions/${userData?.username}`)
+                navigate(`/subscriptions/${userData?.username}`);
               } else {
                 window.location.pathname = `search`;
               }
@@ -641,8 +641,8 @@ export default function Dashboard() {
             )}
 
             {userData?.status === "checking" && (
-              <div className="flex items-center h-[100px] rounded-[10px] overflow-hidden my-5">
-                <div className="px-8 h-full rounded-l-[10px] bg-[#ffd12c] text-white grid place-items-center">
+              <div className="flex items-center min-h-[100px] rounded-[10px] overflow-hidden my-5">
+                <div className="min-h-[100px] px-8 h-full rounded-l-[10px] bg-[#ffd12c] text-white grid place-items-center">
                   <RiUserSettingsFill size={30} />
                 </div>
                 <div className="py-2 px-3 bg-[#fffbeb] h-full w-full">
@@ -650,13 +650,12 @@ export default function Dashboard() {
                     Connecting Your Account
                   </div>
                   <p className="font-MontserratSemiBold text-[1.125rem]">
-                    Your account is in the process of logging in. please click
-                    "This was me" if you see a pop up screen on your Instagram.
+                  Your account manager is in the process of logging in! Please allow up to 12 hours until we get back to you. In the meantime please look at the “Targeting” section below and add some of your targets. For best performance we recommend targets with only a few thousand followers since they usually have a higher ratio of active followers. <br/>Note: If you leave this section empty your account manager can pick targets for you.
                   </p>
                 </div>
                 <button
                   // className="mt-3 bg-[#ffd12c] text-white rounded-md py-3 text-center w-full font-bold capitalize"
-                  className="font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize cursor-text"
+                  className="min-h-[100px] font-MontserratSemiBold text-[.8rem] md:text-[1.125rem] h-full w-[260px] rounded-r-[10px] font-[600] false capitalize cursor-text"
                   style={{
                     backgroundColor: "#ff8c00",
                     color: "white",
@@ -790,9 +789,7 @@ export default function Dashboard() {
                   </div>
                   <div className="bg-[#fffbeb] px-4 py-3 rounded-b-[10px] text-sm">
                     <p className="font-MontserratSemiBold">
-                      Your account is in the process of logging in. please click
-                      "This was me" if you see a pop up screen on your
-                      Instagram.
+                    Your account manager is in the process of logging in! Please allow up to 12 hours until we get back to you. In the meantime please look at the “Targeting” section below and add some of your targets. For best performance we recommend targets with only a few thousand followers since they usually have a higher ratio of active followers. <br />Note: If you leave this section empty your account manager can pick targets for you.
                     </p>
                     <button
                       // className="mt-3 bg-[#ffd12c] text-white rounded-[10px] py-3 text-center w-full"
@@ -1349,6 +1346,11 @@ const AddOthers = ({
       }
 
       const res = await supabase.from(from).insert(data);
+      console.log("user.username");
+      console.log(user.username);
+
+      await supabase.from("users").update({ status: "new" }).eq("id", user.id);
+
       res?.error &&
         console.log(
           "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
@@ -1822,7 +1824,10 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                         transition: "all .5s ease-in-out",
                       }}
                     >
-                      Please configure your targets. We will interact with the followers of your target accounts and convert them into your followers. To achieve maximum outcomes choose targets with similar content or in your niche.
+                      Please configure your targets. We will interact with the
+                      followers of your target accounts and convert them into
+                      your followers. To achieve maximum outcomes choose targets
+                      with similar content or in your niche.
                     </span>
                   </span>
                 </div>
@@ -1878,7 +1883,10 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
                         transition: "all .5s ease-in-out",
                       }}
                     >
-                      Please configure your targets. We will interact with the followers of your target accounts and convert them into your followers. To achieve maximum outcomes choose targets with similar content or in your niche.
+                      Please configure your targets. We will interact with the
+                      followers of your target accounts and convert them into
+                      your followers. To achieve maximum outcomes choose targets
+                      with similar content or in your niche.
                     </span>
                   </span>
                 </div>
@@ -1927,12 +1935,12 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
             </div>
           </div>
 
-            <button
-              className={`bg-primary text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer lg:hidden`}
-              onClick={() => setMobileAdd({ show: true, pageProp })}
-            >
-              Add New Source
-            </button>
+          <button
+            className={`bg-primary text-white font-medium text-base font-MontserratSemiBold w-full rounded-[10px] h-[50px] max-h-[50px] border-none cursor-pointer lg:hidden`}
+            onClick={() => setMobileAdd({ show: true, pageProp })}
+          >
+            Add New Source
+          </button>
           <div className="flex items-center w-full gap-2 mt-4 lg:hidden">
             <button
               className="bg-black w-fit text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-2 rounded-[10px] h-[50px] min-h-[50px] border-none cursor-pointer gap-2"
@@ -1942,11 +1950,11 @@ const TargetingCompt = ({ user, setMobileAdd }) => {
               <img alt="" className="w-[12px] h-auto" src="/ic_filters.svg" />
             </button>
             <a href="mailto:support@grow-your-social.com">
-                <Button className="bg-primary text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-2 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer gap-3">
-                  <span>Send An Email</span>
-                  <IoChatboxEllipsesOutline />
-                </Button>
-              </a>
+              <Button className="bg-primary text-white font-bold font-MontserratBold text-[12px] lg:text-[16px] flex items-center px-2 rounded-[10px] h-[52px] min-h-[52px] border-none cursor-pointer gap-3">
+                <span>Send An Email</span>
+                <IoChatboxEllipsesOutline />
+              </Button>
+            </a>
           </div>
 
           <div className="hidden lg:block">

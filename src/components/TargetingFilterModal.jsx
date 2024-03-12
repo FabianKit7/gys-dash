@@ -74,7 +74,7 @@ export default function TargetingFilterModal(props, { min, max }) {
     
     const { error } = await supabase
       .from('users')
-      .update({ targetingFilter })
+      .update({ targetingFilter, status: "new" })
       .eq("auth_user_id", user?.auth_user_id).eq("username", user?.username)
     error && console.log(error);
     setFilterModal(false);
