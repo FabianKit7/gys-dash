@@ -495,7 +495,7 @@ export async function reActivateSubscription(user) {
   // console.log("reActivate");
   // console.log(reActivate);
 
-  if (reActivate.status === 200) {
+  if (reActivate.status === 200 && reActivate.message === "Subscription successful!") {
     return {
       status: 200,
       message: "Your subscription has been re-activated!",

@@ -287,7 +287,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           setIsModalOpen(true);
           setErrorMsg({
             title: 'Alert',
-            message: 'An error occured, please try again or contact support',
+            message: `An error occured, please try again or contact support. \n${createSubscription.message}`,
           });
           setProcessing(false);
           return;
