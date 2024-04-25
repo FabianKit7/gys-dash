@@ -9,7 +9,6 @@ import { RiErrorWarningLine } from "react-icons/ri";
 import axios from "axios";
 import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "react-click-outside-hook";
-// import { FaAngleLeft } from "react-icons/fa";
 import AlertModal from "../components/AlertModal";
 import { getRefCode, slackSubNotify } from "../helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -28,8 +27,6 @@ import {
 import {
   useStripe,
   useElements,
-  // CardElement,
-  // AddressElement,
   PaymentRequestButtonElement,
 } from "@stripe/react-stripe-js";
 import VATSupportedCountries from "../vat_supported_countries..json";
@@ -57,7 +54,6 @@ export default function Subscriptions() {
     type: "1 month",
     value: 74.99,
   });
-  // const [showSelectedPlanType, setShowSelectedPlanType] = useState(false);
   const [selectedPlanType, setSelectedPlanType] = useState("1 month");
   const [, setIsIOSorMac] = useState(true);
   const [confirmingSetUpIntent, setConfirmingSetUpIntent] = useState(true);
@@ -388,6 +384,10 @@ export default function Subscriptions() {
             console.log(error.message);
           }
 
+          const planId = new URLSearchParams(
+            window.location.search
+          ).get("planId");
+
           // try {
           let createSubscription = await axios.post(
             `${BACKEND_URL}/api/stripe/create_subscription`,
@@ -397,7 +397,7 @@ export default function Subscriptions() {
               email: user?.email,
               paymentMethod: payment_method,
               // price: PRICE_ID,
-              price: selectedPlan.planId,
+              price: planId,
             }
           );
           // .catch((err) => {
@@ -739,6 +739,7 @@ export default function Subscriptions() {
                 >
                   {!isDesktop && (
                     <ChargeBeeCard
+                      planId={selectedPlan.planId}
                       user={user}
                       VATSupportedCountry={VATSupportedCountry}
                       userResults={userResults}
@@ -915,7 +916,6 @@ const Content = ({
   selectedPlan,
   setSelectedPlan,
   selectedPlanType,
-  setSelectedPlanType,
 }) => {
   const amount = parseFloat(selectedPlan?.value?.toString().replace(".", ""));
   const [showCreaditCardInput, setShowCreaditCardInput] = useState(true);
@@ -947,8 +947,6 @@ const Content = ({
   const elements = useElements();
 
   useEffect(() => {
-    // console.log('isDesktop');
-    // console.log(isDesktop);
     if (!stripe || !elements || !isDesktop) return;
 
     setPaymentRequest(null);
@@ -1379,6 +1377,7 @@ const Content = ({
                     >
                       {isDesktop && (
                         <ChargeBeeCard
+                          planId={selectedPlan.planId}
                           user={user}
                           VATSupportedCountry={VATSupportedCountry}
                           userResults={userResults}
@@ -1462,22 +1461,14 @@ export const getStartingDay = () => {
 };
 
 export const ChargeBeeCard = ({
+  planId,
   user,
-  VATSupportedCountry,
-  // userResults,
   addCard,
-  // username,
   setIsModalOpen,
   setErrorMsg,
-  // mobile,
   Loading,
   setLoading,
-  // setRefresh,
-  // refresh,
-  // selectedPlan,
 }) => {
-  // const navigate = useNavigate();
-  // const [nameOnCard, setNameOnCard] = useState("");
   const [, setProcessingPayment] = useState(false);
   const [clientSecret, setClientSecret] = useState(null);
   const stripe = useStripe();
@@ -1549,8 +1540,6 @@ export const ChargeBeeCard = ({
     if (confirm__SetUp) return;
     fetch();
   }, [user]);
-
-  // const handleAddCard = async () => {
   //   setLoading(true);
   //   if (user) {
   //     const cardElement = elements.getElement(CardElement);
@@ -1799,9 +1788,7 @@ export const ChargeBeeCard = ({
   // };
 
   const handleSubmit = async () => {
-    if (!stripe || !elements) {
-      return;
-    }
+    if (!stripe || !elements) return;
 
     setLoading(true);
     // Trigger form validation and wallet collection
@@ -1812,9 +1799,6 @@ export const ChargeBeeCard = ({
       setLoading(false);
       return;
     }
-    // elements.getElement(PaymentElement).update({
-    //   defaultValues: billingAddress,
-    // });
 
     try {
       const addressElement = elements.getElement("address");
@@ -1852,7 +1836,7 @@ export const ChargeBeeCard = ({
         const VATSupportedCountry = VATSupportedCountries.countries.find(
           (sCountry) => sCountry.country === country.name
         );
-        
+
         console.log("VATSupportedCountry");
         console.log(VATSupportedCountry);
         let updateCustomerTax = await axios.post(
@@ -1885,8 +1869,8 @@ export const ChargeBeeCard = ({
       confirmParams: {
         return_url:
           process.env.NODE_ENV === "production"
-            ? `https://app.grow-your-social.com/subscriptions/${user?.username}`
-            : `http://localhost:3000/subscriptions/${user?.username}`,
+            ? `https://app.grow-your-social.com/subscriptions/${user?.username}?planId=${planId}`
+            : `http://localhost:3000/subscriptions/${user?.username}?planId=${planId}`,
       },
     });
 
@@ -2033,53 +2017,11 @@ export const ChargeBeeCard = ({
             setErrorMsg({ title: "Processing...", message: "Please wait" });
             return;
           }
-          // await handleCardPay(setLoading, userResults, setIsModalOpen, setErrorMsg, user, cardRef, username, navigate, nameOnCard);
-          // await handleCardPay();
           await handleSubmit();
         }}
         id="cardForm"
         className=""
       >
-        {/* <div className="shadow-[0_2px_4px_#00000026] rounded-[8px] px-3 py-6 mb-5">
-          <AddressElement
-            options={{
-              mode: "billing",
-              style: {
-                TabLabel: {
-                  color: "#fff",
-                },
-              },
-              TabLabel: {
-                color: "#fff",
-              },
-              defaultValues: {
-                name: user?.full_name || "",
-              },
-              // autocomplete: {
-              //   mode: "google_maps_api",
-              //   apiKey: "{YOUR_GOOGLE_MAPS_API_KEY}",
-              // },
-            }}
-            onChange={(event) => {
-              if (event.complete) {
-                // Extract potentially complete address
-                // const address = event.value.address;
-                const name = event.value.name;
-                // console.log("event.value");
-                // console.log(event.value);
-                // console.log(address);
-                setNameOnCard(name);
-                // const oneLineAddress = `${address.line1}, ${address.line2}, ${address.city}, ${address.state}, ${address.country} ${address.postal_code}`;
-
-                // setAddress(oneLineAddress)
-              }
-            }}
-          />
-        </div>
-        <div className="shadow-[0_2px_4px_#00000026] rounded-[8px] px-3 py-6">
-          <CardElement options={elementOptions} />
-        </div> */}
-
         <div id="payment-element"></div>
         <div id="address-element"></div>
         <div className="mt-0 md:mt-4">
