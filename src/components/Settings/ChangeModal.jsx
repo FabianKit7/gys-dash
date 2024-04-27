@@ -862,13 +862,13 @@ const InvoiceComp = ({ setShowModal, user, setRefresh, refresh }) => {
               color="blue-gray"
               className="font-normal"
             >
-              Page 1 of 10
+              Page 1 of 1
             </Typography>
             <div className="flex gap-2">
-              <Button variant="outlined" size="sm">
+              <Button variant="outlined" size="sm" disabled>
                 Previous
               </Button>
-              <Button variant="outlined" size="sm">
+              <Button variant="outlined" size="sm" disabled>
                 Next
               </Button>
             </div>

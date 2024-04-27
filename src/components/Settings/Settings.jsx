@@ -706,8 +706,8 @@ const ActivateSubModal = ({
     const reActivateMsgElement = document.querySelector("#reActivateMsg");
     reActivateMsgElement.textContent = res.message;
 
-    console.log("res.status");
-    console.log(res.status);
+    // console.log("res.status");
+    // console.log(res.status);
 
     if (res.status === 200) {
       const updateUser = await supabase
@@ -719,6 +719,7 @@ const ActivateSubModal = ({
         })
         .eq("id", user.id);
       if (updateUser?.error) {
+        setProcessing(false);
         console.log(updateUser.error);
         setErrorMsg({
           title: "Alert",
@@ -726,8 +727,6 @@ const ActivateSubModal = ({
         });
       }
     }
-    setProcessing(false);
-
     setTimeout(() => {
       setShowActivateSub(!showActivateSub);
       window.location.reload();
@@ -737,7 +736,7 @@ const ActivateSubModal = ({
   return (
     <>
       {/* <div className="fixed top-0 left-0 w-full h-screen bg"></div> */}
-      <Dialog open={showActivateSub} handler={handleOpen}>
+      <Dialog open={showActivateSub} handler={handleOpen} className="min-w-[75%] md:min-w-[40%]">
         <DialogHeader>Re-activate your subscription.</DialogHeader>
         <DialogBody>
           <strong>@{user?.username}</strong> your account do not have an active
