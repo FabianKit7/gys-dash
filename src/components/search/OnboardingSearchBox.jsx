@@ -1,21 +1,21 @@
-import Axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
-import { useClickOutside } from 'react-click-outside-hook';
+import Axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import { useClickOutside } from "react-click-outside-hook";
 
-import { Spinner } from 'react-bootstrap';
-import { TiTimes } from 'react-icons/ti';
-import { FaAngleRight, FaUser } from 'react-icons/fa';
+import { Spinner } from "react-bootstrap";
+import { TiTimes } from "react-icons/ti";
+import { FaAngleRight, FaUser } from "react-icons/fa";
 import {
   getAccount,
   getRefCode,
   searchAccount,
   uploadImageFromURL,
-} from '../../helpers';
-import { supabase } from '../../supabaseClient';
-import { useNavigate } from 'react-router-dom';
-import AlertModal from '../AlertModal';
-import axios from 'axios';
-import { getStartingDay } from '../../pages/Subscriptions';
+} from "../../helpers";
+import { supabase } from "../../supabaseClient";
+import { useNavigate } from "react-router-dom";
+import AlertModal from "../AlertModal";
+import axios from "axios";
+import { getStartingDay } from "../../pages/Subscriptions";
 import {
   BACKEND_URL,
   PRICE_ID,
@@ -23,40 +23,40 @@ import {
   SUBSCRIPTION_PLANS,
   X_RAPID_API_HOST,
   X_RAPID_API_KEY,
-} from '../../config';
-import PrimaryButton from '../PrimaryButton';
+} from "../../config";
+import PrimaryButton from "../PrimaryButton";
 
-axios.defaults.headers.post['Content-Type'] =
-  'application/x-www-form-urlencoded';
+axios.defaults.headers.post["Content-Type"] =
+  "application/x-www-form-urlencoded";
 
 export default function OnboardingSearchBox({ user, currentUsername }) {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(input);
   const [searchedAccounts, setSearchedAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selected, setSelected] = useState();
   const [errorMsg, setErrorMsg] = useState({
-    title: 'Alert',
-    message: 'something went wrong',
+    title: "Alert",
+    message: "something went wrong",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPlanType] = useState('1 month');
+  const [selectedPlanType] = useState("1 month");
   const [selectedPlan, setSelectedPlan] = useState({
-    planId: '',
-    name: 'Monthly',
-    type: '1 month',
+    planId: "",
+    name: "Monthly",
+    type: "1 month",
     value: 74.99,
   });
   const inputRef = useRef();
   const navigate = useNavigate();
 
-// set default selectedPlan
+  // set default selectedPlan
   useEffect(() => {
-    const plan = SUBSCRIPTION_PLANS.find((plan) => plan?.name === 'Monthly');
+    const plan = SUBSCRIPTION_PLANS.find((plan) => plan?.name === "Monthly");
     setSelectedPlan(plan);
   }, []);
 
@@ -68,7 +68,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
 
   useEffect(() => {
     var i = debouncedQuery;
-    if (debouncedQuery.startsWith('@')) {
+    if (debouncedQuery.startsWith("@")) {
       i = debouncedQuery.substring(1);
     }
     const timer = setTimeout(() => setInput(i), 1000);
@@ -100,33 +100,33 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
 
   const handleSubmit = async () => {
     if (!user?.auth_user_id) {
-      alert('please login first');
+      alert("please login first");
     }
     var filteredSelected = selected;
-    if (filteredSelected.startsWith('@')) {
+    if (filteredSelected.startsWith("@")) {
       filteredSelected = filteredSelected.substring(1);
     }
     if (selected) {
       setProcessing(true);
       const params = {
         ig: filteredSelected,
-        response_type: 'short',
-        corsEnabled: 'false',
-        storageEnabled: 'true',
+        response_type: "short",
+        corsEnabled: "false",
+        storageEnabled: "true",
       };
       // const params = { ig: filteredSelected, response_type: "short", corsEnabled: "false" };
       const options = {
-        method: 'GET',
+        method: "GET",
         url: SCRAPER_API_URL,
         params,
         headers: {
-          'X-RapidAPI-Key': X_RAPID_API_KEY,
-          'X-RapidAPI-Host': X_RAPID_API_HOST,
+          "X-RapidAPI-Key": X_RAPID_API_KEY,
+          "X-RapidAPI-Host": X_RAPID_API_HOST,
         },
       };
       const userResults = await Axios.request(options);
 
-      console.log('userResults');
+      console.log("userResults");
       console.log(userResults);
 
       const vuser = userResults?.data?.[0];
@@ -137,7 +137,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
         // alert('Username not found!');
         setIsModalOpen(true);
         setErrorMsg({
-          title: 'Alert',
+          title: "Alert",
           message: `Username: ${vuser.username} not found!`,
         });
         setProcessing(false);
@@ -153,10 +153,10 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
       // const { data: { user } } = await supabase.auth.getUser()
 
       const checkUsername = await supabase
-        .from('users')
+        .from("users")
         .select()
-        .eq('email', user?.email)
-        .eq('username', vuser?.username);
+        .eq("email", user?.email)
+        .eq("username", vuser?.username);
       if (checkUsername.data?.[0]) {
         const ref = getRefCode();
         if (ref) {
@@ -169,23 +169,23 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
         return;
       }
 
-      var profile_pic_url = '';
+      var profile_pic_url = "";
       // const uploadImageFromURLRes = await uploadImageFromURL(vuser?.username, vuser?.orignal_profile_pic_url)
       const uploadImageFromURLRes = await uploadImageFromURL(vuser?.username);
 
-      if (uploadImageFromURLRes?.status === 'success') {
-        profile_pic_url = uploadImageFromURLRes?.data ?? '';
+      if (uploadImageFromURLRes?.status === "success") {
+        profile_pic_url = uploadImageFromURLRes?.data ?? "";
       }
 
       if (!currentUsername) {
         const updateUser = await supabase
-          .from('users')
+          .from("users")
           .update({
             username: vuser?.username,
             profile_pic_url,
           })
-          .eq('auth_user_id', user?.auth_user_id)
-          .eq('username', user?.username);
+          .eq("auth_user_id", user?.auth_user_id)
+          .eq("username", user?.username);
         // window.location = `/subscriptions/${userResults.data[0].username}`;
         if (!updateUser.error) {
           const ref = getRefCode();
@@ -200,7 +200,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
         } else {
           console.log(updateUser?.error);
           setIsModalOpen(true);
-          setErrorMsg({ title: 'Alert', message: updateUser?.error?.message });
+          setErrorMsg({ title: "Alert", message: updateUser?.error?.message });
           setProcessing(false);
           return;
         }
@@ -211,13 +211,13 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
 
         if (!user?.customer_id) {
           setIsModalOpen(true);
-          setErrorMsg({ title: 'Alert', message: 'No C_ID found' });
+          setErrorMsg({ title: "Alert", message: "No C_ID found" });
           setProcessing(false);
           return;
         }
         let data = {
           customer_id: user?.customer_id,
-          price: selectedPlan.planId || user?.current_plan_id || PRICE_ID || '',
+          price: selectedPlan.planId || user?.current_plan_id || PRICE_ID || "",
         };
         // console.log("sub for c data");
         // console.log(data);
@@ -231,18 +231,18 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
             // console.log(err);
             setIsModalOpen(true);
             setErrorMsg({
-              title: 'Alert',
+              title: "Alert",
               message:
                 err?.response?.data?.message ||
                 err?.message ||
-                'Something went wrong!',
+                "Something went wrong!",
             });
             setProcessing(false);
             return err?.response?.data.err;
           });
 
-          console.log("createSubscription");
-          console.log(createSubscription);
+        console.log("createSubscription");
+        console.log(createSubscription);
 
         if (createSubscription.message === "Subscription successful!") {
           const data = {
@@ -257,8 +257,8 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
             profile_pic_url,
             start_time: getStartingDay(),
             subscription_id: createSubscription?.subscription?.id,
-            status: 'pending',
-            userMode: 'auto',
+            status: "pending",
+            userMode: "auto",
             first_account: false,
           };
           delete data.id;
@@ -270,7 +270,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           delete data.messageSender;
           delete data.msg;
           // console.log(data);
-          const addUser = await supabase.from('users').insert(data);
+          const addUser = await supabase.from("users").insert(data);
 
           if (!addUser.error) {
             navigate(`/dashboard/${vuser?.username}`);
@@ -278,7 +278,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           } else {
             console.log(addUser?.error);
             setIsModalOpen(true);
-            setErrorMsg({ title: 'Alert', message: addUser?.error?.message });
+            setErrorMsg({ title: "Alert", message: addUser?.error?.message });
             setProcessing(false);
             return;
           }
@@ -286,7 +286,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           // console.log(createSubscription)
           setIsModalOpen(true);
           setErrorMsg({
-            title: 'Alert',
+            title: "Alert",
             message: `An error occured, please try again or contact support. \n${createSubscription.message}`,
           });
           setProcessing(false);
@@ -295,7 +295,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
       }
     } else {
       setProcessing(false);
-      alert('choose your account');
+      alert("choose your account");
     }
   };
 
@@ -323,7 +323,16 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
           <div className="flex flex-col justify-between h-full px-5 pb-4 lg:justify-center lg:items-center text-start lg:text-center lg:px-0">
             <div className="block lg:flex flex-col lg:justify-center lg:items-center pb-[80px]">
               {currentUsername && (
-                <div className="py-2 pb-3 px-2 lg:px-[20px] mt-5 rounded-bl-[20px] rounded-[20px] shadow-[0_0_10px_3px_#efefef] bg-white w-full max-w-[300px] mb-3">
+                <div className="max-w-[500px] mx-auto pt-8 md:pt-12 mb-2">
+                  <b className="text-black">
+                    Important notice: There is no free trial for additional
+                    accounts. The first payment is due upon adding an additional
+                    account. Thank you for your understanding!
+                  </b>
+                </div>
+              )}
+              {currentUsername && (
+                <div className="py-2 pb-3 px-2 lg:px-[20px] mt-5 rounded-bl-[20px] rounded-[20px] shadow-[0_0_10px_3px_#efefef] bg-white w-full max-w-[300px] mx-auto mb-3">
                   <div className="flex items-center justify-between gap-4 mt-4">
                     {SUBSCRIPTION_PLANS.filter(
                       (plan) => plan.type === selectedPlanType
@@ -335,14 +344,14 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                           setSelectedPlan(plan);
                         }}
                       >
-                        {plan?.name === 'Monthly' && (
+                        {plan?.name === "Monthly" && (
                           <div className="absolute top-0 -mt-2 left-1/2 -translate-x-1/2 rounded-full px-4 bg-green-600/90 text-white text-xs">
                             Popular
                           </div>
                         )}
                         <div
                           className={`py-3 text-center text-sm text-white rounded-full bg-black group-hover:bg-primary ${
-                            plan?.name === selectedPlan?.name && 'bg-primary/90'
+                            plan?.name === selectedPlan?.name && "bg-primary/90"
                           }`}
                         >
                           {plan?.name}
@@ -355,15 +364,13 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                   </div>
                 </div>
               )}
-
               <h1 className="mt-6 font-bold text-black font-MontserratBold text-[26px] pb-3">
                 Search your account
               </h1>
               <p className="text-[0.875rem] font-MontserratRegular lg:px-[100px]">
-                Find your Instagram account and start growing followers with{' '}
+                Find your Instagram account and start growing followers with{" "}
                 <br className="hidden lg:block" /> Grow-your-social
               </p>
-
               <div className="flex flex-col justify-between mt-3 lg:block">
                 <div
                   className="flex flex-col items-center justify-between h-full w-full lg:h-fit lg:w-[411px] relative"
@@ -371,7 +378,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                 >
                   <div
                     className={`w-full lg:w-[411px] ${
-                      selected ? 'h-[100px]' : 'h-[62px]'
+                      selected ? "h-[100px]" : "h-[62px]"
                     } transition-all duration-300 ease-in`}
                   >
                     {selected && (
@@ -403,7 +410,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                           alt=""
                           className="w-[40px] h-[40px] cursor-pointer"
                           onClick={() => {
-                            setDebouncedQuery('');
+                            setDebouncedQuery("");
                             setSearchedAccounts([]);
                             setSelected();
                             setSelectedAccount();
@@ -443,7 +450,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                             <TiTimes
                               className="cursor-pointer absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
                               onClick={() => {
-                                setDebouncedQuery('');
+                                setDebouncedQuery("");
                                 setSearchedAccounts([]);
                               }}
                             />
@@ -461,7 +468,7 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                           onClick={async () => {
                             setProcessing(true);
                             var filteredSelected = debouncedQuery;
-                            if (filteredSelected.startsWith('@')) {
+                            if (filteredSelected.startsWith("@")) {
                               filteredSelected = filteredSelected.substring(1);
                             }
                             const a = await getAccount(filteredSelected);
@@ -474,8 +481,8 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                               // alert('username not found!')
                               setIsModalOpen(true);
                               setErrorMsg({
-                                title: 'Alert',
-                                message: 'username not found!',
+                                title: "Alert",
+                                message: "username not found!",
                               });
                             }
                             // setInput(debouncedQuery)
@@ -513,10 +520,10 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                                 alt=""
                                 src={data.profile_pic_url}
                                 style={{
-                                  height: '40px',
-                                  marginRight: '10px',
-                                  width: '40px',
-                                  borderRadius: '9999px',
+                                  height: "40px",
+                                  marginRight: "10px",
+                                  width: "40px",
+                                  borderRadius: "9999px",
                                 }}
                               />
                               <div className="flex flex-col" id={data.username}>
@@ -547,13 +554,13 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
                     <PrimaryButton
                       title={
                         processing
-                          ? 'Processing your account…'
-                          : 'Select Account'
+                          ? "Processing your account…"
+                          : "Select Account"
                       }
                       customClass={`h-[52px] w-72 md:w-80 font-semibold text-[16px] ${
-                        processing && 'animate-pulse'
-                      } ${selected ? 'bg-primary' : 'bg-[#C4C4C4]'} ${
-                        processing && 'cursor-wait bg-primary/70'
+                        processing && "animate-pulse"
+                      } ${selected ? "bg-primary" : "bg-[#C4C4C4]"} ${
+                        processing && "cursor-wait bg-primary/70"
                       }`}
                     />
                   </div>
@@ -564,9 +571,9 @@ export default function OnboardingSearchBox({ user, currentUsername }) {
             <div className="fixed left-0 w-full px-5 bottom-6">
               <button
                 className={`${
-                  selected ? 'bg-primary' : 'bg-[#C4C4C4]'
+                  selected ? "bg-primary" : "bg-[#C4C4C4]"
                 } lg:hidden w-full lg:w-[350px] h-[50px] py-[15px] rounded-[10px] text-[.8rem] font-semibold text-white ${
-                  processing && 'cursor-wait bg-primary/70'
+                  processing && "cursor-wait bg-primary/70"
                 }`}
                 onClick={() => {
                   selected && !processing && handleSubmit();

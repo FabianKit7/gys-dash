@@ -499,8 +499,18 @@ export default function Settings() {
             />
             <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">
               Are you sure you want to cancel your subscription for @
-              {userToCancel?.username}? Please contact your account manager
-              before you cancel and give us a chance to improve.
+              {userToCancel?.username}?
+              <br />
+              <br />
+              Before you proceed, please contact your account manager: Isabella.
+              She is available to discuss how we can improve and better meet
+              your individual needs.
+              <br />
+              <br />
+              Note: Once your subscription is canceled, you will lose access to
+              your dashboard. If you are on a paid plan, our team will continue
+              to support your account for the remainder of your billing cycle.
+              You can always contact us if you have any questions!
             </h1>
             <p
               className="mt-2 text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-red-600"
@@ -736,12 +746,16 @@ const ActivateSubModal = ({
   return (
     <>
       {/* <div className="fixed top-0 left-0 w-full h-screen bg"></div> */}
-      <Dialog open={showActivateSub} handler={handleOpen} className="min-w-[75%] md:min-w-[40%]">
+      <Dialog
+        open={showActivateSub}
+        handler={handleOpen}
+        className="min-w-[75%] md:min-w-[40%]"
+      >
         <DialogHeader>Re-activate your subscription.</DialogHeader>
-        <DialogBody>
-          <strong>@{user?.username}</strong> your account do not have an active
-          subscription. Please reactive your subscription if you wish to
-          continue.
+        <DialogBody className="text-black">
+          <strong>@{user?.username}</strong> your account currently does not have an active subscription. Please reactivate your subscription if you wish to continue.
+          <br />
+          Note: Reactivating will automatically create a new subscription and initiate the first payment. If you have any questions, please reach out to us via email.
         </DialogBody>
         {processing && (
           <DialogBody className="animate-pulse text-primary">
