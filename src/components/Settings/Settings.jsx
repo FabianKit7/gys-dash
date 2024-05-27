@@ -497,7 +497,7 @@ export default function Settings() {
                 setCancelModal(false);
               }}
             />
-            <h1 className="text-[1.5rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">
+            <h1 className="text-[0.8rem] md:text-lg font-bold text-center font-MontserratSemiBold text-[#333]">
               Are you sure you want to cancel your subscription for @
               {userToCancel?.username}?
               <br />
@@ -517,7 +517,7 @@ export default function Settings() {
               id="cancelMsg"
             ></p>
 
-            <div className="flex justify-center gap-4">
+            <div className="flex flex-col md:flex-row justify-center gap-2 md:gap-4">
               <a href="mailto:support@grow-your-social.com" className="w-full">
                 <button
                   className="mt-8 m-auto py-3 rounded-[10px] font-MontserratRegular px-10 bg-primary text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 w-full"
@@ -530,7 +530,7 @@ export default function Settings() {
                 </button>
               </a>
               <button
-                className="mt-8 m-auto w-full py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all"
+                className="md:mt-8 m-auto w-full py-3 rounded-[10px] font-MontserratRegular px-10 bg-blue-500 text-white flex justify-center items-center text-[1rem] md:text-lg gap-3 transition-all"
                 onClick={async () => {
                   setTimeout(async () => {
                     const user = userToCancel;
